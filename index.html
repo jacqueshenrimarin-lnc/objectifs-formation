@@ -3,1261 +3,1177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mes Objectifs Formation — LENOUVION</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<title>Émargement — LENOUVION Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root{
-  --ink:#0d0d1a; --paper:#f5f3ee; --accent:#ff4d2e; --gold:#f5c842;
-  --blue:#1a3cff; --green:#00c67a; --purple:#7c3aed; --teal:#0097a7;
-  --card-bg:#ffffff; --border:#e0ddd5; --muted:#9e9a90; --radius:16px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 15% 20%,rgba(26,60,255,.06) 0%,transparent 50%),radial-gradient(circle at 85% 80%,rgba(255,77,46,.05) 0%,transparent 50%),url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d0d1a' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0}
-
-/* TABS */
-.tabs-bar{position:sticky;top:0;z-index:100;background:rgba(245,243,238,.95);backdrop-filter:blur(12px);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 16px}
-.tab-btn{display:inline-flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.03em;padding:8px 18px;border-radius:100px;border:1.5px solid transparent;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted)}
-.tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.tab-btn:not(.active):hover{background:rgba(0,0,0,.05);color:var(--ink)}
-.tab-pill{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6}
-.tab-count{background:var(--accent);color:#fff;border-radius:100px;padding:1px 7px;font-size:.72rem}
-
-#view-participant,#view-formateur{display:none}
-#view-participant.active,#view-formateur.active{display:block}
-.app{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:32px 20px 80px}
-
+:root{--T:#C8532B;--B:#8A2D16;--Sa:#A7BEAE;--Ink:#0B0B0C;--Pa:#F5F2EC;--Cr:#FAF6EE;--Sl:#4A4A4A;--Wi:#B4B2A9;--W:#FFFFFF;--G:#16a34a;--R:#dc2626;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter Tight',sans-serif;background:var(--Pa);color:var(--Ink);min-height:100vh;overflow:hidden;}
 /* HEADER */
-header{text-align:center;padding:40px 0 32px;animation:fadeDown .6s ease both}
-.badge{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:18px}
-.badge span{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
-h1{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:800;line-height:1.1;margin-bottom:12px;letter-spacing:-.02em}
-h1 em{color:var(--accent);font-style:normal}
-.subtitle{font-size:.95rem;color:var(--muted);max-width:440px;margin:0 auto;line-height:1.6}
-
-/* PROGRESS */
-.progress-bar{height:4px;background:var(--border);border-radius:2px;margin:24px 0;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
-.steps-indicator{display:flex;justify-content:center;gap:6px;margin-bottom:24px}
-.step-dot{width:28px;height:6px;border-radius:3px;background:var(--border);transition:background .3s}
-.step-dot.done{background:var(--green)}
-.step-dot.active{background:var(--blue)}
-
-/* CARD */
-.card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:26px;margin-bottom:18px;box-shadow:0 2px 12px rgba(13,13,26,.05);transition:box-shadow .2s}
-.card:hover{box-shadow:0 4px 24px rgba(13,13,26,.09)}
-.step-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
-.card h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:8px}
-.card p{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:14px}
-
-/* FIELDS */
-.field-group{display:flex;gap:12px;flex-wrap:wrap}
-.field{flex:1;min-width:175px}
-label{display:block;font-size:.8rem;font-weight:500;color:var(--ink);margin-bottom:6px}
-input[type="text"],select{width:100%;padding:11px 15px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.93rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
-input[type="text"]:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,60,255,.08)}
-.select-wrap{position:relative}
-.select-wrap::after{content:'▾';position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:.75rem;color:var(--muted)}
-
-/* SKILL LEVEL PILLS */
-.level-pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
-.level-pill{flex:1;min-width:90px;padding:12px 8px;border:2px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;background:var(--paper)}
-.level-pill input[type="radio"]{display:none}
-.level-pill:hover{border-color:var(--blue);background:#f0f3ff}
-.level-pill.selected{border-color:var(--blue);background:#e8edff}
-.level-pill .lp-icon{font-size:1.4rem;margin-bottom:4px;display:block}
-.level-pill .lp-label{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;display:block}
-.level-pill .lp-sub{font-size:.68rem;color:var(--muted);display:block;margin-top:2px}
-.level-pill.selected .lp-label{color:var(--blue)}
-
-/* TEXTAREA + MIC */
-.obj-input-wrap{position:relative}
-textarea{width:100%;padding:13px 52px 13px 15px;min-height:74px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.93rem;color:var(--ink);background:var(--paper);outline:none;resize:vertical;transition:border-color .2s,box-shadow .2s;line-height:1.5}
-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,60,255,.08)}
-textarea::placeholder{color:var(--muted)}
-.mic-btn{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;background:var(--ink);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0}
-.mic-btn:hover{background:var(--blue)}
-.mic-btn.recording{background:var(--accent);animation:pulse 1s ease infinite}
-.mic-btn svg{width:15px;height:15px;fill:white}
-.voice-status{display:none;align-items:center;gap:8px;margin-top:8px;font-size:.8rem;color:var(--accent);font-weight:500}
-.voice-status.active{display:flex}
-.wave-bars{display:flex;align-items:center;gap:2px;height:16px}
-.wave-bar{width:3px;background:var(--accent);border-radius:2px;animation:wave .6s ease infinite}
-.wave-bar:nth-child(2){animation-delay:.1s}.wave-bar:nth-child(3){animation-delay:.2s}.wave-bar:nth-child(4){animation-delay:.3s}
-
+header{background:var(--Ink);height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--T);flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:11px;}
+.lsq{width:34px;height:34px;background:var(--T);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:14px;color:var(--Pa);}
+.lname{font-family:'Fraunces',serif;font-weight:600;font-size:14px;color:var(--Pa);}
+.lsub{font-size:10px;color:var(--Wi);letter-spacing:.6px;text-transform:uppercase;margin-top:1px;}
+.hbadge{background:var(--T);color:var(--Pa);font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;}
+/* LAYOUT */
+.app{display:flex;height:calc(100vh - 56px);}
+/* SIDEBAR */
+.sb{width:290px;background:var(--Cr);border-right:1px solid var(--Wi);display:flex;flex-direction:column;flex-shrink:0;}
+.sbh{padding:14px;border-bottom:1px solid var(--Wi);background:var(--W);}
+.sbh-t{font-family:'Fraunces',serif;font-size:14px;font-weight:600;margin-bottom:10px;}
+.sbl{flex:1;overflow-y:auto;padding:10px;}
+.sbf{padding:10px 13px;border-top:1px solid var(--Wi);font-size:10px;color:var(--Wi);line-height:1.5;}
+/* SESSION CARD */
+.sc{background:var(--W);border:1px solid var(--Wi);border-radius:7px;padding:10px 12px 26px;margin-bottom:7px;cursor:pointer;transition:all .15s;position:relative;}
+.sc:hover{border-color:var(--T);box-shadow:0 2px 7px rgba(200,83,43,.1);}
+.sc.active{border-color:var(--T);border-left:3px solid var(--T);background:#fff8f6;}
+.sc-t{font-weight:600;font-size:13px;margin-bottom:2px;padding-right:38px;}
+.sc-m{font-size:10px;color:var(--Sl);margin-top:1px;}
+.sc-badge{position:absolute;top:8px;right:8px;background:var(--T);color:var(--Pa);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.sc-del{position:absolute;bottom:6px;right:6px;background:none;border:none;cursor:pointer;color:var(--Wi);font-size:12px;padding:2px;transition:color .15s;}
+.sc-del:hover{color:var(--R);}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+/* WELCOME */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:var(--Sl);}
+.wico{font-size:52px;margin-bottom:16px;opacity:.3;}
+.wh{font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--Ink);margin-bottom:8px;}
+.wp{font-size:13px;line-height:1.7;max-width:340px;margin-bottom:22px;}
+/* SESSION VIEW */
+#sv{display:none;flex-direction:column;height:100%;overflow:hidden;}
+.toolbar{padding:11px 22px;background:var(--W);border-bottom:1px solid var(--Wi);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;flex-shrink:0;}
+.tt{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
+.tm{font-size:11px;color:var(--Sl);margin-top:1px;}
+.tr{display:flex;gap:6px;}
+.slotsbar{padding:9px 22px;background:var(--Pa);border-bottom:1px solid var(--Wi);display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
+.stab{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--Wi);background:var(--W);cursor:pointer;transition:all .15s;color:var(--Sl);}
+.stab.active{background:var(--T);color:var(--Pa);border-color:var(--T);}
+.stab:hover:not(.active){border-color:var(--T);color:var(--T);}
+.stab-add{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px dashed var(--Wi);background:transparent;cursor:pointer;color:var(--Sl);transition:all .15s;}
+.stab-add:hover{border-color:var(--T);color:var(--T);}
+/* ADD BAR */
+.addbar{padding:9px 22px;background:var(--W);border-bottom:1px solid var(--Wi);display:flex;gap:7px;align-items:flex-end;flex-shrink:0;flex-wrap:wrap;}
+.addbar .fg{margin:0;flex:1;min-width:80px;}
+/* TABLE */
+.ptw{flex:1;overflow-y:auto;padding:16px 22px;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:160px;color:var(--Sl);gap:7px;text-align:center;}
+table{width:100%;border-collapse:collapse;background:var(--W);border-radius:9px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.05);}
+thead tr{background:var(--Ink);}
+th{padding:9px 11px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--Pa);}
+td{padding:8px 11px;font-size:12px;border-bottom:1px solid var(--Cr);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:#fffdfb;}
+tr:hover td{background:#fff8f6;}
+.sig-img{height:26px;max-width:76px;object-fit:contain;border:1px solid var(--Cr);border-radius:3px;vertical-align:middle;}
+/* STATS BAR */
+.statsbar{padding:7px 22px;background:var(--Cr);border-top:1px solid var(--Wi);display:flex;gap:16px;align-items:center;font-size:11px;color:var(--Sl);flex-shrink:0;}
+.sdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;}
 /* BUTTONS */
-.actions-row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-size:.83rem;font-weight:700;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;letter-spacing:.02em}
-.btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
-.btn:active{transform:translateY(0)}
-.btn-primary{background:var(--ink);color:#fff}
-.btn-primary:hover{background:var(--blue)}
-.btn-accent{background:var(--accent);color:#fff}
-.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border)}
-.btn-outline:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.hint{font-size:.76rem;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px}
-
-/* OBJ LIST */
-.obj-list{list-style:none;display:flex;flex-direction:column;gap:9px}
-.obj-item{display:flex;align-items:flex-start;gap:11px;background:var(--paper);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;animation:slideIn .3s ease both}
-.obj-num{min-width:25px;height:25px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.obj-text{flex:1;font-size:.9rem;line-height:1.5}
-.obj-del{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.95rem;padding:2px 4px;border-radius:4px;transition:color .15s;flex-shrink:0}
-.obj-del:hover{color:var(--accent)}
-.counter{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;background:var(--blue);color:#fff;border-radius:100px;padding:2px 9px;margin-left:auto}
-
-/* ANALYSE */
-#analyse-section{display:none}
-.analyse-header{text-align:center;margin-bottom:24px}
-.analyse-header h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px}
-.loading-bar{height:3px;background:var(--border);border-radius:2px;margin:14px 0;overflow:hidden}
-.loading-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--accent));animation:loadBar 2.8s cubic-bezier(.4,0,.2,1) both}
-
-/* ── NOUVELLE MATRICE 2 AXES ── */
-.dual-matrix{margin-bottom:28px}
-.dual-matrix-title{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.dual-matrix-title::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* Matrice Impact */
-.impact-matrix{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.im-cell{border:1.5px solid var(--border);border-radius:13px;padding:15px;background:var(--card-bg)}
-.im-cell .im-header{display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.im-cell .im-icon{font-size:1.1rem}
-.im-cell .im-label{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.im-cell.gain-temps .im-label{color:var(--green)}
-.im-cell.chiffre-affaires .im-label{color:var(--gold)}
-.im-cell.disponibilite .im-label{color:var(--blue)}
-.im-cell.qualite .im-label{color:var(--purple)}
-.im-items{list-style:none;display:flex;flex-direction:column;gap:5px}
-.im-item{font-size:.77rem;line-height:1.4;background:var(--paper);border-radius:7px;padding:5px 9px}
-.im-item .score-bar{height:3px;border-radius:2px;margin-top:4px;transition:width .5s}
-.im-item .score-txt{font-size:.65rem;color:var(--muted);margin-top:2px}
-
-/* Matrice Faisabilité */
-.feasibility-matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
-.fe-cell{border:1.5px solid var(--border);border-radius:13px;padding:13px;background:var(--card-bg);text-align:center}
-.fe-cell .fe-icon{font-size:1.2rem;margin-bottom:4px}
-.fe-cell .fe-label{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;display:block}
-.fe-cell.complexite .fe-label{color:var(--accent)}
-.fe-cell.securite .fe-label{color:var(--purple)}
-.fe-cell.delai .fe-label{color:var(--teal)}
-.fe-cell.cout .fe-label{color:var(--gold)}
-.fe-items{list-style:none;display:flex;flex-direction:column;gap:4px;text-align:left}
-.fe-item{font-size:.72rem;line-height:1.35;background:var(--paper);border-radius:6px;padding:4px 7px;color:var(--ink)}
-.gauge-row{display:flex;align-items:center;gap:6px;margin-top:6px}
-.gauge-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-.gauge-fill{height:100%;border-radius:3px;transition:width .6s}
-.gauge-label{font-size:.65rem;color:var(--muted);min-width:24px;text-align:right}
-
-/* SCORE GLOBAL */
-.score-section{margin-bottom:20px}
-.score-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.score-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:13px;padding:16px;text-align:center}
-.score-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:4px}
-.score-label{font-size:.73rem;text-transform:uppercase;letter-spacing:.07em;font-weight:600;color:var(--muted)}
-.score-card.green .score-num{color:var(--green)}
-.score-card.gold .score-num{color:#c09800}
-.score-card.blue .score-num{color:var(--blue)}
-.score-card.accent .score-num{color:var(--accent)}
-.score-card.purple .score-num{color:var(--purple)}
-
-/* PRIORITÉ */
-.priority-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.priority-item{display:flex;align-items:flex-start;gap:12px;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px}
-.priority-rank{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;min-width:30px;line-height:1}
-.priority-rank.r1{color:var(--green)} .priority-rank.r2{color:var(--gold)} .priority-rank.r3{color:var(--blue)} .priority-rank.r4,.priority-rank.r5{color:var(--muted)}
-.priority-content{flex:1}
-.priority-text{font-size:.9rem;font-weight:500;margin-bottom:5px;line-height:1.4}
-.priority-tags{display:flex;flex-wrap:wrap;gap:5px}
-.ptag{font-size:.68rem;padding:2px 8px;border-radius:100px;font-weight:600;font-family:'Syne',sans-serif}
-.ptag.green{background:#d6f5e8;color:#007a48}
-.ptag.gold{background:#fdf4d0;color:#8a6e00}
-.ptag.blue{background:#e0e7ff;color:#1a3cff}
-.ptag.accent{background:#ffe5df;color:#cc2200}
-.ptag.purple{background:#ede9fe;color:#5b21b6}
-.ptag.teal{background:#d0f4f7;color:#00606b}
-
-/* PLAN */
-.plan-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-top:8px}
-.plan-card h2{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:10px}
-#planContent{font-size:.88rem;line-height:1.75;color:#444}
-
-/* EXPORT */
-.export-card{background:var(--ink);color:#fff;border-radius:var(--radius);padding:24px;text-align:center;margin-top:22px}
-.export-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:5px}
-.export-card p{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:16px}
-.export-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
-.btn-export{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.18);font-family:'Syne',sans-serif;font-size:.79rem;font-weight:700;letter-spacing:.04em;padding:9px 14px;border-radius:9px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px}
-.btn-export:hover{background:rgba(255,255,255,.22)}
-
-/* FORMATEUR */
-.trainer-header{text-align:center;padding:36px 0 24px}
-.trainer-header h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,4.5vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
-.trainer-header p{color:var(--muted);font-size:.9rem}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}
-.stat-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
-.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:3px}
-.stat-num.blue{color:var(--blue)}.stat-num.green{color:var(--green)}.stat-num.accent{color:var(--accent)}.stat-num.purple{color:var(--purple)}
-.stat-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
-
-/* SEGMENT CHARTS */
-.segment-section{margin-bottom:20px}
-.segment-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.segment-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:13px;padding:16px}
-.segment-card h4{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
-.seg-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.seg-label{font-size:.8rem;font-weight:500;min-width:80px}
-.seg-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.seg-bar-fill{height:100%;border-radius:4px;transition:width .6s}
-.seg-count{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;min-width:20px;text-align:right;color:var(--muted)}
-
-/* PARTICIPANTS */
-.participants-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-.p-card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.p-card-header{display:flex;align-items:center;gap:11px;padding:14px 18px;cursor:pointer;transition:background .15s}
-.p-card-header:hover{background:var(--paper)}
-.p-avatar{width:36px;height:36px;border-radius:50%;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.p-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem}
-.p-meta{font-size:.73rem;color:var(--muted)}
-.p-badge-count{margin-left:auto;background:var(--paper);border:1.5px solid var(--border);border-radius:100px;padding:2px 9px;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;flex-shrink:0}
-.p-card-body{padding:0 18px 16px;display:none}
-.p-card-body.open{display:block}
-.p-level-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:700;font-family:'Syne',sans-serif;margin-bottom:10px}
-.p-level-badge.debutant{background:#ffe5df;color:#cc2200}
-.p-level-badge.intermediaire{background:#fdf4d0;color:#8a6e00}
-.p-level-badge.expert{background:#d6f5e8;color:#007a48}
-.p-obj-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.84rem;line-height:1.4}
-.p-obj-item:last-child{border:none}
-.p-obj-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
-
-/* TAGS */
-.tags-section{margin-bottom:20px}
-.tags-section h3{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:11px}
-.tags-cloud{display:flex;flex-wrap:wrap;gap:8px}
-.tag{border-radius:100px;padding:5px 13px;font-size:.82rem;font-weight:500;cursor:default;transition:transform .15s}
-.tag:hover{transform:scale(1.05)}
-.tag.sz1{font-size:1rem;font-weight:700;background:var(--ink);color:#fff}
-.tag.sz2{font-size:.88rem;font-weight:600;background:var(--blue);color:#fff}
-.tag.sz3{font-size:.8rem;background:var(--paper);border:1.5px solid var(--border);color:var(--ink)}
-
-/* TRAINER EXPORT */
-.trainer-export-bar{background:var(--ink);color:#fff;border-radius:var(--radius);padding:22px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.trainer-export-bar h3{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;flex:1}
-
-/* MODAL QR */
-.modal-overlay{position:fixed;inset:0;background:rgba(13,13,26,.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{background:var(--card-bg);border-radius:20px;padding:34px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);transform:translateY(12px);transition:transform .25s}
-.modal-overlay.open .modal-box{transform:none}
-.modal-box h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:6px}
-.modal-box p{font-size:.84rem;color:var(--muted);margin-bottom:18px;line-height:1.5}
-#qrcode{display:flex;justify-content:center;margin:18px 0}
-#qrcode canvas,#qrcode img{border-radius:10px!important;border:6px solid var(--paper)}
-.modal-url{font-size:.7rem;color:var(--muted);word-break:break-all;margin-bottom:18px;background:var(--paper);padding:9px 12px;border-radius:8px;text-align:left}
-
-/* STATUS */
-.status-bar{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:100px;padding:9px 18px;font-size:.8rem;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-.status-bar.visible{opacity:1}
-.status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.status-dot.green{background:var(--green)}
-.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
-.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
-.empty-state .e-icon{font-size:3rem;margin-bottom:12px;opacity:.4}
-
-@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,77,46,.4)}50%{box-shadow:0 0 0 8px rgba(255,77,46,0)}}
-@keyframes wave{0%,100%{height:4px}50%{height:14px}}
-@keyframes loadBar{to{width:100%}}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:560px){
-  .stats-row{grid-template-columns:1fr 1fr}
-  .impact-matrix,.feasibility-matrix{grid-template-columns:1fr}
-  .segment-row{grid-template-columns:1fr}
-  .field-group{flex-direction:column}
-  .level-pills{flex-direction:column}
-}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:none;border-radius:5px;font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.bp{background:var(--T);color:var(--Pa);}
+.bp:hover{background:var(--B);}
+.bs{background:var(--Cr);color:var(--Sl);border:1px solid var(--Wi);}
+.bs:hover{background:var(--Wi);color:var(--Ink);}
+.bsa{background:var(--Sa);color:var(--Ink);}
+.bsa:hover{opacity:.85;}
+.bd{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bd:hover{background:#fca5a5;}
+.bw{width:100%;justify-content:center;}
+.bx{padding:5px 8px;font-size:11px;}
+/* FORMS */
+.fg{margin-bottom:9px;}
+label{font-size:10px;font-weight:700;color:var(--Sl);text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:3px;}
+input,select,textarea{width:100%;padding:6px 9px;border:1px solid var(--Wi);border-radius:5px;font-family:'Inter Tight',sans-serif;font-size:12px;color:var(--Ink);background:var(--W);outline:none;transition:border-color .15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--T);}
+textarea{resize:vertical;min-height:48px;}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(11,11,12,.52);z-index:1000;align-items:center;justify-content:center;padding:14px;}
+.modal{background:var(--W);border-radius:11px;box-shadow:0 20px 60px rgba(0,0,0,.22);width:100%;overflow:hidden;animation:mIn .2s ease;}
+@keyframes mIn{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mh{padding:16px 20px 12px;border-bottom:1px solid var(--Cr);display:flex;align-items:center;justify-content:space-between;}
+.mt{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
+.mx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--Sl);line-height:1;}
+.mx:hover{color:var(--Ink);}
+.mb{padding:16px 20px;overflow-y:auto;}
+.mf{padding:12px 20px;border-top:1px solid var(--Cr);display:flex;gap:7px;justify-content:flex-end;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+/* SECTION LABEL IN MODAL */
+.sl{font-size:10px;font-weight:700;color:var(--T);text-transform:uppercase;letter-spacing:.7px;margin:14px 0 7px;border-bottom:1px solid var(--Cr);padding-bottom:3px;}
+/* PARTICIPANTS TABLE IN MODAL */
+.mpt{width:100%;border-collapse:collapse;}
+.mpt th{background:var(--Ink);color:var(--Pa);padding:6px 9px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-align:left;}
+.mpt td{padding:5px 9px;border-bottom:1px solid var(--Cr);font-size:12px;vertical-align:middle;}
+.mpt tr:last-child td{border-bottom:none;}
+.mpt input{padding:4px 7px;font-size:11px;}
+/* CANVAS */
+.canv-wrap{border:2px dashed var(--Wi);border-radius:6px;background:var(--Pa);position:relative;overflow:hidden;}
+#sigCanvas{display:block;touch-action:none;}
+.chint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:var(--Wi);pointer-events:none;white-space:nowrap;}
+/* TOAST */
+.toasts{position:fixed;bottom:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:6px;}
+.toast{background:var(--Ink);color:var(--Pa);padding:9px 14px;border-radius:6px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;box-shadow:0 4px 18px rgba(0,0,0,.25);animation:tIn .22s ease;border-left:3px solid var(--T);}
+@keyframes tIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.warn{border-left-color:#f59e0b;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--Wi);border-radius:3px;}
 </style>
 </head>
 <body>
-
-<!-- TABS -->
-<div class="tabs-bar">
-  <button class="tab-btn active" id="tab-participant" onclick="switchTab('participant')">
-    <span class="tab-pill"></span> Participant
-  </button>
-  <button class="tab-btn" id="tab-formateur" onclick="switchTab('formateur')">
-    <span class="tab-pill"></span> Vue Formateur
-    <span class="tab-count" id="tabCount">0</span>
-  </button>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     VUE PARTICIPANT
-═══════════════════════════════════════════════ -->
-<div id="view-participant" class="active">
-<div class="app">
-
-  <header>
-    <div class="badge"><span></span> Méthode VAI · LENOUVION Consulting</div>
-    <h1>Mes <em>objectifs</em><br>de formation</h1>
-    <p class="subtitle">Exprimez ce que vous souhaitez atteindre — par écrit ou à l'oral.</p>
-  </header>
-
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="steps-indicator">
-    <div class="step-dot active" id="sdot1"></div>
-    <div class="step-dot" id="sdot2"></div>
-    <div class="step-dot" id="sdot3"></div>
-    <div class="step-dot" id="sdot4"></div>
-  </div>
-
-  <!-- ÉTAPE 1 : PROFIL -->
-  <div class="card">
-    <div class="step-label">Étape 1 / 4 — Votre profil</div>
-    <h2>Qui êtes-vous ?</h2>
-    <p>Ces informations permettent à l'IA de personnaliser l'analyse selon votre contexte professionnel.</p>
-
-    <div class="field-group" style="margin-bottom:16px">
-      <div class="field">
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" placeholder="Votre prénom" oninput="updateProgress()">
-      </div>
-      <div class="field">
-        <label for="poste">Fonction / Poste</label>
-        <input type="text" id="poste" placeholder="ex : Directeur commercial" oninput="updateProgress()">
-      </div>
-    </div>
-
-    <div class="field-group">
-      <div class="field">
-        <label for="secteur">Secteur d'activité de l'entreprise</label>
-        <div class="select-wrap">
-          <select id="secteur" onchange="updateProgress()">
-            <option value="">— Choisissez un secteur —</option>
-            <option>Agriculture & Agroalimentaire</option>
-            <option>Banque & Assurance & Fintech</option>
-            <option>BTP & Immobilier & Construction</option>
-            <option>Collectivité & Service public</option>
-            <option>Commerce & Distribution & Retail</option>
-            <option>Conseil & Services aux entreprises</option>
-            <option>Culture & Médias & Communication</option>
-            <option>Éducation & Formation</option>
-            <option>Énergie & Environnement & Utilities</option>
-            <option>Industrie & Manufacturing</option>
-            <option>Juridique & Comptabilité</option>
-            <option>Logistique & Transport</option>
-            <option>Luxe & Mode & Beauté</option>
-            <option>Santé & Pharma & MedTech</option>
-            <option>Tech & SaaS & IA</option>
-            <option>Tourisme & Hôtellerie & Restauration</option>
-            <option>Autre</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label for="taille">Taille de l'entreprise</label>
-        <div class="select-wrap">
-          <select id="taille" onchange="updateProgress()">
-            <option value="">— Taille —</option>
-            <option>TPE (1–9 salariés)</option>
-            <option>PME (10–249 salariés)</option>
-            <option>ETI (250–4 999 salariés)</option>
-            <option>Grande entreprise (5 000+)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ÉTAPE 2 : NIVEAU IA -->
-  <div class="card">
-    <div class="step-label">Étape 2 / 4 — Niveau IA</div>
-    <h2>Quel est votre niveau avec l'IA ?</h2>
-    <p>Votre niveau permet d'adapter les recommandations et le plan d'action.</p>
-    <div class="level-pills" id="levelPills">
-      <label class="level-pill" onclick="selectLevel('debutant')">
-        <input type="radio" name="niveau" value="debutant">
-        <span class="lp-icon">🌱</span>
-        <span class="lp-label">Débutant</span>
-        <span class="lp-sub">Je découvre l'IA</span>
-      </label>
-      <label class="level-pill" onclick="selectLevel('intermediaire')">
-        <input type="radio" name="niveau" value="intermediaire">
-        <span class="lp-icon">⚡</span>
-        <span class="lp-label">Intermédiaire</span>
-        <span class="lp-sub">J'utilise déjà des outils IA</span>
-      </label>
-      <label class="level-pill" onclick="selectLevel('expert')">
-        <input type="radio" name="niveau" value="expert">
-        <span class="lp-icon">🚀</span>
-        <span class="lp-label">Expert</span>
-        <span class="lp-sub">Je maîtrise et je déploie l'IA</span>
-      </label>
-    </div>
-  </div>
-
-  <!-- ÉTAPE 3 : OBJECTIFS -->
-  <div class="card">
-    <div style="display:flex;align-items:center;margin-bottom:4px">
-      <div class="step-label" style="margin:0">Étape 3 / 4 — Objectifs</div>
-      <span class="counter" id="counter">0 objectif</span>
-    </div>
-    <h2>Vos objectifs pour cette formation</h2>
-    <p>Qu'espérez-vous apprendre, développer ou transformer ? Jusqu'à 5 objectifs.</p>
-    <div class="obj-input-wrap">
-      <textarea id="objInput" placeholder="Ex : Automatiser mes comptes-rendus de réunion avec Copilot…" rows="3" onkeydown="handleEnter(event)"></textarea>
-      <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Dicter à l'oral">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-      </button>
-    </div>
-    <div class="voice-status" id="voiceStatus">
-      <div class="wave-bars"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
-      Écoute en cours… parlez maintenant
-    </div>
-    <p class="hint">⌨️ <strong>Entrée</strong> pour ajouter · 🎤 pour dicter</p>
-    <div class="actions-row" style="margin-top:11px">
-      <button class="btn btn-primary" onclick="addObjectif()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-        Ajouter
-      </button>
-    </div>
-    <ul class="obj-list" id="objList" style="margin-top:14px"></ul>
-  </div>
-
-  <!-- ÉTAPE 4 : ANALYSER -->
-  <div class="card">
-    <div class="step-label">Étape 4 / 4 — Analyse IA</div>
-    <h2>Analyser mes objectifs</h2>
-    <p>L'IA va évaluer chaque objectif selon <strong>4 dimensions d'impact</strong> (gain de temps, CA, disponibilité, qualité) et <strong>4 critères de faisabilité</strong> (complexité, sécurité, délai, coût), en tenant compte de votre profil et de votre secteur.</p>
-    <button class="btn btn-accent" id="analyseBtn" onclick="lancerAnalyse()">✦ Lancer l'analyse IA</button>
-  </div>
-
-  <!-- RÉSULTATS -->
-  <div id="analyse-section">
-    <div class="analyse-header">
-      <h2>Votre analyse personnalisée</h2>
-      <p id="analyse-subtitle" style="font-size:.88rem;color:var(--muted)">Générée par l'IA</p>
-      <div class="loading-bar" id="loadingBar" style="display:none"><div class="loading-fill"></div></div>
-    </div>
-
-    <!-- SCORES GLOBAUX -->
-    <div class="score-section">
-      <div class="dual-matrix-title">📊 Scores globaux</div>
-      <div class="score-cards" id="scoreCards"></div>
-    </div>
-
-    <!-- PRIORITÉS -->
+ 
+<header>
+  <div class="logo">
+    <div class="lsq">LN</div>
     <div>
-      <div class="dual-matrix-title">🏆 Objectifs par priorité</div>
-      <div class="priority-list" id="priorityList"></div>
-    </div>
-
-    <!-- AXE 1 : IMPACT -->
-    <div class="dual-matrix">
-      <div class="dual-matrix-title">💡 Axe 1 — Impact potentiel</div>
-      <div class="impact-matrix">
-        <div class="im-cell gain-temps">
-          <div class="im-header"><span class="im-icon">⏱️</span><span class="im-label">Gain de temps</span></div>
-          <ul class="im-items" id="im-temps"></ul>
-        </div>
-        <div class="im-cell chiffre-affaires">
-          <div class="im-header"><span class="im-icon">📈</span><span class="im-label">Chiffre d'affaires</span></div>
-          <ul class="im-items" id="im-ca"></ul>
-        </div>
-        <div class="im-cell disponibilite">
-          <div class="im-header"><span class="im-icon">🔓</span><span class="im-label">Disponibilité</span></div>
-          <ul class="im-items" id="im-dispo"></ul>
-        </div>
-        <div class="im-cell qualite">
-          <div class="im-header"><span class="im-icon">⭐</span><span class="im-label">Qualité</span></div>
-          <ul class="im-items" id="im-qualite"></ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- AXE 2 : FAISABILITÉ -->
-    <div class="dual-matrix">
-      <div class="dual-matrix-title">⚙️ Axe 2 — Faisabilité de réalisation</div>
-      <div class="feasibility-matrix">
-        <div class="fe-cell complexite">
-          <div class="fe-icon">🧩</div><span class="fe-label">Complexité technique</span>
-          <ul class="fe-items" id="fe-complexite"></ul>
-        </div>
-        <div class="fe-cell securite">
-          <div class="fe-icon">🔒</div><span class="fe-label">Sécurité & RGPD</span>
-          <ul class="fe-items" id="fe-securite"></ul>
-        </div>
-        <div class="fe-cell delai">
-          <div class="fe-icon">📅</div><span class="fe-label">Délai</span>
-          <ul class="fe-items" id="fe-delai"></ul>
-        </div>
-        <div class="fe-cell cout">
-          <div class="fe-icon">💰</div><span class="fe-label">Coût</span>
-          <ul class="fe-items" id="fe-cout"></ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- PLAN -->
-    <div class="plan-card">
-      <h2>📋 Plan d'action personnalisé</h2>
-      <div id="planContent"></div>
-    </div>
-
-    <!-- EXPORT -->
-    <div class="export-card" id="exportCard" style="display:none">
-      <h3>Emportez votre feuille de route 🎒</h3>
-      <p>Sauvegardez ou partagez vos objectifs et votre plan d'action.</p>
-      <div class="export-btns">
-        <button class="btn-export" onclick="exportPDFParticipant()">📄 Exporter PDF</button>
-        <button class="btn-export" onclick="exporterTexte()">📋 Copier texte</button>
-        <button class="btn-export" onclick="resetForm()">🔄 Nouvelle session</button>
-      </div>
+      <div class="lname">LENOUVION Consulting</div>
+      <div class="lsub">Organisme de formation IA · Qualiopi</div>
     </div>
   </div>
-
-</div>
-</div><!-- /view-participant -->
-
-
-<!-- ═══════════════════════════════════════════════
-     VUE FORMATEUR
-═══════════════════════════════════════════════ -->
-<div id="view-formateur">
+  <div class="hbadge">📋 Émargement</div>
+</header>
+ 
 <div class="app">
-  <div class="trainer-header">
-    <div class="badge"><span></span> Dashboard Formateur</div>
-    <h1>Vue <em>Formateur</em></h1>
-    <p>Synthèse en temps réel des objectifs collectés</p>
-  </div>
-
-  <!-- QR ACCESS -->
-  <div class="card" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-    <div style="flex:1;min-width:200px">
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:5px">🔗 Accès participants</div>
-      <p style="margin:0;font-size:.82rem">Partagez ce QR code pour que les participants rejoignent le formulaire directement depuis leur mobile.</p>
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sbh">
+      <div class="sbh-t">Sessions de formation</div>
+      <button class="btn bp bw" id="btnNewSession">＋ Nouvelle session</button>
     </div>
-    <div style="display:flex;gap:9px;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="showQR()">📱 QR Code</button>
-      <button class="btn btn-outline" onclick="copyLink()">🔗 Copier lien</button>
+    <div class="sbl" id="sbList"></div>
+    <div class="sbf">🔒 Données stockées localement (navigateur)<br>SIRET 980 112 536 00019</div>
+  </aside>
+ 
+  <!-- MAIN -->
+  <main class="main">
+    <div class="welcome" id="welcome">
+      <div class="wico">📋</div>
+      <div class="wh">Bienvenue dans l'émargement LNC</div>
+      <div class="wp">Créez une session pour enregistrer les présences et collecter les signatures de vos participants.</div>
+      <button class="btn bp" id="btnNewSession2">＋ Créer ma première session</button>
     </div>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats-row" id="trainerStats">
-    <div class="stat-card"><div class="stat-num blue" id="statParticipants">0</div><div class="stat-label">Participants</div></div>
-    <div class="stat-card"><div class="stat-num green" id="statObjectifs">0</div><div class="stat-label">Objectifs</div></div>
-    <div class="stat-card"><div class="stat-num accent" id="statAnalyses">0</div><div class="stat-label">Analyses IA</div></div>
-    <div class="stat-card"><div class="stat-num purple" id="statSecteurs">0</div><div class="stat-label">Secteurs</div></div>
-  </div>
-
-  <div id="trainerContent"></div>
-
-  <div class="trainer-export-bar" id="trainerExportBar" style="display:none">
-    <h3>📊 Rapport formateur</h3>
-    <div style="display:flex;gap:9px;flex-wrap:wrap">
-      <button class="btn-export" onclick="exportPDFFormateur()">📄 PDF groupe</button>
-      <button class="btn-export" onclick="clearAllData()">🗑️ Effacer session</button>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- QR MODAL -->
-<div class="modal-overlay" id="qrModal" onclick="closeQR(event)">
-  <div class="modal-box">
-    <h3>📱 QR Code d'accès</h3>
-    <p>Les participants scannent ce code pour ouvrir l'outil sur leur téléphone.</p>
-    <div id="qrcode"></div>
-    <div class="modal-url" id="qrUrl">—</div>
-    <button class="btn btn-primary" onclick="closeQRBtn()">Fermer</button>
-  </div>
-</div>
-
-<div class="status-bar" id="statusBar">
-  <span class="status-dot" id="statusDot"></span>
-  <span id="statusMsg"></span>
-</div>
-
-<script>
-// ══════════════════════════════════════════
-// STATE & STORAGE
-// ══════════════════════════════════════════
-const STORAGE_KEY = 'lenouvion_v3';
-const state = { objectifs:[], maxObj:5, recognition:null, isRecording:false, analyseDone:false, analysis:null };
-function loadAll(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY))||[]; }catch{ return []; } }
-function saveAll(a){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(a)); }catch{} }
-
-// ══════════════════════════════════════════
-// TABS
-// ══════════════════════════════════════════
-function switchTab(t){
-  ['participant','formateur'].forEach(v=>{
-    document.getElementById('view-'+v).classList.toggle('active',v===t);
-    document.getElementById('tab-'+v).classList.toggle('active',v===t);
-  });
-  if(t==='formateur') renderTrainerView();
-}
-
-// ══════════════════════════════════════════
-// LEVEL SELECTION
-// ══════════════════════════════════════════
-function selectLevel(lvl){
-  document.querySelectorAll('.level-pill').forEach(p=>p.classList.remove('selected'));
-  const target = document.querySelector(`.level-pill input[value="${lvl}"]`);
-  if(target){ target.checked=true; target.closest('.level-pill').classList.add('selected'); }
-  updateProgress();
-}
-function getNiveau(){ const r=document.querySelector('input[name="niveau"]:checked'); return r?r.value:''; }
-
-// ══════════════════════════════════════════
-// PROGRESS
-// ══════════════════════════════════════════
-function updateProgress(){
-  const s1 = !!(document.getElementById('prenom').value.trim() || document.getElementById('poste').value.trim());
-  const s2 = !!getNiveau();
-  const s3 = state.objectifs.length>0;
-  const s4 = state.analyseDone;
-  const steps=[s1,s2,s3,s4];
-  const done=steps.filter(Boolean).length;
-  document.getElementById('progressFill').style.width=(done/4*100)+'%';
-  steps.forEach((s,i)=>{
-    const d=document.getElementById('sdot'+(i+1));
-    d.className='step-dot'+(s?i<done-1||s4?' done':' done':i===done?' active':'');
-  });
-}
-
-// ══════════════════════════════════════════
-// OBJECTIFS
-// ══════════════════════════════════════════
-function addObjectif(){
-  const inp=document.getElementById('objInput');
-  const t=inp.value.trim();
-  if(!t){showStatus('Saisissez un objectif.',false);return;}
-  if(state.objectifs.length>=state.maxObj){showStatus('Maximum 5 objectifs atteint.',false);return;}
-  state.objectifs.push(t); inp.value='';
-  renderList(); updateCounter(); updateProgress();
-  showStatus('Objectif ajouté ✓',true);
-}
-function handleEnter(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addObjectif();}}
-function removeObjectif(i){state.objectifs.splice(i,1);renderList();updateCounter();updateProgress();}
-function renderList(){
-  const ul=document.getElementById('objList'); ul.innerHTML='';
-  state.objectifs.forEach((o,i)=>{
-    const li=document.createElement('li'); li.className='obj-item'; li.style.animationDelay=(i*50)+'ms';
-    li.innerHTML=`<div class="obj-num">${i+1}</div><div class="obj-text">${esc(o)}</div><button class="obj-del" onclick="removeObjectif(${i})">✕</button>`;
-    ul.appendChild(li);
-  });
-}
-function updateCounter(){
-  const n=state.objectifs.length;
-  document.getElementById('counter').textContent=n+' objectif'+(n>1?'s':'');
-  document.getElementById('tabCount').textContent=loadAll().length;
-}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-// ══════════════════════════════════════════
-// VOICE
-// ══════════════════════════════════════════
-function toggleVoice(){
-  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){showStatus('Reconnaissance vocale non disponible.',false);return;}
-  state.isRecording?state.recognition?.stop():startVoice();
-}
-function startVoice(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  const rec=new SR(); rec.lang='fr-FR'; rec.interimResults=true; state.recognition=rec;
-  rec.onstart=()=>{state.isRecording=true;document.getElementById('micBtn').classList.add('recording');document.getElementById('voiceStatus').classList.add('active');};
-  rec.onresult=(e)=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;document.getElementById('objInput').value=t;};
-  rec.onend=()=>{state.isRecording=false;document.getElementById('micBtn').classList.remove('recording');document.getElementById('voiceStatus').classList.remove('active');if(document.getElementById('objInput').value.trim())showStatus('Dictée terminée — cliquez Ajouter ✓',true);};
-  rec.onerror=()=>{state.isRecording=false;document.getElementById('micBtn').classList.remove('recording');document.getElementById('voiceStatus').classList.remove('active');showStatus('Erreur microphone.',false);};
-  rec.start();
-}
-
-// ══════════════════════════════════════════
-// ANALYSE IA
-// ══════════════════════════════════════════
-async function lancerAnalyse(){
-  if(!state.objectifs.length){showStatus('Ajoutez au moins un objectif.',false);return;}
-  const btn=document.getElementById('analyseBtn');
-  btn.innerHTML='<span class="spinner"></span> Analyse en cours…'; btn.disabled=true;
-  const prenom=document.getElementById('prenom').value.trim()||'le participant';
-  const poste=document.getElementById('poste').value.trim()||'';
-  const secteur=document.getElementById('secteur').value||'non précisé';
-  const taille=document.getElementById('taille').value||'non précisée';
-  const niveau=getNiveau()||'non précisé';
-  const niveauLabels={debutant:'Débutant (découvre l\'IA)',intermediaire:'Intermédiaire (utilise déjà des outils IA)',expert:'Expert (maîtrise et déploie l\'IA)'};
-  const niveauLabel=niveauLabels[niveau]||niveau;
-  const objTxt=state.objectifs.map((o,i)=>`${i+1}. ${o}`).join('\n');
-
-  const prompt=`Tu es un expert en transformation IA pour les entreprises et en formation professionnelle.
-
-CONTEXTE DU PARTICIPANT :
-- Prénom : ${prenom}
-- Poste : ${poste||'non précisé'}
-- Secteur d'activité : ${secteur}
-- Taille entreprise : ${taille}
-- Niveau IA : ${niveauLabel}
-
-OBJECTIFS DE FORMATION :
-${objTxt}
-
-MISSION : Pour chaque objectif, réalise une analyse sur 2 axes :
-
-AXE 1 — IMPACT POTENTIEL (note de 1 à 5 pour chaque dimension) :
-- gain_temps : impact sur la réduction du temps passé
-- ca : impact sur le chiffre d'affaires / revenus
-- disponibilite : impact sur la disponibilité de l'équipe / du dirigeant
-- qualite : impact sur la qualité des livrables / décisions
-
-AXE 2 — FAISABILITÉ (note de 1 à 5, où 5 = très facile/faible risque) :
-- complexite_technique : niveau de difficulté technique (5 = très simple)
-- securite_rgpd : niveau de risque sécurité/RGPD (5 = risque très faible)
-- delai : rapidité de mise en œuvre (5 = très rapide)
-- cout : niveau de coût (5 = très abordable)
-
-Calcule pour chaque objectif :
-- score_impact = moyenne des 4 notes d'impact
-- score_faisabilite = moyenne des 4 notes de faisabilité
-- score_priorite = (score_impact * 0.6) + (score_faisabilite * 0.4)
-
-Réponds UNIQUEMENT en JSON valide sans markdown ni backticks :
-{
-  "objectifs": [
-    {
-      "texte": "texte court de l'objectif (max 60 car.)",
-      "impact": { "gain_temps": 4, "ca": 3, "disponibilite": 5, "qualite": 3, "score": 3.75, "commentaire": "Phrase courte sur l'impact principal" },
-      "faisabilite": { "complexite_technique": 4, "securite_rgpd": 5, "delai": 4, "cout": 5, "score": 4.5, "commentaire": "Phrase courte sur la faisabilité" },
-      "score_priorite": 4.05,
-      "tags": ["gains rapides", "automatisation"]
-    }
-  ],
-  "scores_globaux": {
-    "gain_temps": 3.8,
-    "ca": 2.9,
-    "disponibilite": 4.1,
-    "qualite": 3.6,
-    "faisabilite_globale": 3.9
-  },
-  "plan": "Plan d'action personnalisé en 3 étapes concrètes pour ${prenom} (niveau ${niveauLabel}, secteur ${secteur}). Adapté à son niveau et à son contexte. Formulation motivante avec verbes d'action. 5-7 phrases."
-}`;
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompt}]})
-    });
-    const data=await res.json();
-    const raw=data.content.map(c=>c.text||'').join('').trim();
-    const result=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    afficherResultats(result,prenom,poste,secteur,taille,niveau);
-  }catch(err){
-    console.error(err);
-    const fb=analyseLocale(state.objectifs);
-    afficherResultats(fb,prenom,poste,secteur,taille,niveau);
-    showStatus('Analyse en mode local (API indisponible)',true);
-  }finally{
-    btn.innerHTML='✦ Relancer l\'analyse'; btn.disabled=false;
-  }
-}
-
-function analyseLocale(objs){
-  const objectifs=objs.map((o,i)=>({
-    texte:o.slice(0,60),
-    impact:{gain_temps:3+i%2,ca:2+i%3,disponibilite:4-i%2,qualite:3+i%2,score:3.2,commentaire:'Impact estimé'},
-    faisabilite:{complexite_technique:4-i%2,securite_rgpd:4,delai:3+i%2,cout:4-i%2,score:3.8,commentaire:'Faisabilité estimée'},
-    score_priorite:3.5-i*0.2,tags:['à analyser']
-  }));
-  return{objectifs,scores_globaux:{gain_temps:3.2,ca:2.8,disponibilite:3.5,qualite:3.4,faisabilite_globale:3.8},plan:'Commencez par les objectifs à fort impact. Planifiez les plus complexes en étapes. Mesurez vos progrès régulièrement.'};
-}
-
-function afficherResultats(data,prenom,poste,secteur,taille,niveau){
-  document.getElementById('analyse-section').style.display='block';
-  document.getElementById('loadingBar').style.display='block';
-  document.getElementById('analyse-subtitle').textContent=`Analyse pour ${prenom} — ${secteur||'secteur non précisé'}`;
-
-  setTimeout(()=>{
-    document.getElementById('loadingBar').style.display='none';
-    state.analysis=data;
-
-    // ── SCORES GLOBAUX
-    const sg=data.scores_globaux||{};
-    const scoreHtml=[
-      {k:'gain_temps',l:'Gain de temps',icon:'⏱️',cl:'green'},
-      {k:'ca',l:'CA potentiel',icon:'📈',cl:'gold'},
-      {k:'disponibilite',l:'Disponibilité',icon:'🔓',cl:'blue'},
-      {k:'qualite',l:'Qualité',icon:'⭐',cl:'purple'},
-      {k:'faisabilite_globale',l:'Faisabilité',icon:'⚙️',cl:'accent'},
-    ].map(s=>`<div class="score-card ${s.cl}"><div class="score-num">${((sg[s.k]||0)/5*100).toFixed(0)}%</div><div class="score-label">${s.icon} ${s.l}</div></div>`).join('');
-    document.getElementById('scoreCards').innerHTML=scoreHtml;
-
-    // ── PRIORITÉS
-    const sorted=[...(data.objectifs||[])].sort((a,b)=>(b.score_priorite||0)-(a.score_priorite||0));
-    const prioColors=['r1','r2','r3','r4','r5'];
-    const tagColors={'gains rapides':'green','automatisation':'blue','sécurité':'purple','coût':'gold','long terme':'accent','formation':'teal','stratégique':'purple','rapide':'green'};
-    document.getElementById('priorityList').innerHTML=sorted.map((o,i)=>{
-      const tags=(o.tags||[]).map(t=>{
-        const col=Object.entries(tagColors).find(([k])=>t.toLowerCase().includes(k))?.[1]||'blue';
-        return `<span class="ptag ${col}">${t}</span>`;
-      }).join('');
-      const imp=((o.impact?.score||0)/5*100).toFixed(0);
-      const fai=((o.faisabilite?.score||0)/5*100).toFixed(0);
-      return `<div class="priority-item">
-        <div class="priority-rank ${prioColors[i]}">#${i+1}</div>
-        <div class="priority-content">
-          <div class="priority-text">${esc(o.texte||'')}</div>
-          <div style="display:flex;gap:12px;margin:6px 0;font-size:.75rem;color:var(--muted)">
-            <span>💡 Impact <strong style="color:var(--ink)">${imp}%</strong></span>
-            <span>⚙️ Faisabilité <strong style="color:var(--ink)">${fai}%</strong></span>
-            <span>🎯 Priorité <strong style="color:var(--blue)">${((o.score_priorite||0)/5*100).toFixed(0)}%</strong></span>
-          </div>
-          <div class="priority-tags">${tags}</div>
+ 
+    <div id="sv">
+      <div class="toolbar">
+        <div>
+          <div class="tt" id="svTitle"></div>
+          <div class="tm" id="svMeta"></div>
         </div>
-      </div>`;
-    }).join('');
-
-    // ── AXE IMPACT : remplir les 4 colonnes
-    const impDims=[
-      {id:'im-temps',k:'gain_temps',col:'#00c67a'},
-      {id:'im-ca',k:'ca',col:'#c09800'},
-      {id:'im-dispo',k:'disponibilite',col:'#1a3cff'},
-      {id:'im-qualite',k:'qualite',col:'#7c3aed'}
-    ];
-    impDims.forEach(dim=>{
-      const ul=document.getElementById(dim.id); ul.innerHTML='';
-      (data.objectifs||[]).sort((a,b)=>(b.impact?.[dim.k]||0)-(a.impact?.[dim.k]||0)).forEach(o=>{
-        const sc=o.impact?.[dim.k]||0;
-        const pct=(sc/5*100).toFixed(0);
-        const li=document.createElement('li'); li.className='im-item';
-        li.innerHTML=`<div style="font-size:.75rem;font-weight:500;margin-bottom:3px">${esc((o.texte||'').slice(0,45))}</div>
-          <div class="gauge-row"><div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%;background:${dim.col}"></div></div><span class="gauge-label">${pct}%</span></div>`;
-        ul.appendChild(li);
-      });
-    });
-
-    // ── AXE FAISABILITÉ
-    const faiDims=[
-      {id:'fe-complexite',k:'complexite_technique',col:'#ff4d2e'},
-      {id:'fe-securite',k:'securite_rgpd',col:'#7c3aed'},
-      {id:'fe-delai',k:'delai',col:'#0097a7'},
-      {id:'fe-cout',k:'cout',col:'#c09800'}
-    ];
-    faiDims.forEach(dim=>{
-      const ul=document.getElementById(dim.id); ul.innerHTML='';
-      (data.objectifs||[]).sort((a,b)=>(b.faisabilite?.[dim.k]||0)-(a.faisabilite?.[dim.k]||0)).forEach(o=>{
-        const sc=o.faisabilite?.[dim.k]||0;
-        const pct=(sc/5*100).toFixed(0);
-        const li=document.createElement('li'); li.className='fe-item';
-        li.innerHTML=`${esc((o.texte||'').slice(0,35))}
-          <div class="gauge-row"><div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%;background:${dim.col}"></div></div><span class="gauge-label">${pct}%</span></div>`;
-        ul.appendChild(li);
-      });
-    });
-
-    // ── PLAN
-    document.getElementById('planContent').innerHTML=(data.plan||'').replace(/\n/g,'<br>');
-    document.getElementById('exportCard').style.display='block';
-
-    // SAVE
-    const all=loadAll();
-    all.push({
-      id:Date.now(), prenom:document.getElementById('prenom').value.trim()||'Anonyme',
-      poste:document.getElementById('poste').value.trim()||'',
-      secteur:document.getElementById('secteur').value||'',
-      taille:document.getElementById('taille').value||'',
-      niveau:getNiveau()||'',
-      objectifs:[...state.objectifs], analysis:data,
-      ts:new Date().toISOString()
-    });
-    saveAll(all);
-    document.getElementById('tabCount').textContent=all.length;
-    state.analyseDone=true; updateProgress();
-    showStatus('Analyse complète ✓',true);
-    document.getElementById('analyse-section').scrollIntoView({behavior:'smooth',block:'start'});
-  },2800);
+        <div class="tr">
+          <button class="btn bs bx" onclick="openEditModal()">✏ Modifier</button>
+          <button class="btn bsa bx" onclick="exportJSON()">💾 JSON</button>
+          <button class="btn bp bx" onclick="exportPDF()">📄 PDF Qualiopi</button>
+          <button class="btn" style="background:#1a73e8;color:#fff;" onclick="openEmailModal()">📧 Envoyer l'émargement</button>
+        </div>
+      </div>
+      <div class="slotsbar" id="slotsbar"></div>
+      <div class="addbar">
+        <div class="fg"><label>Prénom</label><input id="aP" placeholder="Marie" onkeydown="addKey(event)"></div>
+        <div class="fg"><label>Nom</label><input id="aN" placeholder="DUPONT" onkeydown="addKey(event)"></div>
+        <div class="fg"><label>Email</label><input id="aE" placeholder="marie@acme.fr" onkeydown="addKey(event)"></div>
+        <div class="fg"><label>Société</label><input id="aS" placeholder="Acme SA" onkeydown="addKey(event)"></div>
+        <div class="fg"><label>Fonction</label><input id="aF" placeholder="Directeur" onkeydown="addKey(event)"></div>
+        <button class="btn bp" style="align-self:flex-end;" onclick="addPart()">＋</button>
+      </div>
+      <div class="ptw" id="ptw"></div>
+      <div class="statsbar" id="statsbar"></div>
+    </div>
+  </main>
+</div>
+ 
+<div class="toasts" id="toasts"></div>
+ 
+<!-- ════ MODAL NOUVELLE SESSION ════ -->
+<div class="overlay" id="newModal" style="display:none;">
+  <div class="modal" style="max-width:660px;max-height:92vh;display:flex;flex-direction:column;">
+    <div class="mh">
+      <div class="mt">Nouvelle session de formation</div>
+      <button class="mx" onclick="closeModal('newModal')">✕</button>
+    </div>
+    <div class="mb" style="flex:1;overflow-y:auto;">
+ 
+      <div class="sl">Informations générales</div>
+      <div class="fg"><label>Intitulé de la formation *</label><input id="ns_title" placeholder="Ex : Prise en main de Claude — Niveau 1"></div>
+      <div class="g2">
+        <div class="fg"><label>Date de début *</label><input type="date" id="ns_ds"></div>
+        <div class="fg"><label>Date de fin</label><input type="date" id="ns_de"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Heure début</label><input type="time" id="ns_hs" value="09:00"></div>
+        <div class="fg"><label>Heure fin</label><input type="time" id="ns_he" value="17:00"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Lieu / Modalité</label><input id="ns_lieu" placeholder="Paris 8e / Distanciel / Hybride"></div>
+        <div class="fg"><label>Client / Entreprise</label><input id="ns_client" placeholder="Nom de l'entreprise cliente"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Formateur *</label><input id="ns_form" value="Jacques-Henri MARIN"></div>
+        <div class="fg"><label>Email formateur</label><input id="ns_fmail" value="jacqueshenri.marin@lenouvion-consulting.fr"></div>
+      </div>
+      <div class="fg"><label>Demi-journées (séparées par des virgules)</label><input id="ns_slots" value="Matin J1, Après-midi J1" placeholder="Matin J1, Après-midi J1, Matin J2…"></div>
+ 
+      <div class="sl">Participants</div>
+      <table class="mpt" id="mptTable">
+        <thead><tr><th>Prénom</th><th>Nom</th><th>Email</th><th>Société</th><th>Fonction</th><th></th></tr></thead>
+        <tbody id="mptBody"></tbody>
+      </table>
+      <div style="display:flex;gap:6px;margin-top:8px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Prénom</label><input id="mp_p" onkeydown="modalAddKey(event)" placeholder="Marie"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Nom</label><input id="mp_n" onkeydown="modalAddKey(event)" placeholder="DUPONT"></div>
+        <div class="fg" style="margin:0;flex:1.4;min-width:90px;"><label>Email</label><input id="mp_e" onkeydown="modalAddKey(event)" placeholder="marie@acme.fr"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Société</label><input id="mp_s" onkeydown="modalAddKey(event)" placeholder="Acme SA"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Fonction</label><input id="mp_f" onkeydown="modalAddKey(event)" placeholder="Dir."></div>
+        <button class="btn bsa" style="align-self:flex-end;" onclick="modalAdd()">＋</button>
+      </div>
+ 
+      <div class="sl">Import rapide (optionnel)</div>
+      <div class="fg"><label>Coller une liste — 1 ligne par participant : Prénom Nom email société</label>
+        <textarea id="ns_import" placeholder="Marie DUPONT marie@acme.fr Acme SA&#10;Pierre MARTIN pierre@soc.fr SociétéB"></textarea>
+      </div>
+      <button class="btn bs bx" onclick="importList()">↩ Importer</button>
+    </div>
+    <div class="mf">
+      <button class="btn bs" onclick="closeModal('newModal')">Annuler</button>
+      <button class="btn bp" onclick="createSession()">✓ Créer la session</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ════ MODAL ÉDITION SESSION ════ -->
+<div class="overlay" id="editModal" style="display:none;">
+  <div class="modal" style="max-width:680px;max-height:92vh;display:flex;flex-direction:column;">
+    <div class="mh">
+      <div class="mt">✏ Modifier la session</div>
+      <button class="mx" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <div class="mb" style="flex:1;overflow-y:auto;">
+      <div class="sl">Informations générales</div>
+      <div class="fg"><label>Intitulé *</label><input id="ed_title"></div>
+      <div class="g2">
+        <div class="fg"><label>Date début *</label><input type="date" id="ed_ds"></div>
+        <div class="fg"><label>Date fin</label><input type="date" id="ed_de"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Heure début</label><input type="time" id="ed_hs"></div>
+        <div class="fg"><label>Heure fin</label><input type="time" id="ed_he"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Lieu / Modalité</label><input id="ed_lieu"></div>
+        <div class="fg"><label>Client / Entreprise</label><input id="ed_client"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Formateur *</label><input id="ed_form"></div>
+        <div class="fg"><label>Email formateur</label><input id="ed_fmail"></div>
+      </div>
+      <div class="fg">
+        <label>Demi-journées (séparées par des virgules)</label>
+        <input id="ed_slots">
+        <div style="font-size:10px;color:var(--Wi);margin-top:3px;">⚠ Modifier l'ordre peut décaler les signatures existantes.</div>
+      </div>
+ 
+      <div class="sl">Participants (<span id="edPCount">0</span>)</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr style="background:var(--Ink);">
+          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Prénom</th>
+          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Nom</th>
+          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Email</th>
+          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Société</th>
+          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Fonction</th>
+          <th style="padding:7px 10px;width:32px;"></th>
+        </tr></thead>
+        <tbody id="edPtBody"></tbody>
+      </table>
+ 
+      <div style="display:flex;gap:6px;margin-top:9px;align-items:flex-end;flex-wrap:wrap;padding:10px;background:var(--Cr);border-radius:6px;border:1px solid var(--Wi);">
+        <div style="font-size:10px;font-weight:700;color:var(--T);text-transform:uppercase;letter-spacing:.6px;width:100%;margin-bottom:2px;">Ajouter un participant</div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Prénom</label><input id="ep_p" onkeydown="edAddKey(event)" placeholder="Marie"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Nom</label><input id="ep_n" onkeydown="edAddKey(event)" placeholder="DUPONT"></div>
+        <div class="fg" style="margin:0;flex:1.4;min-width:90px;"><label>Email</label><input id="ep_e" onkeydown="edAddKey(event)" placeholder="marie@acme.fr"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Société</label><input id="ep_s" onkeydown="edAddKey(event)" placeholder="Acme SA"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:60px;"><label>Fonction</label><input id="ep_f" onkeydown="edAddKey(event)" placeholder="Dir."></div>
+        <button class="btn bsa" style="align-self:flex-end;" onclick="edAddPart()">＋</button>
+      </div>
+ 
+      <div class="sl">Import rapide (optionnel)</div>
+      <div class="fg"><label>1 ligne par participant : Prénom Nom email société</label>
+        <textarea id="ed_import" placeholder="Marie DUPONT marie@acme.fr Acme SA&#10;Pierre MARTIN pierre@soc.fr SociétéB"></textarea>
+      </div>
+      <button class="btn bs bx" onclick="edImport()">↩ Importer</button>
+    </div>
+    <div class="mf">
+      <button class="btn bs" onclick="closeModal('editModal')">Annuler</button>
+      <button class="btn bp" onclick="saveEdit()">✓ Enregistrer les modifications</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ════ MODAL SIGNATURE ════ -->
+<div class="overlay" id="sigModal" style="display:none;">
+  <div class="modal" style="max-width:500px;">
+    <div class="mh">
+      <div class="mt" id="sigTitle">Signature</div>
+      <button class="mx" onclick="closeModal('sigModal')">✕</button>
+    </div>
+    <div class="mb">
+      <p style="font-size:12px;color:var(--Sl);margin-bottom:10px;">Signez dans le cadre ci-dessous (doigt sur tablette ou souris).</p>
+      <div class="canv-wrap">
+        <canvas id="sigCanvas" width="456" height="155"></canvas>
+        <div class="chint" id="chint">Signez ici ✍</div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:8px;align-items:center;">
+        <button class="btn bs bx" onclick="clearCanv()">🗑 Effacer</button>
+        <span style="font-size:10px;color:var(--Wi);">Stylet, doigt ou souris</span>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" onclick="closeModal('sigModal')">Annuler</button>
+      <button class="btn bp" onclick="saveSig()">✓ Valider la signature</button>
+    </div>
+  </div>
+</div>
+ 
+<script>
+// ════════════════════════════════════
+// STATE
+// ════════════════════════════════════
+const KEY = 'lnc_ema_v2';
+const DEFAULT_APP_URL = 'https://jacqueshenrimarin-lnc.github.io/evaluation-formation/';
+let S = { sessions:[], aid:null, aslot:0, appUrl: DEFAULT_APP_URL };
+ 
+function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function hydrate(){ try{ const d=localStorage.getItem(KEY); if(d) S={...S,...JSON.parse(d)}; }catch(e){} }
+ 
+// ════════════════════════════════════
+// MODAL
+// ════════════════════════════════════
+function openModal(id){
+  const el=document.getElementById(id);
+  el.style.display='flex';
 }
-
-// ══════════════════════════════════════════
-// EXPORT PDF PARTICIPANT
-// ══════════════════════════════════════════
-function exportPDFParticipant(){
-  if(!window.jspdf){exporterTexte();return;}
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=210,M=18,CW=W-M*2; let y=20;
-  const prenom=document.getElementById('prenom').value.trim()||'Participant';
-  const poste=document.getElementById('poste').value.trim();
-  const secteur=document.getElementById('secteur').value;
-  const niveau=getNiveau();
-  const niveauLabels={debutant:'🌱 Débutant',intermediaire:'⚡ Intermédiaire',expert:'🚀 Expert'};
-
-  // Header
-  doc.setFillColor(13,13,26); doc.rect(0,0,W,36,'F');
-  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(17);
-  doc.text('Analyse de mes Objectifs de Formation IA',M,15);
-  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
-  doc.text('LENOUVION Consulting · Méthode VAI',M,23);
-  doc.setTextColor(245,200,66); doc.text(new Date().toLocaleDateString('fr-FR'),W-M,23,{align:'right'});
-  y=46;
-
-  // Identity
-  doc.setFillColor(240,242,255); doc.roundedRect(M,y,CW,20,3,3,'F');
-  doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(13,13,26);
-  doc.text(prenom+(poste?' — '+poste:''),M+6,y+8);
-  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(80,80,80);
-  if(secteur) doc.text('Secteur : '+secteur,M+6,y+15);
-  if(niveau) doc.text('Niveau IA : '+niveauLabels[niveau],M+6+(secteur?80:0),y+15);
-  y+=28;
-
-  // Objectifs
-  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(26,60,255);
-  doc.text('MES OBJECTIFS',M,y); y+=7;
-  state.objectifs.forEach((o,i)=>{
-    doc.setFillColor(245,245,250); doc.roundedRect(M,y-3,CW,9,2,2,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(26,60,255); doc.text(`${i+1}.`,M+3,y+3);
-    doc.setFont('helvetica','normal'); doc.setTextColor(13,13,26);
-    const lines=doc.splitTextToSize(o,CW-12); doc.text(lines[0],M+10,y+3); y+=11;
-  });
-  y+=4;
-
-  // Scores globaux
-  if(state.analysis?.scores_globaux){
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(26,60,255);
-    doc.text('SCORES GLOBAUX',M,y); y+=8;
-    const sg=state.analysis.scores_globaux;
-    const scoreItems=[
-      {l:'Gain de temps',k:'gain_temps',c:[0,198,122]},
-      {l:'CA potentiel',k:'ca',c:[192,152,0]},
-      {l:'Disponibilité',k:'disponibilite',c:[26,60,255]},
-      {l:'Qualité',k:'qualite',c:[124,58,237]},
-      {l:'Faisabilité',k:'faisabilite_globale',c:[255,77,46]}
-    ];
-    scoreItems.forEach(s=>{
-      const pct=Math.round((sg[s.k]||0)/5*100);
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(50,50,50);
-      doc.text(s.l+' :',M,y); doc.text(pct+'%',M+50,y);
-      doc.setFillColor(230,230,230); doc.roundedRect(M+60,y-4,80,5,2,2,'F');
-      doc.setFillColor(...s.c); doc.roundedRect(M+60,y-4,80*pct/100,5,2,2,'F');
-      y+=9;
-    });
-    y+=4;
-  }
-
-  // Priorités
-  if(state.analysis?.objectifs){
-    if(y>240){doc.addPage();y=20;}
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(26,60,255);
-    doc.text('OBJECTIFS PAR PRIORITÉ',M,y); y+=8;
-    const sorted=[...state.analysis.objectifs].sort((a,b)=>(b.score_priorite||0)-(a.score_priorite||0));
-    sorted.forEach((o,i)=>{
-      if(y>265){doc.addPage();y=20;}
-      doc.setFillColor(i===0?230:i===1?255:240,i===0?240:i===1?248:240,i===0?255:i===1?220:255);
-      doc.roundedRect(M,y-3,CW,14,2,2,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(26,60,255);
-      doc.text(`#${i+1}`,M+3,y+5);
-      doc.setFont('helvetica','normal'); doc.setTextColor(13,13,26);
-      const lines=doc.splitTextToSize(o.texte||'',CW-30); doc.text(lines[0],M+14,y+5);
-      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(100,100,100);
-      doc.text(`Impact: ${((o.impact?.score||0)/5*100).toFixed(0)}%  Faisabilité: ${((o.faisabilite?.score||0)/5*100).toFixed(0)}%  Priorité: ${((o.score_priorite||0)/5*100).toFixed(0)}%`,M+14,y+11);
-      y+=17;
-    });
-  }
-
-  // Plan
-  if(state.analysis?.plan){
-    if(y>240){doc.addPage();y=20;}
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(26,60,255);
-    doc.text('PLAN D\'ACTION PERSONNALISÉ',M,y); y+=7;
-    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(50,50,50);
-    const lines=doc.splitTextToSize(state.analysis.plan,CW); doc.text(lines,M,y);
-  }
-
-  // Footer
-  doc.setFillColor(245,243,238); doc.rect(0,280,W,17,'F');
-  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,160);
-  doc.text('LENOUVION Consulting · Formation IA pour dirigeants · lenouvion.com',W/2,287,{align:'center'});
-
-  doc.save(`objectifs-${prenom.toLowerCase().replace(/\s+/g,'-')}.pdf`);
-  showStatus('PDF exporté ✓',true);
+function closeModal(id){
+  document.getElementById(id).style.display='none';
 }
-
-function exporterTexte(){
-  const prenom=document.getElementById('prenom').value.trim()||'Participant';
-  let t=`ANALYSE OBJECTIFS DE FORMATION IA\n${prenom}\n\nOBJECTIFS :\n`;
-  state.objectifs.forEach((o,i)=>t+=`${i+1}. ${o}\n`);
-  if(state.analysis?.plan) t+=`\nPLAN D'ACTION :\n${state.analysis.plan}\n`;
-  t+='\n— LENOUVION Consulting —';
-  navigator.clipboard.writeText(t).then(()=>showStatus('Copié ✓',true)).catch(()=>showStatus('Impossible de copier.',false));
-}
-
-function resetForm(){
-  state.objectifs=[]; state.analyseDone=false; state.analysis=null;
-  ['prenom','poste','objInput'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('secteur').selectedIndex=0;
-  document.getElementById('taille').selectedIndex=0;
-  document.querySelectorAll('.level-pill').forEach(p=>p.classList.remove('selected'));
-  document.querySelectorAll('input[name="niveau"]').forEach(r=>r.checked=false);
-  renderList(); updateCounter(); updateProgress();
-  document.getElementById('analyse-section').style.display='none';
-  window.scrollTo({top:0,behavior:'smooth'});
-  showStatus('Nouvelle session démarrée 🔄',true);
-}
-
-// ══════════════════════════════════════════
-// TRAINER VIEW
-// ══════════════════════════════════════════
-function renderTrainerView(){
-  const all=loadAll();
-  document.getElementById('statParticipants').textContent=all.length;
-  document.getElementById('statObjectifs').textContent=all.reduce((s,p)=>s+(p.objectifs||[]).length,0);
-  document.getElementById('statAnalyses').textContent=all.filter(p=>p.analysis).length;
-  const secteurs=new Set(all.map(p=>p.secteur).filter(Boolean));
-  document.getElementById('statSecteurs').textContent=secteurs.size;
-  document.getElementById('trainerExportBar').style.display=all.length?'flex':'none';
-  const container=document.getElementById('trainerContent');
-  container.innerHTML='';
-
-  if(!all.length){
-    container.innerHTML=`<div class="empty-state"><div class="e-icon">📭</div><p>Aucun participant n'a encore soumis ses objectifs.<br>Partagez le QR code pour démarrer la collecte.</p></div>`;
+document.addEventListener('click', e=>{
+  if(e.target.classList.contains('overlay')) closeModal(e.target.id);
+});
+ 
+// ════════════════════════════════════
+// TEMP PARTICIPANTS (modal)
+// ════════════════════════════════════
+let tmp=[];
+ 
+function renderMPT(){
+  const tb=document.getElementById('mptBody');
+  if(!tmp.length){
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant — ajoutez-en ci-dessous</td></tr>';
     return;
   }
-
-  // ── SEGMENTS : niveau & secteur
-  const segDiv=document.createElement('div'); segDiv.className='card segment-section';
-  const niveauCounts={debutant:0,intermediaire:0,expert:0};
-  all.forEach(p=>{ if(p.niveau&&niveauCounts[p.niveau]!==undefined) niveauCounts[p.niveau]++; });
-  const maxN=Math.max(...Object.values(niveauCounts),1);
-  const secteurCounts={};
-  all.forEach(p=>{ if(p.secteur) secteurCounts[p.secteur]=(secteurCounts[p.secteur]||0)+1; });
-  const topSecteurs=Object.entries(secteurCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const maxS=topSecteurs[0]?.[1]||1;
-  const nColors={debutant:'#ff4d2e',intermediaire:'#f5c842',expert:'#00c67a'};
-  const nLabels={debutant:'🌱 Débutant',intermediaire:'⚡ Intermédiaire',expert:'🚀 Expert'};
-  segDiv.innerHTML=`<h2 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:14px">📊 Profil du groupe</h2>
-  <div class="segment-row">
-    <div class="segment-card">
-      <h4>Niveau IA</h4>
-      ${Object.entries(niveauCounts).map(([k,v])=>`<div class="seg-bar-row">
-        <span class="seg-label">${nLabels[k]}</span>
-        <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:${v/maxN*100}%;background:${nColors[k]}"></div></div>
-        <span class="seg-count">${v}</span>
-      </div>`).join('')}
-    </div>
-    <div class="segment-card">
-      <h4>Secteurs représentés</h4>
-      ${topSecteurs.length?topSecteurs.map(([k,v])=>`<div class="seg-bar-row">
-        <span class="seg-label" style="font-size:.72rem">${k.split('&')[0].trim()}</span>
-        <div class="seg-bar-wrap"><div class="seg-bar-fill" style="width:${v/maxS*100}%;background:var(--blue)"></div></div>
-        <span class="seg-count">${v}</span>
-      </div>`).join(''):'<p style="font-size:.82rem;color:var(--muted)">Aucun secteur renseigné</p>'}
-    </div>
-  </div>`;
-  container.appendChild(segDiv);
-
-  // ── SCORES MOYENS DU GROUPE
-  const analysed=all.filter(p=>p.analysis?.scores_globaux);
-  if(analysed.length){
-    const avgDiv=document.createElement('div'); avgDiv.className='card';
-    const dims=['gain_temps','ca','disponibilite','qualite','faisabilite_globale'];
-    const dimLabels={gain_temps:'⏱️ Gain de temps',ca:'📈 CA',disponibilite:'🔓 Disponibilité',qualite:'⭐ Qualité',faisabilite_globale:'⚙️ Faisabilité'};
-    const dimColors={gain_temps:'#00c67a',ca:'#c09800',disponibilite:'#1a3cff',qualite:'#7c3aed',faisabilite_globale:'#ff4d2e'};
-    const avgs={};
-    dims.forEach(d=>{ avgs[d]=analysed.reduce((s,p)=>s+(p.analysis.scores_globaux[d]||0),0)/analysed.length; });
-    avgDiv.innerHTML=`<h2 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:14px">📈 Scores moyens du groupe</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px">
-    ${dims.map(d=>`<div class="score-card" style="border-top:3px solid ${dimColors[d]}">
-      <div class="score-num" style="font-size:1.5rem;color:${dimColors[d]}">${(avgs[d]/5*100).toFixed(0)}%</div>
-      <div class="score-label">${dimLabels[d]}</div>
-    </div>`).join('')}
-    </div>`;
-    container.appendChild(avgDiv);
-  }
-
-  // ── TAGS CLOUD
-  const wordCount={};
-  all.forEach(p=>(p.objectifs||[]).forEach(o=>{
-    o.toLowerCase().split(/\s+/).forEach(w=>{
-      w=w.replace(/[^a-zàâçéèêëîïôûùüÿñæœ]/gi,'');
-      if(w.length>4) wordCount[w]=(wordCount[w]||0)+1;
-    });
+  tb.innerHTML=tmp.map((p,i)=>`<tr>
+    <td>${esc(p.p)}</td><td><b>${esc(p.n)}</b></td>
+    <td style="color:var(--Sl);font-size:11px;">${esc(p.e||'—')}</td>
+    <td style="color:var(--Sl);font-size:11px;">${esc(p.s||'—')}</td>
+    <td style="color:var(--Sl);font-size:11px;">${esc(p.f||'—')}</td>
+    <td><button class="btn bd bx" onclick="tmpRm(${i})">✕</button></td>
+  </tr>`).join('');
+}
+function tmpRm(i){ tmp.splice(i,1); renderMPT(); }
+ 
+function modalAdd(){
+  const p=v('mp_p'),n=v('mp_n');
+  if(!p&&!n){ toast('Prénom ou Nom requis','warn'); return; }
+  tmp.push({p,n,e:v('mp_e'),s:v('mp_s'),f:v('mp_f')});
+  ['mp_p','mp_n','mp_e','mp_s','mp_f'].forEach(cl);
+  document.getElementById('mp_p').focus();
+  renderMPT();
+}
+function modalAddKey(e){ if(e.key==='Enter') modalAdd(); }
+ 
+function importList(){
+  const raw=v('ns_import'); if(!raw) return;
+  const lines=raw.split('\n').filter(l=>l.trim());
+  lines.forEach(l=>{
+    const pts=l.trim().split(/[\s,;]+/);
+    if(pts.length<2) return;
+    tmp.push({p:pts[0],n:pts[1],e:pts[2]||'',s:pts.slice(3).join(' ')||'',f:''});
+  });
+  document.getElementById('ns_import').value='';
+  renderMPT();
+  toast(`✓ ${lines.length} ligne(s) importée(s)`);
+}
+ 
+// ════════════════════════════════════
+// OPEN NEW MODAL
+// ════════════════════════════════════
+function openNew(){
+  tmp=[];
+  renderMPT();
+  const today=todayStr();
+  ['ns_title','ns_lieu','ns_client'].forEach(cl);
+  document.getElementById('ns_ds').value=today;
+  document.getElementById('ns_de').value=today;
+  document.getElementById('ns_hs').value='09:00';
+  document.getElementById('ns_he').value='17:00';
+  document.getElementById('ns_form').value='Jacques-Henri MARIN';
+  document.getElementById('ns_fmail').value='jacqueshenri.marin@lenouvion-consulting.fr';
+  document.getElementById('ns_slots').value='Matin J1, Après-midi J1';
+  openModal('newModal');
+}
+document.getElementById('btnNewSession').onclick=openNew;
+document.getElementById('btnNewSession2').onclick=openNew;
+ 
+// ════════════════════════════════════
+// CREATE SESSION
+// ════════════════════════════════════
+function createSession(){
+  const title=v('ns_title');
+  const ds=v('ns_ds');
+  if(!title){ toast('L\'intitulé est requis','warn'); return; }
+  if(!ds){ toast('La date de début est requise','warn'); return; }
+ 
+  const slotsRaw=v('ns_slots');
+  const slots=slotsRaw.split(',').map(x=>x.trim()).filter(Boolean);
+  if(!slots.length) slots.push('Journée complète');
+ 
+  const participants=tmp.map(t=>({
+    id:uid(), prenom:t.p, nom:t.n, email:t.e, societe:t.s, fonction:t.f,
+    signatures:{},
+    presence:Object.fromEntries(slots.map((_,i)=>[i,true]))
   }));
-  const topWords=Object.entries(wordCount).sort((a,b)=>b[1]-a[1]).slice(0,22);
-  if(topWords.length){
-    const max=topWords[0][1];
-    const tagDiv=document.createElement('div'); tagDiv.className='card tags-section';
-    tagDiv.innerHTML=`<h3>Mots-clés les plus fréquents</h3><div class="tags-cloud">${topWords.map(([w,c])=>`<span class="tag sz${c===max?1:c>1?2:3}">${w} <small style="opacity:.5">${c}</small></span>`).join('')}</div>`;
-    container.appendChild(tagDiv);
+ 
+  const session={
+    id:uid(), title,
+    ds, de:v('ns_de')||ds,
+    hs:v('ns_hs')||'09:00', he:v('ns_he')||'17:00',
+    lieu:v('ns_lieu'), client:v('ns_client'),
+    formateur:v('ns_form')||'Jacques-Henri MARIN',
+    fmail:v('ns_fmail'),
+    slots, participants,
+    createdAt:new Date().toISOString()
+  };
+ 
+  S.sessions.unshift(session);
+  S.aid=session.id; S.aslot=0;
+  persist();
+  closeModal('newModal');
+  renderSB(); renderSV();
+  toast('✓ Session créée avec succès');
+}
+ 
+// ════════════════════════════════════
+// SESSION ACTIONS
+// ════════════════════════════════════
+function delSession(id,e){
+  e.stopPropagation();
+  if(!confirm('Supprimer cette session définitivement ?')) return;
+  S.sessions=S.sessions.filter(s=>s.id!==id);
+  if(S.aid===id){ S.aid=S.sessions[0]?.id||null; S.aslot=0; }
+  persist(); renderSB();
+  S.aid ? renderSV() : showWelcome();
+}
+function selSession(id){
+  S.aid=id; S.aslot=0;
+  renderSB(); renderSV();
+}
+function getActive(){ return S.sessions.find(s=>s.id===S.aid); }
+ 
+// ════════════════════════════════════
+// PARTICIPANTS
+// ════════════════════════════════════
+function addPart(){
+  const prenom=v('aP'),nom=v('aN');
+  if(!prenom&&!nom){ toast('Prénom ou Nom requis','warn'); return; }
+  const s=getActive();
+  const p={
+    id:uid(), prenom, nom,
+    email:v('aE'), societe:v('aS'), fonction:v('aF'),
+    signatures:{},
+    presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+  };
+  s.participants.push(p);
+  persist();
+  ['aP','aN','aE','aS','aF'].forEach(cl);
+  document.getElementById('aP').focus();
+  renderTable(); renderStats();
+  toast(`✓ ${p.prenom} ${p.nom} ajouté(e)`);
+}
+function addKey(e){ if(e.key==='Enter') addPart(); }
+ 
+function rmPart(id){
+  if(!confirm('Supprimer ce participant ?')) return;
+  const s=getActive();
+  s.participants=s.participants.filter(p=>p.id!==id);
+  persist(); renderTable(); renderStats();
+  toast('Participant supprimé');
+}
+ 
+function togPresence(pid,si){
+  const p=getActive().participants.find(x=>x.id===pid);
+  if(p){ p.presence[si]=!p.presence[si]; persist(); renderTable(); renderStats(); }
+}
+ 
+function clrSig(pid,si){
+  const p=getActive().participants.find(x=>x.id===pid);
+  if(p){ delete p.signatures[si]; persist(); renderTable(); renderStats(); }
+}
+ 
+// ════════════════════════════════════
+// RENDER SIDEBAR
+// ════════════════════════════════════
+function renderSB(){
+  const el=document.getElementById('sbList');
+  if(!S.sessions.length){
+    el.innerHTML='<div style="padding:16px;text-align:center;color:var(--Sl);font-size:12px;">Aucune session.<br>Commencez par en créer une.</div>';
+    return;
   }
-
-  // ── PARTICIPANTS
-  const pSection=document.createElement('div');
-  pSection.innerHTML=`<div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:11px">Détail par participant (${all.length})</div>`;
-  const pList=document.createElement('div'); pList.className='participants-list';
-  const avatarColors=['#1a3cff','#00c67a','#ff4d2e','#7c3aed','#f5c842','#0097a7'];
-  all.slice().reverse().forEach((p,i)=>{
-    const initials=(p.prenom||'?').slice(0,2).toUpperCase();
-    const col=avatarColors[i%avatarColors.length];
-    const lvlBadge=p.niveau?`<span class="p-level-badge ${p.niveau}">${{debutant:'🌱 Débutant',intermediaire:'⚡ Intermédiaire',expert:'🚀 Expert'}[p.niveau]||p.niveau}</span>`:'';
-    const card=document.createElement('div'); card.className='p-card';
-    card.innerHTML=`
-      <div class="p-card-header" onclick="toggleCard(this)">
-        <div class="p-avatar" style="background:${col}">${initials}</div>
-        <div><div class="p-name">${esc(p.prenom)}</div><div class="p-meta">${esc(p.poste||'')}${p.secteur?' · '+esc(p.secteur):''}</div></div>
-        <span class="p-badge-count">${(p.objectifs||[]).length} obj.</span>
-        <span style="color:var(--muted);font-size:.9rem;margin-left:6px">▾</span>
-      </div>
-      <div class="p-card-body">
-        ${lvlBadge}
-        ${(p.objectifs||[]).map(o=>`<div class="p-obj-item"><div class="p-obj-dot" style="background:${col}"></div><span>${esc(o)}</span></div>`).join('')}
-        ${p.analysis?.scores_globaux?`<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">${['gain_temps','ca','disponibilite','qualite','faisabilite_globale'].map(k=>`<span style="font-size:.7rem;background:var(--paper);border:1px solid var(--border);border-radius:100px;padding:2px 8px">${{gain_temps:'⏱️',ca:'📈',disponibilite:'🔓',qualite:'⭐',faisabilite_globale:'⚙️'}[k]} ${(p.analysis.scores_globaux[k]/5*100).toFixed(0)}%</span>`).join('')}</div>`:''}
-        ${p.analysis?.plan?`<div style="margin-top:10px;padding:10px;background:var(--paper);border-radius:8px;font-size:.78rem;color:var(--muted);line-height:1.5"><strong style="color:var(--ink)">Plan IA :</strong> ${esc(p.analysis.plan)}</div>`:''}
-        <div style="font-size:.68rem;color:var(--muted);margin-top:8px">Soumis le ${new Date(p.ts).toLocaleString('fr-FR')}</div>
-      </div>`;
-    pList.appendChild(card);
-  });
-  pSection.appendChild(pList);
-  container.appendChild(pSection);
+  el.innerHTML=S.sessions.map(s=>{
+    const t=s.participants.length;
+    const isA=s.id===S.aid;
+    return `<div class="sc ${isA?'active':''}" onclick="selSession('${s.id}')">
+      <div class="sc-t">${esc(s.title)}</div>
+      <div class="sc-m">${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''} · ${s.hs}–${s.he}</div>
+      ${s.client?`<div class="sc-m">🏢 ${esc(s.client)}</div>`:''}
+      <div class="sc-m">👤 ${esc(s.formateur)}</div>
+      <div class="sc-badge">${t} part.</div>
+      <button class="sc-del" onclick="delSession('${s.id}',event)" title="Supprimer">🗑</button>
+    </div>`;
+  }).join('');
 }
-
-function toggleCard(header){
-  const body=header.nextElementSibling;
-  const arrow=header.querySelector('span:last-child');
-  body.classList.toggle('open');
-  arrow.textContent=body.classList.contains('open')?'▴':'▾';
+ 
+// ════════════════════════════════════
+// RENDER SESSION VIEW
+// ════════════════════════════════════
+function renderSV(){
+  const s=getActive();
+  if(!s){ showWelcome(); return; }
+  document.getElementById('welcome').style.display='none';
+  const sv=document.getElementById('sv');
+  sv.style.display='flex';
+ 
+  document.getElementById('svTitle').textContent=s.title;
+  const meta=[fmtD(s.ds)+(s.de!==s.ds?' → '+fmtD(s.de):''),`${s.hs}–${s.he}`,s.lieu,s.client,s.formateur].filter(Boolean).join(' · ');
+  document.getElementById('svMeta').textContent=meta;
+ 
+  document.getElementById('slotsbar').innerHTML=
+    s.slots.map((sl,i)=>`<button class="stab ${i===S.aslot?'active':''}" onclick="setSlot(${i})">${esc(sl)}</button>`).join('')+
+    `<button class="stab-add" onclick="addSlot()">＋ Demi-journée</button>`;
+ 
+  renderTable(); renderStats();
 }
-
-// ══════════════════════════════════════════
-// EXPORT PDF FORMATEUR
-// ══════════════════════════════════════════
-function exportPDFFormateur(){
-  const all=loadAll();
-  if(!all.length){showStatus('Aucune donnée.',false);return;}
+ 
+function setSlot(i){ S.aslot=i; renderSV(); }
+ 
+function addSlot(){
+  const s=getActive();
+  const nm=prompt('Nom de la nouvelle demi-journée :',`Créneau ${s.slots.length+1}`);
+  if(!nm) return;
+  s.slots.push(nm.trim());
+  s.participants.forEach(p=>{ p.presence[s.slots.length-1]=true; });
+  persist(); S.aslot=s.slots.length-1; renderSV();
+}
+ 
+function showWelcome(){
+  document.getElementById('welcome').style.display='flex';
+  document.getElementById('sv').style.display='none';
+}
+ 
+// ════════════════════════════════════
+// RENDER TABLE
+// ════════════════════════════════════
+function renderTable(){
+  const s=getActive(); const si=S.aslot;
+  const wrap=document.getElementById('ptw');
+  if(!s.participants.length){
+    wrap.innerHTML='<div class="empty"><div style="font-size:36px;opacity:.3;">👥</div><div style="font-size:13px;">Aucun participant — utilisez le formulaire ci-dessus.</div></div>';
+    return;
+  }
+  wrap.innerHTML=`<table>
+    <thead><tr>
+      <th>#</th><th>Prénom &amp; Nom</th><th>Email</th><th>Société</th><th>Fonction</th>
+      <th>Présence</th><th>Signature — ${esc(s.slots[si])}</th><th></th>
+    </tr></thead>
+    <tbody>${s.participants.map((p,i)=>{
+      const present=p.presence[si]!==false;
+      const sig=p.signatures[si];
+      return `<tr>
+        <td style="color:var(--Sl);font-size:10px;">${i+1}</td>
+        <td><b>${esc(p.prenom)} ${esc(p.nom)}</b></td>
+        <td style="color:var(--Sl);font-size:11px;">${esc(p.email||'—')}</td>
+        <td style="color:var(--Sl);font-size:11px;">${esc(p.societe||'—')}</td>
+        <td style="color:var(--Sl);font-size:11px;">${esc(p.fonction||'—')}</td>
+        <td>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px;font-weight:600;">
+            <input type="checkbox" ${present?'checked':''} onchange="togPresence('${p.id}',${si})" style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;">
+            <span style="color:${present?'var(--G)':'var(--R)'};">${present?'Présent':'Absent'}</span>
+          </label>
+        </td>
+        <td>${sig
+          ?`<div style="display:flex;align-items:center;gap:6px;"><img src="${sig}" class="sig-img" alt="sig"><button class="btn bd bx" onclick="clrSig('${p.id}',${si})">✕</button></div>`
+          :`<button class="btn bp bx" onclick="openSig('${p.id}')">✍ Signer</button>`
+        }</td>
+        <td><button class="btn bd bx" onclick="rmPart('${p.id}')">🗑</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+ 
+// ════════════════════════════════════
+// STATS
+// ════════════════════════════════════
+function renderStats(){
+  const s=getActive(); const si=S.aslot;
+  const tot=s.participants.length;
+  const pres=s.participants.filter(p=>p.presence[si]!==false).length;
+  const sgd=s.participants.filter(p=>p.signatures[si]).length;
+  document.getElementById('statsbar').innerHTML=`
+    <span><span class="sdot" style="background:var(--T)"></span><b>${tot}</b> participant(s)</span>
+    <span><span class="sdot" style="background:var(--G)"></span><b>${pres}</b> présent(s)</span>
+    <span><span class="sdot" style="background:#8b5cf6"></span><b>${sgd}/${tot}</b> signature(s)</span>
+    <span style="flex:1"></span>
+    <span style="font-size:10px;color:var(--Wi);">Demi-journée : ${esc(s.slots[si])}</span>`;
+}
+ 
+// ════════════════════════════════════
+// SIGNATURE
+// ════════════════════════════════════
+let sCtx,sDraw=false,sLX=0,sLY=0,sPid=null;
+ 
+function openSig(pid){
+  sPid=pid;
+  const p=getActive().participants.find(x=>x.id===pid);
+  document.getElementById('sigTitle').textContent=`Signature — ${p.prenom} ${p.nom}`;
+  openModal('sigModal');
+  setTimeout(initCanv,60);
+}
+ 
+function initCanv(){
+  const c=document.getElementById('sigCanvas');
+  sCtx=c.getContext('2d');
+  sCtx.clearRect(0,0,c.width,c.height);
+  sCtx.strokeStyle='#0B0B0C'; sCtx.lineWidth=2; sCtx.lineCap='round'; sCtx.lineJoin='round';
+  document.getElementById('chint').style.display='block';
+  const pos=e=>{ const r=c.getBoundingClientRect(); const src=e.touches?e.touches[0]:e; return [src.clientX-r.left,src.clientY-r.top]; };
+  c.onmousedown=e=>{ sDraw=true; [sLX,sLY]=pos(e); document.getElementById('chint').style.display='none'; };
+  c.onmousemove=e=>{ if(!sDraw) return; const[x,y]=pos(e); sCtx.beginPath(); sCtx.moveTo(sLX,sLY); sCtx.lineTo(x,y); sCtx.stroke(); sLX=x; sLY=y; };
+  c.onmouseup=c.onmouseleave=()=>sDraw=false;
+  c.ontouchstart=e=>{ e.preventDefault(); sDraw=true; [sLX,sLY]=pos(e); document.getElementById('chint').style.display='none'; };
+  c.ontouchmove=e=>{ e.preventDefault(); if(!sDraw) return; const[x,y]=pos(e); sCtx.beginPath(); sCtx.moveTo(sLX,sLY); sCtx.lineTo(x,y); sCtx.stroke(); sLX=x; sLY=y; };
+  c.ontouchend=()=>sDraw=false;
+}
+ 
+function clearCanv(){ const c=document.getElementById('sigCanvas'); sCtx.clearRect(0,0,c.width,c.height); document.getElementById('chint').style.display='block'; }
+ 
+function saveSig(){
+  const c=document.getElementById('sigCanvas');
+  const blank=!sCtx.getImageData(0,0,c.width,c.height).data.some(x=>x!==0);
+  if(blank){ toast('Veuillez signer dans le cadre','warn'); return; }
+  const p=getActive().participants.find(x=>x.id===sPid);
+  p.signatures[S.aslot]=c.toDataURL('image/png');
+  persist(); closeModal('sigModal'); renderTable(); renderStats();
+  toast(`✓ Signature de ${p.prenom} ${p.nom} enregistrée`);
+}
+ 
+// ════════════════════════════════════
+// EXPORT PDF
+// ════════════════════════════════════
+function exportPDF(){
+  const s=getActive(); if(!s) return;
   const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=210,M=18,CW=W-M*2; let y=20;
-  const date=new Date().toLocaleDateString('fr-FR');
-
-  // Header
-  doc.setFillColor(13,13,26); doc.rect(0,0,W,36,'F');
-  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(16);
-  doc.text('Rapport Formateur — Analyse IA du groupe',M,15);
-  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
-  doc.text(`LENOUVION Consulting · ${date}`,M,24);
-  doc.setTextColor(245,200,66);
-  doc.text(`${all.length} participant${all.length>1?'s':''} · ${all.reduce((s,p)=>s+(p.objectifs||[]).length,0)} objectifs`,W-M,24,{align:'right'});
-  y=46;
-
-  // Stats
-  doc.setFillColor(240,242,255); doc.roundedRect(M,y,CW,16,3,3,'F');
-  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(26,60,255);
-  const nCounts={debutant:0,intermediaire:0,expert:0};
-  all.forEach(p=>{if(p.niveau&&nCounts[p.niveau]!==undefined)nCounts[p.niveau]++;});
-  const secteurs=new Set(all.map(p=>p.secteur).filter(Boolean));
-  doc.text(`Débutants: ${nCounts.debutant}  Intermédiaires: ${nCounts.intermediaire}  Experts: ${nCounts.expert}`,M+4,y+7);
-  doc.text(`Secteurs représentés: ${secteurs.size}`,M+4,y+13);
-  y+=24;
-
-  // Scores moyens
-  const analysed=all.filter(p=>p.analysis?.scores_globaux);
-  if(analysed.length){
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(26,60,255);
-    doc.text('SCORES MOYENS DU GROUPE',M,y); y+=8;
-    const dims=['gain_temps','ca','disponibilite','qualite','faisabilite_globale'];
-    const dimL={gain_temps:'Gain de temps',ca:'CA potentiel',disponibilite:'Disponibilité',qualite:'Qualité',faisabilite_globale:'Faisabilité'};
-    const dimC={gain_temps:[0,198,122],ca:[192,152,0],disponibilite:[26,60,255],qualite:[124,58,237],faisabilite_globale:[255,77,46]};
-    dims.forEach(d=>{
-      const avg=analysed.reduce((s,p)=>s+(p.analysis.scores_globaux[d]||0),0)/analysed.length;
-      const pct=Math.round(avg/5*100);
-      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(50,50,50);
-      doc.text(dimL[d]+' :',M,y); doc.text(pct+'%',M+55,y);
-      doc.setFillColor(225,225,225); doc.roundedRect(M+65,y-4,90,5,2,2,'F');
-      doc.setFillColor(...dimC[d]); doc.roundedRect(M+65,y-4,90*pct/100,5,2,2,'F');
-      y+=9;
+  s.slots.forEach((slotName,si)=>{
+    const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const W=297,H=210,mg=14;
+    // fond
+    doc.setFillColor(245,242,236); doc.rect(0,0,W,H,'F');
+    // header
+    doc.setFillColor(11,11,12); doc.rect(0,0,W,21,'F');
+    doc.setFillColor(200,83,43); doc.rect(0,21,W,1.5,'F');
+    // logo
+    doc.setFillColor(200,83,43); doc.roundedRect(mg,4.5,11,11,2,2,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(8); doc.setFont('helvetica','bold');
+    doc.text('LN',mg+5.5,11.5,{align:'center'});
+    doc.setFontSize(10); doc.setTextColor(245,242,236);
+    doc.text('LENOUVION Consulting',mg+15,9.5);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(180,178,169);
+    doc.text('Organisme de formation IA · Qualiopi · SIRET 980 112 536 00019',mg+15,14.5);
+    // badge
+    doc.setFillColor(200,83,43); doc.roundedRect(W-40,5.5,26,9,2,2,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text('QUALIOPI',W-27,11.2,{align:'center'});
+    // titre
+    doc.setTextColor(11,11,12); doc.setFontSize(12); doc.setFont('helvetica','bold');
+    doc.text("FEUILLE D'ÉMARGEMENT",mg,30);
+    // encart terracotta
+    doc.setFillColor(200,83,43); doc.rect(mg,33,1.5,19,'F');
+    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(11,11,12);
+    doc.text(s.title,mg+4,38);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(74,74,74);
+    const l1=[`${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}`,`${s.hs}–${s.he}`,s.lieu?`Lieu : ${s.lieu}`:null,s.client?`Client : ${s.client}`:null].filter(Boolean).join('    ');
+    doc.text(l1,mg+4,44);
+    doc.text(`Formateur : ${s.formateur}  ·  ${s.fmail||''}`,mg+4,49);
+    doc.setFillColor(200,83,43); doc.roundedRect(mg+4,51,55,5.5,1,1,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text(`Demi-journée : ${slotName}`,mg+31.5,55,{align:'center'});
+    // TABLE
+    const tY=61; const cols=[8,42,38,34,38,18,89];
+    const heads=['N°','Prénom & Nom','Société','Fonction','Email','Présence','Signature'];
+    let xO=mg;
+    doc.setFillColor(11,11,12); doc.rect(mg,tY,W-mg*2,7,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(6); doc.setFont('helvetica','bold');
+    heads.forEach((h,i)=>{ doc.text(h,xO+2,tY+4.7); xO+=cols[i]; });
+    let rY=tY+7; const rH=14;
+    s.participants.forEach((p,idx)=>{
+      const even=idx%2===0;
+      doc.setFillColor(even?250:255,even?246:255,even?238:255); doc.rect(mg,rY,W-mg*2,rH,'F');
+      doc.setDrawColor(180,178,169); doc.setLineWidth(.25); doc.rect(mg,rY,W-mg*2,rH,'S');
+      const present=p.presence[si]!==false;
+      xO=mg;
+      const cells=[String(idx+1),`${p.prenom} ${p.nom}`,p.societe||'',p.fonction||'',p.email||'',present?'Présent':'Absent'];
+      cells.forEach((c,i)=>{
+        if(i===1){doc.setFont('helvetica','bold');doc.setTextColor(11,11,12);}
+        else if(i===5){doc.setTextColor(present?22:153,present?101:27,present?52:27);doc.setFont('helvetica','bold');}
+        else{doc.setFont('helvetica','normal');doc.setTextColor(74,74,74);}
+        doc.setFontSize(6); doc.text(String(c).substring(0,30),xO+2,rY+8);
+        xO+=cols[i];
+      });
+      const sig=p.signatures[si];
+      if(sig){try{doc.addImage(sig,'PNG',xO+2,rY+1,85,12);}catch(e){}}
+      else{doc.setDrawColor(180,178,169);doc.setLineWidth(.2);doc.rect(xO+2,rY+1,85,11,'S');doc.setFontSize(5.5);doc.setTextColor(180,178,169);doc.text('À signer',xO+44,rY+8,{align:'center'});}
+      rY+=rH;
     });
-    y+=4;
-  }
-
-  // Participants
-  doc.addPage(); y=20;
-  doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(13,13,26);
-  doc.text('DÉTAIL PAR PARTICIPANT',M,y); y+=10;
-  all.forEach((p,idx)=>{
-    if(y>255){doc.addPage();y=20;}
-    doc.setFillColor(245,246,252); doc.roundedRect(M,y-3,CW,10,2,2,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(13,13,26);
-    doc.text(`${idx+1}. ${p.prenom}${p.poste?' — '+p.poste:''}`,M+4,y+4);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(130,130,130);
-    if(p.secteur) doc.text(p.secteur,W-M,y+4,{align:'right'});
-    y+=14;
-    (p.objectifs||[]).forEach((o,oi)=>{
-      if(y>265){doc.addPage();y=20;}
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(50,50,50);
-      const lines=doc.splitTextToSize(`  ${oi+1}. ${o}`,CW-4);
-      doc.text(lines,M+3,y); y+=lines.length*4.5+2;
-    });
-    if(p.analysis?.scores_globaux&&y<255){
-      const sg=p.analysis.scores_globaux;
-      doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(100,100,100);
-      doc.text(`  Scores — Temps:${(sg.gain_temps/5*100).toFixed(0)}%  CA:${(sg.ca/5*100).toFixed(0)}%  Dispo:${(sg.disponibilite/5*100).toFixed(0)}%  Qualité:${(sg.qualite/5*100).toFixed(0)}%  Faisab.:${(sg.faisabilite_globale/5*100).toFixed(0)}%`,M,y);
-      y+=7;
-    }
-    y+=3;
+    // footer
+    doc.setFillColor(11,11,12); doc.rect(0,H-9,W,11,'F');
+    doc.setFillColor(200,83,43); doc.rect(0,H-9,W,.7,'F');
+    doc.setTextColor(180,178,169); doc.setFontSize(6.5); doc.setFont('helvetica','normal');
+    doc.text('© LENOUVION Consulting · Tous droits réservés',mg,H-4);
+    doc.text('Formation IA · Qualiopi',W/2,H-4,{align:'center'});
+    doc.setTextColor(200,83,43);
+    doc.text(`${slotName} · ${fmtD(s.ds)}`,W-mg,H-4,{align:'right'});
+    doc.save(`Emargement_${slug(s.title)}_${slug(slotName)}.pdf`);
   });
-
-  doc.setFillColor(245,243,238); doc.rect(0,280,W,17,'F');
-  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,160);
-  doc.text('LENOUVION Consulting · Formation IA pour dirigeants · Confidentiel',W/2,287,{align:'center'});
-  doc.save('rapport-formateur-objectifs.pdf');
-  showStatus('Rapport PDF formateur exporté ✓',true);
+  toast(`📄 ${s.slots.length} PDF exporté(s)`);
 }
-
-function clearAllData(){
-  if(!confirm('Effacer toutes les données de session ?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  document.getElementById('tabCount').textContent='0';
-  renderTrainerView();
-  showStatus('Session effacée.',true);
+ 
+// ════════════════════════════════════
+// EDIT MODAL
+// ════════════════════════════════════
+let edTmpParts = []; // working copy of participants during edit
+ 
+function openEditModal(){
+  const s=getActive(); if(!s) return;
+  // fill fields
+  document.getElementById('ed_title').value = s.title;
+  document.getElementById('ed_ds').value = s.ds;
+  document.getElementById('ed_de').value = s.de||'';
+  document.getElementById('ed_hs').value = s.hs||'09:00';
+  document.getElementById('ed_he').value = s.he||'17:00';
+  document.getElementById('ed_lieu').value = s.lieu||'';
+  document.getElementById('ed_client').value = s.client||'';
+  document.getElementById('ed_form').value = s.formateur||'';
+  document.getElementById('ed_fmail').value = s.fmail||'';
+  document.getElementById('ed_slots').value = s.slots.join(', ');
+  document.getElementById('ed_import').value = '';
+  // deep copy participants
+  edTmpParts = s.participants.map(p=>({...p, signatures:{...p.signatures}, presence:{...p.presence}}));
+  renderEdTable();
+  openModal('editModal');
 }
-
-// ══════════════════════════════════════════
-// QR CODE
-// ══════════════════════════════════════════
-let qrGenerated=false;
-function showQR(){
-  const url=window.location.href.split('#')[0];
-  document.getElementById('qrUrl').textContent=url;
-  if(!qrGenerated){
-    document.getElementById('qrcode').innerHTML='';
-    new QRCode(document.getElementById('qrcode'),{text:url,width:192,height:192,colorDark:'#0d0d1a',colorLight:'#f5f3ee',correctLevel:QRCode.CorrectLevel.H});
-    qrGenerated=true;
+ 
+function renderEdTable(){
+  document.getElementById('edPCount').textContent = edTmpParts.length;
+  const tb = document.getElementById('edPtBody');
+  if(!edTmpParts.length){
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant</td></tr>';
+    return;
   }
-  document.getElementById('qrModal').classList.add('open');
+  tb.innerHTML = edTmpParts.map((p,i)=>`<tr style="border-bottom:1px solid var(--Cr);">
+    <td style="padding:5px 8px;"><input value="${esc(p.prenom)}" oninput="edTmpParts[${i}].prenom=this.value" style="padding:4px 7px;font-size:11px;"></td>
+    <td style="padding:5px 8px;"><input value="${esc(p.nom)}" oninput="edTmpParts[${i}].nom=this.value" style="padding:4px 7px;font-size:11px;"></td>
+    <td style="padding:5px 8px;"><input value="${esc(p.email||'')}" oninput="edTmpParts[${i}].email=this.value" style="padding:4px 7px;font-size:11px;" placeholder="email"></td>
+    <td style="padding:5px 8px;"><input value="${esc(p.societe||'')}" oninput="edTmpParts[${i}].societe=this.value" style="padding:4px 7px;font-size:11px;" placeholder="société"></td>
+    <td style="padding:5px 8px;"><input value="${esc(p.fonction||'')}" oninput="edTmpParts[${i}].fonction=this.value" style="padding:4px 7px;font-size:11px;" placeholder="fonction"></td>
+    <td style="padding:5px 8px;">
+      <button class="btn bd bx" onclick="edRmPart(${i})" title="Supprimer${p.signatures&&Object.keys(p.signatures).length?' (a des signatures)':''}">
+        ${p.signatures&&Object.keys(p.signatures).length ? '⚠ Retirer' : '✕'}
+      </button>
+    </td>
+  </tr>`).join('');
 }
-function closeQR(e){if(e.target===document.getElementById('qrModal'))closeQRBtn();}
-function closeQRBtn(){document.getElementById('qrModal').classList.remove('open');}
-function copyLink(){
-  navigator.clipboard.writeText(window.location.href.split('#')[0]).then(()=>showStatus('Lien copié ✓',true)).catch(()=>showStatus('Impossible de copier.',false));
+ 
+function edRmPart(i){
+  const p = edTmpParts[i];
+  const hasSig = p.signatures && Object.keys(p.signatures).length > 0;
+  if(hasSig){
+    if(!confirm(`${p.prenom} ${p.nom} a déjà signé. Supprimer quand même (la signature sera perdue) ?`)) return;
+  }
+  edTmpParts.splice(i,1);
+  renderEdTable();
 }
-
-// ══════════════════════════════════════════
-// STATUS TOAST
-// ══════════════════════════════════════════
-let statusTimer;
-function showStatus(msg,ok){
-  const bar=document.getElementById('statusBar');
-  document.getElementById('statusDot').className='status-dot'+(ok?' green':'');
-  document.getElementById('statusMsg').textContent=msg;
-  bar.classList.add('visible');
-  clearTimeout(statusTimer);
-  statusTimer=setTimeout(()=>bar.classList.remove('visible'),2800);
+ 
+function edAddPart(){
+  const prenom=v('ep_p'), nom=v('ep_n');
+  if(!prenom&&!nom){ toast('Prénom ou Nom requis','warn'); return; }
+  const s=getActive();
+  edTmpParts.push({
+    id:uid(), prenom, nom,
+    email:v('ep_e'), societe:v('ep_s'), fonction:v('ep_f'),
+    signatures:{},
+    presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+  });
+  ['ep_p','ep_n','ep_e','ep_s','ep_f'].forEach(cl);
+  document.getElementById('ep_p').focus();
+  renderEdTable();
 }
-
+function edAddKey(e){ if(e.key==='Enter') edAddPart(); }
+ 
+function edImport(){
+  const raw=v('ed_import'); if(!raw) return;
+  const s=getActive();
+  const lines=raw.split('\n').filter(l=>l.trim());
+  lines.forEach(l=>{
+    const pts=l.trim().split(/[\s,;]+/);
+    if(pts.length<2) return;
+    edTmpParts.push({
+      id:uid(), prenom:pts[0], nom:pts[1],
+      email:pts[2]||'', societe:pts.slice(3).join(' ')||'', fonction:'',
+      signatures:{},
+      presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+    });
+  });
+  document.getElementById('ed_import').value='';
+  renderEdTable();
+  toast(`✓ ${lines.length} ligne(s) importée(s)`);
+}
+ 
+function saveEdit(){
+  const title=v('ed_title'), ds=v('ed_ds');
+  if(!title){ toast('L\'intitulé est requis','warn'); return; }
+  if(!ds){ toast('La date de début est requise','warn'); return; }
+  const slotsRaw=v('ed_slots');
+  const slots=slotsRaw.split(',').map(x=>x.trim()).filter(Boolean);
+  if(!slots.length){ toast('Au moins une demi-journée requise','warn'); return; }
+ 
+  const s=getActive();
+  // update scalar fields
+  s.title=title; s.ds=ds; s.de=v('ed_de')||ds;
+  s.hs=v('ed_hs')||'09:00'; s.he=v('ed_he')||'17:00';
+  s.lieu=v('ed_lieu'); s.client=v('ed_client');
+  s.formateur=v('ed_form')||'Jacques-Henri MARIN';
+  s.fmail=v('ed_fmail');
+  s.slots=slots;
+ 
+  // update participants — preserve signatures/presence for existing IDs
+  s.participants = edTmpParts.map(p=>{
+    // ensure presence keys cover all slots
+    const presence={};
+    slots.forEach((_,i)=>{ presence[i] = (p.presence[i] !== undefined) ? p.presence[i] : true; });
+    return {...p, presence};
+  });
+ 
+  persist();
+  closeModal('editModal');
+  S.aslot=Math.min(S.aslot, slots.length-1);
+  renderSB(); renderSV();
+  toast('✓ Session mise à jour');
+}
+// ════════════════════════════════════
+// EMAIL CONVOCATIONS
+// ════════════════════════════════════
+function openEmailModal(){
+  const s=getActive(); if(!s) return;
+ 
+  // populate slot selector
+  const sel=document.getElementById('em_slot');
+  sel.innerHTML='<option value="all">Toutes les demi-journées</option>'+
+    s.slots.map((sl,i)=>`<option value="${i}">${esc(sl)}</option>`).join('');
+  sel.value=String(S.aslot);
+ 
+  // restore saved URL
+  document.getElementById('em_appurl').value = S.appUrl || DEFAULT_APP_URL;
+ 
+  updateEmailPreview();
+  sel.onchange=updateEmailPreview;
+  document.getElementById('em_appurl').oninput=updateEmailPreview;
+  document.getElementById('em_sendparts').onchange=updateEmailPreview;
+  document.getElementById('em_sendform').onchange=updateEmailPreview;
+ 
+  openModal('emailModal');
+}
+ 
+function buildSlotLabel(s){
+  const slotVal=document.getElementById('em_slot').value;
+  if(slotVal==='all') return s.slots.join(', ');
+  return s.slots[parseInt(slotVal)]||s.slots[0];
+}
+ 
+function buildParticipantEmail(s, p, appUrl){
+  const slotLabel=buildSlotLabel(s);
+  const link=appUrl
+    ? `Cliquez sur le lien ci-dessous, puis apposez votre signature électronique :\n\n👉 ${appUrl}\n\n⏱ Cela prend moins de 30 secondes depuis votre téléphone ou ordinateur.`
+    : `Votre formateur vous communiquera le lien de signature au démarrage de la session.\n👉 ${DEFAULT_APP_URL}`;
+  return `Bonjour ${p.prenom},
+ 
+La session "${s.title}" démarre dans quelques minutes — merci de signer votre feuille d'émargement dès maintenant.
+ 
+${link}
+ 
+──────────────────────────────
+📚 ${s.title}
+📅 ${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}  ·  ⏰ ${s.hs} – ${s.he}
+${s.lieu?'📍 '+s.lieu+'  ·  ':''}📋 ${slotLabel}
+👤 Formateur : ${s.formateur}
+──────────────────────────────
+ 
+Votre signature vaut attestation de présence au titre des exigences Qualiopi.
+ 
+En cas de difficulté technique, signalez-le directement à votre formateur.
+ 
+Bonne formation,
+ 
+${s.formateur}
+LENOUVION Consulting — Organisme de formation IA · Qualiopi
+SIRET 980 112 536 00019`;
+}
+ 
+function buildFormateurEmail(s, appUrl){
+  const slotLabel=buildSlotLabel(s);
+  const link=appUrl?`🔗 Lien émargement participants : ${appUrl}`:'⚠ Lien émargement : non renseigné — pensez à configurer l\'URL de l\'app.';
+  const listeParts=s.participants.map((p,i)=>{
+    const hasMail=p.email&&p.email.includes('@');
+    return `  ${i+1}. ${p.prenom} ${p.nom}${p.societe?' ('+p.societe+')':''}${hasMail?' — '+p.email:' ⚠ pas d\'email'}`;
+  }).join('\n');
+  const noMail=s.participants.filter(p=>!p.email||!p.email.includes('@'));
+  return `Bonjour ${s.formateur},
+ 
+La session démarre dans quelques minutes. Voici votre récapitulatif d'émargement.
+ 
+${link}
+ 
+──────────────────────────────
+📚 ${s.title}
+📅 ${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}  ·  ⏰ ${s.hs} – ${s.he}
+${s.lieu?'📍 '+s.lieu+'  ·  ':''}📋 ${slotLabel}
+──────────────────────────────
+ 
+👥 PARTICIPANTS (${s.participants.length}) :
+${listeParts||'  Aucun participant enregistré.'}
+${noMail.length?`\n⚠ ${noMail.length} participant(s) sans email — émargement manuel requis :\n${noMail.map(p=>'  · '+p.prenom+' '+p.nom).join('\n')}`:'' }
+ 
+Bonne formation !
+ 
+LENOUVION Consulting — Organisme de formation IA · Qualiopi`;
+}
+ 
+function buildSubjectParticipant(s){
+  return `✍ Émargement à signer — ${s.title} — aujourd'hui ${s.hs}`;
+}
+ 
+function buildSubjectFormateur(s){
+  return `[FORMATEUR] Récap émargement — ${s.title} — ${fmtD(s.ds)}`;
+}
+ 
+function updateEmailPreview(){
+  const s=getActive(); if(!s) return;
+  const appUrl=document.getElementById('em_appurl').value.trim();
+  const sendParts=document.getElementById('em_sendparts').checked;
+  const sendForm=document.getElementById('em_sendform').checked;
+ 
+  const sampleP=s.participants[0]||{prenom:'Participant',nom:'',email:'exemple@société.fr',societe:'',fonction:''};
+  document.getElementById('em_prev_subj').textContent=buildSubjectParticipant(s);
+  document.getElementById('em_prev_body').textContent=buildParticipantEmail(s,sampleP,appUrl);
+ 
+  // count participants with/without email
+  const withEmail=s.participants.filter(p=>p.email&&p.email.includes('@'));
+  const withoutEmail=s.participants.filter(p=>!p.email||!p.email.includes('@'));
+ 
+  // warnings
+  const warn=document.getElementById('em_nomail_warn');
+  const warnMsg=document.getElementById('em_nomail_msg');
+  if(withoutEmail.length && sendParts){
+    warn.style.display='block';
+    warnMsg.textContent=`${withoutEmail.length} participant(s) sans email valide seront ignorés : ${withoutEmail.map(p=>p.prenom+' '+p.nom).join(', ')}`;
+  } else { warn.style.display='none'; }
+ 
+  // summary
+  let lines=[];
+  if(sendParts) lines.push(`📨 ${withEmail.length} email(s) d'émargement participants (brouillons Gmail)`);
+  if(sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail}`);
+  else if(sendForm && !s.fmail) lines.push(`⚠ Email formateur : aucune adresse enregistrée pour ${s.formateur}`);
+  if(!sendParts && !sendForm) lines.push('Aucun destinataire sélectionné.');
+  document.getElementById('em_summary').innerHTML=lines.join('<br>');
+}
+ 
+async function sendConvocations(){
+  const s=getActive(); if(!s) return;
+  const appUrl=document.getElementById('em_appurl').value.trim();
+  const sendParts=document.getElementById('em_sendparts').checked;
+  const sendForm=document.getElementById('em_sendform').checked;
+ 
+  // save URL for next time
+  S.appUrl=appUrl; persist();
+ 
+  const btn=document.getElementById('em_sendBtn');
+  btn.textContent='⏳ Création des brouillons…';
+  btn.disabled=true;
+ 
+  let created=0, errors=0;
+ 
+  // ── PARTICIPANTS ──
+  if(sendParts){
+    const eligible=s.participants.filter(p=>p.email&&p.email.includes('@'));
+    for(const p of eligible){
+      try{
+        await callGmailCreateDraft({
+          to:[p.email],
+          subject:buildSubjectParticipant(s),
+          body:buildParticipantEmail(s,p,appUrl)
+        });
+        created++;
+      } catch(e){ errors++; console.error('Draft error',p.email,e); }
+    }
+  }
+ 
+  // ── FORMATEUR ──
+  if(sendForm && s.fmail && s.fmail.includes('@')){
+    try{
+      await callGmailCreateDraft({
+        to:[s.fmail],
+        subject:buildSubjectFormateur(s),
+        body:buildFormateurEmail(s,appUrl)
+      });
+      created++;
+    } catch(e){ errors++; console.error('Draft error formateur',e); }
+  }
+ 
+  btn.textContent='📧 Créer les brouillons Gmail';
+  btn.disabled=false;
+ 
+  if(created>0){
+    closeModal('emailModal');
+    toast(`✓ ${created} brouillon(s) créé(s) dans Gmail${errors?' ('+errors+' erreur(s))':''}`);
+  } else {
+    toast('Aucun brouillon créé — vérifiez les adresses email','warn');
+  }
+}
+ 
+async function callGmailCreateDraft({to, subject, body}){
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      mcp_servers:[{type:'url',url:'https://gmailmcp.googleapis.com/mcp/v1',name:'gmail'}],
+      messages:[{role:'user',content:`Create a Gmail draft with these exact parameters (do not modify content):
+TO: ${to.join(', ')}
+SUBJECT: ${subject}
+BODY (use exactly as-is):
+${body}`}]
+    })
+  });
+  if(!resp.ok){
+    const err=await resp.text();
+    throw new Error(`API error ${resp.status}: ${err}`);
+  }
+  return resp.json();
+}
+ 
+// ════════════════════════════════════
+// EXPORT JSON
+// ════════════════════════════════════
+function exportJSON(){
+  const s=getActive(); if(!s) return;
+  const b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u; a.download=`Session_${slug(s.title)}.json`; a.click();
+  URL.revokeObjectURL(u);
+  toast('💾 Session sauvegardée en JSON');
+}
+ 
+// ════════════════════════════════════
+// UTILS
+// ════════════════════════════════════
+function v(id){ return document.getElementById(id)?.value?.trim()||''; }
+function cl(id){ const e=document.getElementById(id); if(e) e.value=''; }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtD(d){ if(!d) return ''; const[y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function slug(s){ return String(s).replace(/[^a-zA-Z0-9]/g,'_').substring(0,40); }
+function toast(msg,type='ok'){
+  const el=document.createElement('div');
+  el.className='toast'+(type==='warn'?' warn':'');
+  el.textContent=msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+ 
+// ════════════════════════════════════
 // INIT
-updateCounter(); updateProgress();
+// ════════════════════════════════════
+hydrate();
+renderSB();
+if(S.aid && S.sessions.find(s=>s.id===S.aid)) renderSV();
+else if(S.sessions.length){ S.aid=S.sessions[0].id; renderSB(); renderSV(); }
 </script>
+<!-- ════ MODAL EMAIL CONVOCATIONS ════ -->
+<div class="overlay" id="emailModal" style="display:none;">
+  <div class="modal" style="max-width:640px;max-height:92vh;display:flex;flex-direction:column;">
+    <div class="mh">
+      <div class="mt">📧 Envoyer la feuille d'émargement</div>
+      <button class="mx" onclick="closeModal('emailModal')">✕</button>
+    </div>
+    <div class="mb" style="flex:1;overflow-y:auto;">
+ 
+      <div class="sl">Configuration</div>
+      <div class="fg">
+        <label>URL de l'application d'émargement</label>
+        <input id="em_appurl" placeholder="https://jacqueshenrimarin-lnc.github.io/evaluation-formation/">
+        <div style="font-size:10px;color:var(--Wi);margin-top:3px;">Ce lien est inclus dans chaque email pour que les participants signent depuis leur téléphone.</div>
+      </div>
+      <div class="g2">
+        <div class="fg">
+          <label>Destinataires</label>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:2px;">
+            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:7px;cursor:pointer;">
+              <input type="checkbox" id="em_sendparts" checked style="width:14px;height:14px;accent-color:var(--T);">
+              Participants (avec email)
+            </label>
+            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:7px;cursor:pointer;">
+              <input type="checkbox" id="em_sendform" checked style="width:14px;height:14px;accent-color:var(--T);">
+              Formateur (récap complet)
+            </label>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Demi-journée concernée</label>
+          <select id="em_slot" style="margin-top:2px;"></select>
+          <div style="font-size:10px;color:var(--Wi);margin-top:3px;">Ou "Toutes" pour une convocation globale.</div>
+        </div>
+      </div>
+ 
+      <div class="sl">Prévisualisation — Email participant</div>
+      <div style="border:1px solid var(--Wi);border-radius:7px;overflow:hidden;">
+        <div style="background:var(--Ink);padding:10px 14px;display:flex;gap:14px;font-size:11px;color:var(--Wi);">
+          <span>À : <strong style="color:var(--Pa);">marie.dupont@acme.fr</strong></span>
+          <span>Objet : <strong style="color:var(--Pa);" id="em_prev_subj">—</strong></span>
+        </div>
+        <div id="em_prev_body" style="padding:14px;font-size:12px;line-height:1.7;color:var(--Ink);background:var(--W);max-height:220px;overflow-y:auto;white-space:pre-wrap;"></div>
+      </div>
+ 
+      <div id="em_nomail_warn" style="display:none;margin-top:10px;padding:9px 12px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;font-size:12px;color:#713f12;">
+        ⚠ <span id="em_nomail_msg"></span>
+      </div>
+ 
+      <div class="sl">Résumé</div>
+      <div id="em_summary" style="font-size:12px;color:var(--Sl);line-height:1.8;"></div>
+    </div>
+    <div class="mf">
+      <button class="btn bs" onclick="closeModal('emailModal')">Annuler</button>
+      <button class="btn" style="background:#1a73e8;color:#fff;font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:600;gap:6px;display:inline-flex;align-items:center;padding:7px 14px;border:none;border-radius:5px;cursor:pointer;" onclick="sendConvocations()" id="em_sendBtn">
+        📧 Créer les brouillons Gmail
+    </div>
+  </div>
+</div>
+ 
 </body>
 </html>
