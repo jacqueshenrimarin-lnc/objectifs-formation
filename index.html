@@ -219,7 +219,7 @@ textarea { resize: vertical; min-height: 44px; }
             <button class="btn btn-s btn-sm" onclick="openEditModal()">✏ Modifier</button>
             <button class="btn btn-sa btn-sm" onclick="exportJSON()">💾 JSON</button>
             <button class="btn btn-p btn-sm" onclick="exportPDF()">📄 PDF</button>
-            <button class="btn btn-blue btn-sm" onclick="openEmailModal()">📧 Envoyer</button>
+            <button class="btn btn-blue btn-sm" onclick="openEmailFormateur()">📧 Email formateur</button>
           </div>
         </div>
       </div>
@@ -396,59 +396,62 @@ textarea { resize: vertical; min-height: 44px; }
 </div>
 
 <!-- ════════════════════════════════
-     MODAL : EMAIL ÉMARGEMENT
+     MODAL : BROUILLON EMAIL INDIVIDUEL
+═════════════════════════════════ -->
+<div class="overlay" id="draftModal" style="display:none;">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-h">
+      <div>
+        <div class="modal-title">📧 Brouillon email</div>
+        <div id="draft_to" style="font-size:11px;color:var(--Sl);margin-top:2px;"></div>
+      </div>
+      <button class="modal-x" onclick="closeModal('draftModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <div class="fg">
+        <label>Objet</label>
+        <input id="draft_subject" style="font-weight:600;">
+      </div>
+      <div class="fg">
+        <label>Corps du message</label>
+        <textarea id="draft_body" style="min-height:280px;font-size:12px;line-height:1.6;font-family:'Inter Tight',sans-serif;"></textarea>
+      </div>
+    </div>
+    <div class="modal-f" style="justify-content:space-between;align-items:center;">
+      <span style="font-size:10px;color:var(--Wi);">Modifiable avant envoi · Ouverture dans votre client email</span>
+      <div style="display:flex;gap:7px;">
+        <button class="btn btn-s" onclick="closeModal('draftModal')">Fermer</button>
+        <button class="btn btn-blue" onclick="sendDraft()">📧 Envoyer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MODAL : EMAIL GLOBAL (formateur)
 ═════════════════════════════════ -->
 <div class="overlay" id="emailModal" style="display:none;">
   <div class="modal" style="max-width:580px;">
     <div class="modal-h">
-      <div class="modal-title">📧 Envoyer la feuille d'émargement</div>
+      <div class="modal-title">📧 Email récap formateur</div>
       <button class="modal-x" onclick="closeModal('emailModal')">✕</button>
     </div>
     <div class="modal-b">
-      <div class="sec-label">Configuration</div>
       <div class="fg">
-        <label>URL de l'application d'émargement</label>
-        <input id="em_appurl">
-        <div style="font-size:10px;color:var(--Wi);margin-top:2px;">Inclus dans chaque email pour que les participants signent depuis leur téléphone.</div>
+        <label>Objet</label>
+        <input id="em_subject" style="font-weight:600;">
       </div>
-      <div class="g2" style="margin-bottom:10px;">
-        <div class="fg" style="margin:0;">
-          <label>Destinataires</label>
-          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
-            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="em_sendparts" checked style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;flex-shrink:0;">
-              Participants (avec email)
-            </label>
-            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="em_sendform" checked style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;flex-shrink:0;">
-              Formateur (récap complet)
-            </label>
-          </div>
-        </div>
-        <div class="fg" style="margin:0;">
-          <label>Demi-journée</label>
-          <select id="em_slot" style="margin-top:4px;"></select>
-        </div>
+      <div class="fg">
+        <label>Corps du message</label>
+        <textarea id="em_body" style="min-height:280px;font-size:12px;line-height:1.6;font-family:'Inter Tight',sans-serif;"></textarea>
       </div>
-
-      <div class="sec-label">Prévisualisation — participant</div>
-      <div style="border:1px solid var(--Wi);border-radius:6px;overflow:hidden;margin-bottom:10px;">
-        <div style="background:var(--Ink);padding:8px 12px;font-size:10px;color:var(--Wi);display:flex;gap:14px;flex-wrap:wrap;">
-          <span>Objet : <strong style="color:var(--Pa);" id="em_prev_subj">—</strong></span>
-        </div>
-        <div id="em_prev_body" style="padding:10px 12px;font-size:11px;line-height:1.6;color:var(--Ink);max-height:180px;overflow-y:auto;white-space:pre-wrap;background:var(--W);"></div>
-      </div>
-
-      <div id="em_warn" style="display:none;padding:8px 10px;background:#fef9c3;border:1px solid #fde047;border-radius:5px;font-size:11px;color:#713f12;margin-bottom:8px;">
-        ⚠ <span id="em_warn_msg"></span>
-      </div>
-
-      <div class="sec-label">Résumé</div>
-      <div id="em_summary" style="font-size:12px;color:var(--Sl);line-height:1.8;"></div>
     </div>
-    <div class="modal-f">
-      <button class="btn btn-s" onclick="closeModal('emailModal')">Annuler</button>
-      <button class="btn btn-blue" onclick="sendEmails()">📧 Ouvrir les emails</button>
+    <div class="modal-f" style="justify-content:space-between;align-items:center;">
+      <span style="font-size:10px;color:var(--Wi);">Modifiable avant envoi · Ouverture dans votre client email</span>
+      <div style="display:flex;gap:7px;">
+        <button class="btn btn-s" onclick="closeModal('emailModal')">Fermer</button>
+        <button class="btn btn-blue" onclick="sendEmailFormateur()">📧 Envoyer au formateur</button>
+      </div>
     </div>
   </div>
 </div>
@@ -475,6 +478,20 @@ function hydrate() {
           if (op.sessions) { S.sessions = op.sessions; persist(); }
         }
       } catch(e) {}
+    });
+    // Normalize all signature/presence keys to integers
+    // (localStorage serializes numeric keys as strings)
+    S.sessions.forEach(session => {
+      session.participants.forEach(p => {
+        // normalize signatures
+        const newSig = {};
+        Object.keys(p.signatures||{}).forEach(k => { newSig[parseInt(k)] = p.signatures[k]; });
+        p.signatures = newSig;
+        // normalize presence
+        const newPres = {};
+        Object.keys(p.presence||{}).forEach(k => { newPres[parseInt(k)] = p.presence[k]; });
+        p.presence = newPres;
+      });
     });
   } catch(e) {}
 }
@@ -753,8 +770,8 @@ function renderTable() {
           <div style="display:flex;align-items:center;gap:5px;">
             <span style="color:var(--Sl);font-size:11px;">${esc(p.email || '—')}</span>
             ${hasEmail
-              ? `<button class="btn btn-blue btn-xs" onclick="openMailtoLink('${esc(p.email)}','${esc(p.id)}')" title="Envoyer l'email d'émargement">✉</button>`
-              : `<span style="font-size:10px;color:var(--Wi);" title="Pas d'email">✕</span>`}
+              ? `<button class="btn btn-blue btn-xs" onclick="openDraft('${p.id}')" title="Ouvrir le brouillon email">✉ Email</button>`
+              : `<span style="font-size:10px;color:var(--Wi);" title="Pas d'email">—</span>`}
           </div>
         </td>
         <td style="color:var(--Sl);font-size:11px;">${esc(p.societe || '—')}</td>
@@ -956,12 +973,15 @@ function saveEdit() {
 }
 
 // ════════════════════════════════════════════
-// EMAIL — CONTENT BUILDERS
+// EMAIL — HELPERS & BUILDERS
 // ════════════════════════════════════════════
-function getSlotLabel(s) {
-  const val = document.getElementById('em_slot')?.value;
-  if (!val || val === 'all') return s.slots.join(', ');
-  return s.slots[parseInt(val)] || s.slots[0];
+function fireMailto(email, subject, body) {
+  const a = document.createElement('a');
+  a.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => document.body.removeChild(a), 500);
 }
 
 function buildSubjPart(s) {
@@ -972,36 +992,34 @@ function buildSubjForm(s) {
 }
 
 function buildBodyPart(s, p, appUrl) {
-  const slot = getSlotLabel(s);
-  const link = appUrl
-    ? `Cliquez sur le lien ci-dessous et apposez votre signature :\n\n👉 ${appUrl}\n\n⏱ Moins de 30 secondes depuis votre téléphone.`
-    : `Votre formateur vous communiquera le lien au démarrage.\n👉 ${DEFAULT_URL}`;
+  const url = appUrl || DEFAULT_URL;
   return `Bonjour ${p.prenom},
 
 La session "${s.title}" démarre dans quelques minutes.
 Merci de signer votre feuille d'émargement dès maintenant.
 
-${link}
+Cliquez sur le lien ci-dessous et apposez votre signature :
+
+👉 ${url}
+
+⏱ Moins de 30 secondes depuis votre téléphone.
 
 ──────────────────────────────
 📚 ${s.title}
 📅 ${fmtD(s.ds)}${s.de !== s.ds ? ' → ' + fmtD(s.de) : ''}  ·  ⏰ ${s.hs}–${s.he}
-${s.lieu ? '📍 ' + s.lieu + '  ·  ' : ''}📋 ${slot}
-👤 Formateur : ${s.formateur}
+${s.lieu ? '📍 ' + s.lieu + '\n' : ''}${s.client ? '🏢 ' + s.client + '\n' : ''}👤 Formateur : ${s.formateur}
 ──────────────────────────────
 
 Votre signature vaut attestation de présence (Qualiopi).
 
-En cas de difficulté, signalez-le à votre formateur.
-
+Bonne formation,
 ${s.formateur}
 LENOUVION Consulting — Formation IA · Qualiopi
 SIRET 980 112 536 00019`;
 }
 
 function buildBodyForm(s, appUrl) {
-  const slot = getSlotLabel(s);
-  const link = appUrl ? `🔗 ${appUrl}` : `🔗 ${DEFAULT_URL}`;
+  const url = appUrl || DEFAULT_URL;
   const liste = s.participants.map((p,i) => {
     const ok = p.email && p.email.includes('@');
     return `  ${i+1}. ${p.prenom} ${p.nom}${p.societe ? ' (' + p.societe + ')' : ''}${ok ? ' — ' + p.email : ' ⚠ pas d\'email'}`;
@@ -1011,13 +1029,12 @@ function buildBodyForm(s, appUrl) {
 
 Récapitulatif de votre session — démarrage dans quelques minutes.
 
-${link}
+🔗 Lien émargement : ${url}
 
 ──────────────────────────────
 📚 ${s.title}
 📅 ${fmtD(s.ds)}${s.de !== s.ds ? ' → ' + fmtD(s.de) : ''}  ·  ⏰ ${s.hs}–${s.he}
-${s.lieu ? '📍 ' + s.lieu + '  ·  ' : ''}📋 ${slot}
-──────────────────────────────
+${s.lieu ? '📍 ' + s.lieu + '\n' : ''}${s.client ? '🏢 ' + s.client + '\n' : ''}──────────────────────────────
 
 👥 PARTICIPANTS (${s.participants.length}) :
 ${liste || '  Aucun participant enregistré.'}
@@ -1028,99 +1045,45 @@ LENOUVION Consulting — Formation IA · Qualiopi`;
 }
 
 // ════════════════════════════════════════════
-// EMAIL MODAL
+// MODAL BROUILLON INDIVIDUEL
 // ════════════════════════════════════════════
-function openEmailModal() {
+let draftPid = null;
+
+function openDraft(pid) {
   const s = getActive(); if (!s) return;
-  // slots selector
-  const sel = document.getElementById('em_slot');
-  sel.innerHTML = '<option value="all">Toutes</option>' +
-    s.slots.map((sl,i) => `<option value="${i}">${esc(sl)}</option>`).join('');
-  sel.value = String(S.aslot);
-  // url
-  document.getElementById('em_appurl').value = S.appUrl || DEFAULT_URL;
-  // listeners
-  sel.onchange = updateEmailPreview;
-  document.getElementById('em_appurl').oninput = updateEmailPreview;
-  document.getElementById('em_sendparts').onchange = updateEmailPreview;
-  document.getElementById('em_sendform').onchange = updateEmailPreview;
-  updateEmailPreview();
+  const p = s.participants.find(x => x.id === pid); if (!p) return;
+  if (!p.email || !p.email.includes('@')) { toast('Pas d\'adresse email pour ce participant','warn'); return; }
+  draftPid = pid;
+  document.getElementById('draft_to').textContent = `À : ${p.email}`;
+  document.getElementById('draft_subject').value = buildSubjPart(s);
+  document.getElementById('draft_body').value = buildBodyPart(s, p, S.appUrl || DEFAULT_URL);
+  openModal('draftModal');
+}
+
+function sendDraft() {
+  const s = getActive(); if (!s) return;
+  const p = s.participants.find(x => x.id === draftPid); if (!p) return;
+  fireMailto(p.email, document.getElementById('draft_subject').value, document.getElementById('draft_body').value);
+  closeModal('draftModal');
+  toast(`✉ Email ouvert pour ${p.prenom} ${p.nom}`);
+}
+
+// ════════════════════════════════════════════
+// MODAL EMAIL FORMATEUR
+// ════════════════════════════════════════════
+function openEmailFormateur() {
+  const s = getActive(); if (!s) return;
+  if (!s.fmail || !s.fmail.includes('@')) { toast('Pas d\'email formateur — modifiez la session','warn'); return; }
+  document.getElementById('em_subject').value = buildSubjForm(s);
+  document.getElementById('em_body').value = buildBodyForm(s, S.appUrl || DEFAULT_URL);
   openModal('emailModal');
 }
 
-function updateEmailPreview() {
+function sendEmailFormateur() {
   const s = getActive(); if (!s) return;
-  const appUrl = document.getElementById('em_appurl').value.trim() || DEFAULT_URL;
-  const sendParts = document.getElementById('em_sendparts').checked;
-  const sendForm = document.getElementById('em_sendform').checked;
-  const sampleP = s.participants[0] || { prenom: 'Participant', nom: '', email: 'exemple@société.fr', societe: '', fonction: '' };
-
-  document.getElementById('em_prev_subj').textContent = buildSubjPart(s);
-  document.getElementById('em_prev_body').textContent = buildBodyPart(s, sampleP, appUrl);
-
-  const withEmail = s.participants.filter(p => p.email && p.email.includes('@'));
-  const noEmail = s.participants.filter(p => !p.email || !p.email.includes('@'));
-  const warn = document.getElementById('em_warn');
-  const warnMsg = document.getElementById('em_warn_msg');
-  if (noEmail.length && sendParts) {
-    warn.style.display = 'block';
-    warnMsg.textContent = `${noEmail.length} participant(s) sans email : ${noEmail.map(p => p.prenom + ' ' + p.nom).join(', ')}`;
-  } else { warn.style.display = 'none'; }
-
-  const lines = [];
-  if (sendParts) lines.push(`📨 ${withEmail.length} email(s) participants (ouverture client email)`);
-  if (sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail}`);
-  else if (sendForm && !s.fmail) lines.push(`⚠ Email formateur : adresse manquante — modifiez la session`);
-  if (!sendParts && !sendForm) lines.push('Aucun destinataire sélectionné.');
-  document.getElementById('em_summary').innerHTML = lines.join('<br>');
-}
-
-function sendEmails() {
-  const s = getActive(); if (!s) return;
-  const appUrl = document.getElementById('em_appurl').value.trim() || DEFAULT_URL;
-  const sendParts = document.getElementById('em_sendparts').checked;
-  const sendForm = document.getElementById('em_sendform').checked;
-  S.appUrl = appUrl; persist();
-
-  const recipients = [];
-  if (sendParts) {
-    s.participants.filter(p => p.email && p.email.includes('@')).forEach(p => {
-      recipients.push({ email: p.email, subject: buildSubjPart(s), body: buildBodyPart(s, p, appUrl) });
-    });
-  }
-  if (sendForm && s.fmail && s.fmail.includes('@')) {
-    recipients.push({ email: s.fmail, subject: buildSubjForm(s), body: buildBodyForm(s, appUrl) });
-  }
-  if (!recipients.length) { toast('Aucun email valide — vérifiez les adresses','warn'); return; }
-
+  fireMailto(s.fmail, document.getElementById('em_subject').value, document.getElementById('em_body').value);
   closeModal('emailModal');
-
-  // Ouvre chaque mailto via un lien invisible — évite la redirection de page
-  function openMailto(r) {
-    const a = document.createElement('a');
-    a.href = `mailto:${encodeURIComponent(r.email)}?subject=${encodeURIComponent(r.subject)}&body=${encodeURIComponent(r.body)}`;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => document.body.removeChild(a), 500);
-  }
-
-  // Un seul destinataire → ouverture immédiate
-  if (recipients.length === 1) {
-    openMailto(recipients[0]);
-    toast('✓ Email ouvert dans votre client email');
-    return;
-  }
-
-  // Plusieurs destinataires → délai entre chaque ouverture
-  // et avertissement que le navigateur peut bloquer les suivants
-  toast(`📧 Ouverture de ${recipients.length} email(s) — acceptez les popups si demandé`);
-  recipients.forEach((r, i) => {
-    setTimeout(() => {
-      openMailto(r);
-      if (i === recipients.length - 1) toast(`✓ ${recipients.length} email(s) ouverts`);
-    }, i * 1200);
-  });
+  toast('✉ Email formateur ouvert');
 }
 
 // ════════════════════════════════════════════
@@ -1171,7 +1134,7 @@ function exportPDF() {
       const even = idx%2===0;
       doc.setFillColor(even?250:255, even?246:255, even?238:255); doc.rect(mg,rY,W-mg*2,rH,'F');
       doc.setDrawColor(180,178,169); doc.setLineWidth(.25); doc.rect(mg,rY,W-mg*2,rH,'S');
-      const present = p.presence[si] !== false;
+      const present = p.presence[si] !== false && p.presence[String(si)] !== false;
       xO = mg;
       [String(idx+1), `${p.prenom} ${p.nom}`, p.societe||'', p.fonction||'', p.email||'', present?'Présent':'Absent'].forEach((c,i) => {
         if (i===1) { doc.setFont('helvetica','bold'); doc.setTextColor(11,11,12); }
@@ -1180,9 +1143,16 @@ function exportPDF() {
         doc.setFontSize(6); doc.text(String(c).substring(0,30), xO+2, rY+8);
         xO += cols[i];
       });
-      const sig = p.signatures[si];
-      if (sig) { try { doc.addImage(sig,'PNG',xO+2,rY+1,85,12); } catch(e) {} }
-      else { doc.setDrawColor(180,178,169); doc.setLineWidth(.2); doc.rect(xO+2,rY+1,85,11,'S'); doc.setFontSize(5.5); doc.setTextColor(180,178,169); doc.text('À signer',xO+44,rY+8,{align:'center'}); }
+      const sig = p.signatures[si] || p.signatures[String(si)];
+      if (sig) {
+        try {
+          // strip data URL prefix if needed and force PNG format
+          doc.addImage(sig, 'PNG', xO+2, rY+1, 85, 12);
+        } catch(e) {
+          // fallback: try as JPEG
+          try { doc.addImage(sig, 'JPEG', xO+2, rY+1, 85, 12); } catch(e2) {}
+        }
+      } else { doc.setDrawColor(180,178,169); doc.setLineWidth(.2); doc.rect(xO+2,rY+1,85,11,'S'); doc.setFontSize(5.5); doc.setTextColor(180,178,169); doc.text('À signer',xO+44,rY+8,{align:'center'}); }
       rY += rH;
     });
     doc.setFillColor(11,11,12); doc.rect(0,H-9,W,11,'F');
