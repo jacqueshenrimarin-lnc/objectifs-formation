@@ -4,251 +4,320 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Émargement — LENOUVION Consulting</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-:root{--T:#C8532B;--B:#8A2D16;--Sa:#A7BEAE;--Ink:#0B0B0C;--Pa:#F5F2EC;--Cr:#FAF6EE;--Sl:#4A4A4A;--Wi:#B4B2A9;--W:#FFFFFF;--G:#16a34a;--R:#dc2626;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter Tight',sans-serif;background:var(--Pa);color:var(--Ink);min-height:100vh;overflow:hidden;}
-/* HEADER */
-header{background:var(--Ink);height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--T);flex-shrink:0;}
-.logo{display:flex;align-items:center;gap:11px;}
-.lsq{width:34px;height:34px;background:var(--T);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:14px;color:var(--Pa);}
-.lname{font-family:'Fraunces',serif;font-weight:600;font-size:14px;color:var(--Pa);}
-.lsub{font-size:10px;color:var(--Wi);letter-spacing:.6px;text-transform:uppercase;margin-top:1px;}
-.hbadge{background:var(--T);color:var(--Pa);font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;}
-/* LAYOUT */
-.app{display:flex;height:calc(100vh - 56px);}
-/* SIDEBAR */
-.sb{width:290px;background:var(--Cr);border-right:1px solid var(--Wi);display:flex;flex-direction:column;flex-shrink:0;}
-.sbh{padding:14px;border-bottom:1px solid var(--Wi);background:var(--W);}
-.sbh-t{font-family:'Fraunces',serif;font-size:14px;font-weight:600;margin-bottom:10px;}
-.sbl{flex:1;overflow-y:auto;padding:10px;}
-.sbf{padding:10px 13px;border-top:1px solid var(--Wi);font-size:10px;color:var(--Wi);line-height:1.5;}
-/* SESSION CARD */
-.sc{background:var(--W);border:1px solid var(--Wi);border-radius:7px;padding:10px 12px 26px;margin-bottom:7px;cursor:pointer;transition:all .15s;position:relative;}
-.sc:hover{border-color:var(--T);box-shadow:0 2px 7px rgba(200,83,43,.1);}
-.sc.active{border-color:var(--T);border-left:3px solid var(--T);background:#fff8f6;}
-.sc-t{font-weight:600;font-size:13px;margin-bottom:2px;padding-right:38px;}
-.sc-m{font-size:10px;color:var(--Sl);margin-top:1px;}
-.sc-badge{position:absolute;top:8px;right:8px;background:var(--T);color:var(--Pa);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;}
-.sc-del{position:absolute;bottom:6px;right:6px;background:none;border:none;cursor:pointer;color:var(--Wi);font-size:12px;padding:2px;transition:color .15s;}
-.sc-del:hover{color:var(--R);}
-/* MAIN */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-/* WELCOME */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:var(--Sl);}
-.wico{font-size:52px;margin-bottom:16px;opacity:.3;}
-.wh{font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--Ink);margin-bottom:8px;}
-.wp{font-size:13px;line-height:1.7;max-width:340px;margin-bottom:22px;}
-/* SESSION VIEW */
-#sv{display:none;flex-direction:column;height:100%;overflow:hidden;}
-.toolbar{padding:11px 22px;background:var(--W);border-bottom:1px solid var(--Wi);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;flex-shrink:0;}
-.tt{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
-.tm{font-size:11px;color:var(--Sl);margin-top:1px;}
-.tr{display:flex;gap:6px;}
-.slotsbar{padding:9px 22px;background:var(--Pa);border-bottom:1px solid var(--Wi);display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
-.stab{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--Wi);background:var(--W);cursor:pointer;transition:all .15s;color:var(--Sl);}
-.stab.active{background:var(--T);color:var(--Pa);border-color:var(--T);}
-.stab:hover:not(.active){border-color:var(--T);color:var(--T);}
-.stab-add{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px dashed var(--Wi);background:transparent;cursor:pointer;color:var(--Sl);transition:all .15s;}
-.stab-add:hover{border-color:var(--T);color:var(--T);}
-/* ADD BAR */
-.addbar{padding:9px 22px;background:var(--W);border-bottom:1px solid var(--Wi);display:flex;gap:7px;align-items:flex-end;flex-shrink:0;flex-wrap:wrap;}
-.addbar .fg{margin:0;flex:1;min-width:80px;}
-/* TABLE */
-.ptw{flex:1;overflow-y:auto;padding:16px 22px;}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:160px;color:var(--Sl);gap:7px;text-align:center;}
-table{width:100%;border-collapse:collapse;background:var(--W);border-radius:9px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.05);}
-thead tr{background:var(--Ink);}
-th{padding:9px 11px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--Pa);}
-td{padding:8px 11px;font-size:12px;border-bottom:1px solid var(--Cr);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:nth-child(even) td{background:#fffdfb;}
-tr:hover td{background:#fff8f6;}
-.sig-img{height:26px;max-width:76px;object-fit:contain;border:1px solid var(--Cr);border-radius:3px;vertical-align:middle;}
-/* STATS BAR */
-.statsbar{padding:7px 22px;background:var(--Cr);border-top:1px solid var(--Wi);display:flex;gap:16px;align-items:center;font-size:11px;color:var(--Sl);flex-shrink:0;}
-.sdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;}
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:none;border-radius:5px;font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.bp{background:var(--T);color:var(--Pa);}
-.bp:hover{background:var(--B);}
-.bs{background:var(--Cr);color:var(--Sl);border:1px solid var(--Wi);}
-.bs:hover{background:var(--Wi);color:var(--Ink);}
-.bsa{background:var(--Sa);color:var(--Ink);}
-.bsa:hover{opacity:.85;}
-.bd{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
-.bd:hover{background:#fca5a5;}
-.bw{width:100%;justify-content:center;}
-.bx{padding:5px 8px;font-size:11px;}
-/* FORMS */
-.fg{margin-bottom:9px;}
-label{font-size:10px;font-weight:700;color:var(--Sl);text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:3px;}
-input,select,textarea{width:100%;padding:6px 9px;border:1px solid var(--Wi);border-radius:5px;font-family:'Inter Tight',sans-serif;font-size:12px;color:var(--Ink);background:var(--W);outline:none;transition:border-color .15s;}
-input:focus,select:focus,textarea:focus{border-color:var(--T);}
-textarea{resize:vertical;min-height:48px;}
-/* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(11,11,12,.52);z-index:1000;align-items:center;justify-content:center;padding:14px;}
-.modal{background:var(--W);border-radius:11px;box-shadow:0 20px 60px rgba(0,0,0,.22);width:100%;overflow:hidden;animation:mIn .2s ease;}
-@keyframes mIn{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
-.mh{padding:16px 20px 12px;border-bottom:1px solid var(--Cr);display:flex;align-items:center;justify-content:space-between;}
-.mt{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
-.mx{background:none;border:none;font-size:19px;cursor:pointer;color:var(--Sl);line-height:1;}
-.mx:hover{color:var(--Ink);}
-.mb{padding:16px 20px;overflow-y:auto;}
-.mf{padding:12px 20px;border-top:1px solid var(--Cr);display:flex;gap:7px;justify-content:flex-end;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
-/* SECTION LABEL IN MODAL */
-.sl{font-size:10px;font-weight:700;color:var(--T);text-transform:uppercase;letter-spacing:.7px;margin:14px 0 7px;border-bottom:1px solid var(--Cr);padding-bottom:3px;}
-/* PARTICIPANTS TABLE IN MODAL */
-.mpt{width:100%;border-collapse:collapse;}
-.mpt th{background:var(--Ink);color:var(--Pa);padding:6px 9px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-align:left;}
-.mpt td{padding:5px 9px;border-bottom:1px solid var(--Cr);font-size:12px;vertical-align:middle;}
-.mpt tr:last-child td{border-bottom:none;}
-.mpt input{padding:4px 7px;font-size:11px;}
-/* CANVAS */
-.canv-wrap{border:2px dashed var(--Wi);border-radius:6px;background:var(--Pa);position:relative;overflow:hidden;}
-#sigCanvas{display:block;touch-action:none;}
-.chint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:var(--Wi);pointer-events:none;white-space:nowrap;}
-/* TOAST */
-.toasts{position:fixed;bottom:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:6px;}
-.toast{background:var(--Ink);color:var(--Pa);padding:9px 14px;border-radius:6px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;box-shadow:0 4px 18px rgba(0,0,0,.25);animation:tIn .22s ease;border-left:3px solid var(--T);}
-@keyframes tIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-.toast.warn{border-left-color:#f59e0b;}
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-thumb{background:var(--Wi);border-radius:3px;}
+/* ── TOKENS ── */
+:root {
+  --T: #C8532B; --B: #8A2D16; --Sa: #A7BEAE;
+  --Ink: #0B0B0C; --Pa: #F5F2EC; --Cr: #FAF6EE;
+  --Sl: #4A4A4A; --Wi: #B4B2A9; --W: #FFFFFF;
+  --G: #16a34a; --R: #dc2626;
+  --sidebar: 270px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: 'Inter Tight', sans-serif; background: var(--Pa); color: var(--Ink); display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── HEADER ── */
+.hdr {
+  height: 52px; flex-shrink: 0;
+  background: var(--Ink); border-bottom: 3px solid var(--T);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.hdr-logo { display: flex; align-items: center; gap: 10px; }
+.hdr-sq { width: 32px; height: 32px; background: var(--T); border-radius: 5px; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-weight: 700; font-size: 13px; color: var(--Pa); }
+.hdr-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 13px; color: var(--Pa); }
+.hdr-sub { font-size: 10px; color: var(--Wi); letter-spacing: .5px; text-transform: uppercase; }
+.hdr-badge { background: var(--T); color: var(--Pa); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: .4px; text-transform: uppercase; }
+
+/* ── APP SHELL ── */
+.shell { flex: 1; display: flex; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sb { width: var(--sidebar); flex-shrink: 0; background: var(--Cr); border-right: 1px solid var(--Wi); display: flex; flex-direction: column; }
+.sb-head { padding: 14px 12px 12px; border-bottom: 1px solid var(--Wi); background: var(--W); }
+.sb-title { font-family: 'Fraunces', serif; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.sb-list { flex: 1; overflow-y: auto; padding: 10px 8px; }
+.sb-foot { padding: 8px 12px; border-top: 1px solid var(--Wi); font-size: 9px; color: var(--Wi); line-height: 1.5; }
+
+.sc { background: var(--W); border: 1px solid var(--Wi); border-radius: 7px; padding: 9px 10px 24px; margin-bottom: 6px; cursor: pointer; transition: all .15s; position: relative; }
+.sc:hover { border-color: var(--T); }
+.sc.active { border-color: var(--T); border-left: 3px solid var(--T); background: #fff8f6; }
+.sc-t { font-weight: 600; font-size: 12px; margin-bottom: 2px; padding-right: 36px; line-height: 1.3; }
+.sc-m { font-size: 10px; color: var(--Sl); margin-top: 2px; }
+.sc-badge { position: absolute; top: 8px; right: 8px; background: var(--T); color: var(--Pa); font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+.sc-del { position: absolute; bottom: 5px; right: 6px; background: none; border: none; cursor: pointer; color: var(--Wi); font-size: 12px; padding: 2px; line-height: 1; transition: color .15s; }
+.sc-del:hover { color: var(--R); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+/* ── WELCOME ── */
+.welcome { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+.welcome-ico { font-size: 48px; opacity: .25; margin-bottom: 16px; }
+.welcome-h { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.welcome-p { font-size: 13px; color: var(--Sl); line-height: 1.7; max-width: 320px; margin-bottom: 20px; }
+
+/* ── SESSION VIEW ── */
+#sv { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+
+.toolbar {
+  padding: 10px 18px; background: var(--W); border-bottom: 1px solid var(--Wi);
+  flex-shrink: 0;
+}
+.toolbar-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.toolbar-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.toolbar-meta { font-size: 11px; color: var(--Sl); margin-top: 2px; }
+.toolbar-actions { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; flex-shrink: 0; }
+
+.slots-bar { padding: 8px 18px; background: var(--Pa); border-bottom: 1px solid var(--Wi); display: flex; gap: 5px; flex-wrap: wrap; align-items: center; flex-shrink: 0; }
+.stab { padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--Wi); background: var(--W); cursor: pointer; transition: all .15s; color: var(--Sl); }
+.stab.active { background: var(--T); color: var(--Pa); border-color: var(--T); }
+.stab:hover:not(.active) { border-color: var(--T); color: var(--T); }
+.stab-add { padding: 4px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px dashed var(--Wi); background: transparent; cursor: pointer; color: var(--Sl); transition: all .15s; }
+.stab-add:hover { border-color: var(--T); color: var(--T); }
+
+/* ── ADD PARTICIPANT BAR ── */
+.add-bar { padding: 8px 18px; background: var(--W); border-bottom: 1px solid var(--Wi); flex-shrink: 0; }
+.add-bar-fields { display: flex; gap: 6px; align-items: flex-end; flex-wrap: wrap; }
+.add-bar-fields .fg { margin: 0; flex: 1; min-width: 90px; }
+.add-bar-fields .fg.sm { min-width: 70px; }
+
+/* ── TABLE AREA ── */
+.ptw { flex: 1; overflow-y: auto; padding: 14px 18px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 160px; color: var(--Sl); gap: 8px; text-align: center; }
+
+table { width: 100%; border-collapse: collapse; background: var(--W); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.06); font-size: 12px; }
+thead tr { background: var(--Ink); }
+th { padding: 8px 10px; text-align: left; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--Pa); white-space: nowrap; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--Cr); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fffdfb; }
+tr:hover td { background: #fff8f6; }
+
+.sig-img { height: 24px; max-width: 72px; object-fit: contain; border: 1px solid var(--Cr); border-radius: 3px; vertical-align: middle; }
+
+/* ── STATS BAR ── */
+.stats-bar { padding: 6px 18px; background: var(--Cr); border-top: 1px solid var(--Wi); display: flex; gap: 14px; align-items: center; font-size: 11px; color: var(--Sl); flex-shrink: 0; flex-wrap: wrap; }
+.sdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 3px; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 11px; border: none; border-radius: 5px; font-family: 'Inter Tight', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; transition: all .15s; white-space: nowrap; text-decoration: none; }
+.btn-p { background: var(--T); color: var(--Pa); }
+.btn-p:hover { background: var(--B); }
+.btn-s { background: var(--Cr); color: var(--Sl); border: 1px solid var(--Wi); }
+.btn-s:hover { background: var(--Wi); color: var(--Ink); }
+.btn-sa { background: var(--Sa); color: var(--Ink); }
+.btn-sa:hover { opacity: .85; }
+.btn-d { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.btn-d:hover { background: #fca5a5; }
+.btn-blue { background: #1a73e8; color: #fff; }
+.btn-blue:hover { background: #1558b0; }
+.btn-w { width: 100%; justify-content: center; }
+.btn-xs { padding: 3px 7px; font-size: 10px; }
+.btn-sm { padding: 5px 9px; font-size: 11px; }
+
+/* ── FORMS ── */
+.fg { margin-bottom: 8px; }
+label { font-size: 10px; font-weight: 700; color: var(--Sl); text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 3px; }
+input, select, textarea { width: 100%; padding: 6px 8px; border: 1px solid var(--Wi); border-radius: 5px; font-family: 'Inter Tight', sans-serif; font-size: 12px; color: var(--Ink); background: var(--W); outline: none; transition: border-color .15s; }
+input:focus, select:focus, textarea:focus { border-color: var(--T); }
+textarea { resize: vertical; min-height: 44px; }
+
+/* ── GRID HELPERS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+
+/* ── MODAL ── */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(11,11,12,.55); z-index: 1000; align-items: center; justify-content: center; padding: 12px; }
+.modal { background: var(--W); border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.22); width: 100%; max-height: 90vh; display: flex; flex-direction: column; animation: mIn .2s ease; }
+@keyframes mIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-h { padding: 14px 18px 12px; border-bottom: 1px solid var(--Cr); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.modal-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; }
+.modal-x { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--Sl); line-height: 1; }
+.modal-x:hover { color: var(--Ink); }
+.modal-b { padding: 14px 18px; overflow-y: auto; flex: 1; }
+.modal-f { padding: 10px 18px; border-top: 1px solid var(--Cr); display: flex; gap: 7px; justify-content: flex-end; flex-shrink: 0; }
+
+.sec-label { font-size: 10px; font-weight: 700; color: var(--T); text-transform: uppercase; letter-spacing: .6px; margin: 14px 0 7px; border-bottom: 1px solid var(--Cr); padding-bottom: 3px; }
+.sec-label:first-child { margin-top: 0; }
+
+/* ── MODAL PARTICIPANTS TABLE ── */
+.mpt { width: 100%; border-collapse: collapse; }
+.mpt th { background: var(--Ink); color: var(--Pa); padding: 6px 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; text-align: left; }
+.mpt td { padding: 4px 8px; border-bottom: 1px solid var(--Cr); font-size: 11px; vertical-align: middle; }
+.mpt tr:last-child td { border-bottom: none; }
+.mpt input { padding: 3px 6px; font-size: 11px; }
+
+/* ── SIGNATURE CANVAS ── */
+.canv-wrap { border: 2px dashed var(--Wi); border-radius: 6px; background: var(--Pa); position: relative; overflow: hidden; }
+#sigCanvas { display: block; touch-action: none; width: 100%; height: 150px; }
+.canv-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 12px; color: var(--Wi); pointer-events: none; white-space: nowrap; }
+
+/* ── TOAST ── */
+.toasts { position: fixed; bottom: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
+.toast { background: var(--Ink); color: var(--Pa); padding: 9px 13px; border-radius: 6px; font-size: 12px; font-weight: 500; box-shadow: 0 4px 18px rgba(0,0,0,.25); animation: tIn .22s ease; border-left: 3px solid var(--T); pointer-events: auto; }
+.toast.warn { border-left-color: #f59e0b; }
+@keyframes tIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--Wi); border-radius: 2px; }
 </style>
 </head>
 <body>
- 
-<header>
-  <div class="logo">
-    <div class="lsq">LN</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-logo">
+    <div class="hdr-sq">LN</div>
     <div>
-      <div class="lname">LENOUVION Consulting</div>
-      <div class="lsub">Organisme de formation IA · Qualiopi</div>
+      <div class="hdr-name">LENOUVION Consulting</div>
+      <div class="hdr-sub">Organisme de formation IA · Qualiopi</div>
     </div>
   </div>
-  <div class="hbadge">📋 Émargement</div>
+  <div class="hdr-badge">📋 Émargement</div>
 </header>
- 
-<div class="app">
+
+<!-- SHELL -->
+<div class="shell">
+
   <!-- SIDEBAR -->
   <aside class="sb">
-    <div class="sbh">
-      <div class="sbh-t">Sessions de formation</div>
-      <button class="btn bp bw" id="btnNewSession">＋ Nouvelle session</button>
+    <div class="sb-head">
+      <div class="sb-title">Sessions</div>
+      <button class="btn btn-p btn-w" id="btnNew">＋ Nouvelle session</button>
     </div>
-    <div class="sbl" id="sbList"></div>
-    <div class="sbf">🔒 Données stockées localement (navigateur)<br>SIRET 980 112 536 00019</div>
+    <div class="sb-list" id="sbList"></div>
+    <div class="sb-foot">🔒 Données locales · SIRET 980 112 536 00019</div>
   </aside>
- 
+
   <!-- MAIN -->
   <main class="main">
+
+    <!-- WELCOME -->
     <div class="welcome" id="welcome">
-      <div class="wico">📋</div>
-      <div class="wh">Bienvenue dans l'émargement LNC</div>
-      <div class="wp">Créez une session pour enregistrer les présences et collecter les signatures de vos participants.</div>
-      <button class="btn bp" id="btnNewSession2">＋ Créer ma première session</button>
+      <div class="welcome-ico">📋</div>
+      <div class="welcome-h">Bienvenue dans l'émargement LNC</div>
+      <div class="welcome-p">Créez une session pour enregistrer les présences et collecter les signatures de vos participants.</div>
+      <button class="btn btn-p" id="btnNew2">＋ Créer ma première session</button>
     </div>
- 
+
+    <!-- SESSION VIEW -->
     <div id="sv">
+
+      <!-- TOOLBAR -->
       <div class="toolbar">
-        <div>
-          <div class="tt" id="svTitle"></div>
-          <div class="tm" id="svMeta"></div>
-        </div>
-        <div class="tr">
-          <button class="btn bs bx" onclick="openEditModal()">✏ Modifier</button>
-          <button class="btn bsa bx" onclick="exportJSON()">💾 JSON</button>
-          <button class="btn bp bx" onclick="exportPDF()">📄 PDF Qualiopi</button>
-          <button class="btn" style="background:#1a73e8;color:#fff;" onclick="openEmailModal()">📧 Envoyer l'émargement</button>
+        <div class="toolbar-top">
+          <div>
+            <div class="toolbar-title" id="svTitle"></div>
+            <div class="toolbar-meta" id="svMeta"></div>
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn btn-s btn-sm" onclick="openEditModal()">✏ Modifier</button>
+            <button class="btn btn-sa btn-sm" onclick="exportJSON()">💾 JSON</button>
+            <button class="btn btn-p btn-sm" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn btn-blue btn-sm" onclick="openEmailModal()">📧 Envoyer</button>
+          </div>
         </div>
       </div>
-      <div class="slotsbar" id="slotsbar"></div>
-      <div class="addbar">
-        <div class="fg"><label>Prénom</label><input id="aP" placeholder="Marie" onkeydown="addKey(event)"></div>
-        <div class="fg"><label>Nom</label><input id="aN" placeholder="DUPONT" onkeydown="addKey(event)"></div>
-        <div class="fg"><label>Email</label><input id="aE" placeholder="marie@acme.fr" onkeydown="addKey(event)"></div>
-        <div class="fg"><label>Société</label><input id="aS" placeholder="Acme SA" onkeydown="addKey(event)"></div>
-        <div class="fg"><label>Fonction</label><input id="aF" placeholder="Directeur" onkeydown="addKey(event)"></div>
-        <button class="btn bp" style="align-self:flex-end;" onclick="addPart()">＋</button>
+
+      <!-- SLOTS -->
+      <div class="slots-bar" id="slotsBar"></div>
+
+      <!-- ADD PARTICIPANT -->
+      <div class="add-bar">
+        <div class="add-bar-fields">
+          <div class="fg"><label>Prénom</label><input id="aP" placeholder="Marie" onkeydown="addKey(event)"></div>
+          <div class="fg"><label>Nom</label><input id="aN" placeholder="DUPONT" onkeydown="addKey(event)"></div>
+          <div class="fg"><label>Email</label><input id="aE" placeholder="marie@acme.fr" onkeydown="addKey(event)"></div>
+          <div class="fg sm"><label>Société</label><input id="aS" placeholder="Acme SA" onkeydown="addKey(event)"></div>
+          <div class="fg sm"><label>Fonction</label><input id="aF" placeholder="Directeur" onkeydown="addKey(event)"></div>
+          <button class="btn btn-p" style="align-self:flex-end;margin-bottom:8px;" onclick="addPart()">＋ Ajouter</button>
+        </div>
       </div>
+
+      <!-- TABLE -->
       <div class="ptw" id="ptw"></div>
-      <div class="statsbar" id="statsbar"></div>
-    </div>
+
+      <!-- STATS -->
+      <div class="stats-bar" id="statsBar"></div>
+
+    </div><!-- /sv -->
   </main>
-</div>
- 
+</div><!-- /shell -->
+
 <div class="toasts" id="toasts"></div>
- 
-<!-- ════ MODAL NOUVELLE SESSION ════ -->
+
+<!-- ════════════════════════════════
+     MODAL : NOUVELLE SESSION
+═════════════════════════════════ -->
 <div class="overlay" id="newModal" style="display:none;">
-  <div class="modal" style="max-width:660px;max-height:92vh;display:flex;flex-direction:column;">
-    <div class="mh">
-      <div class="mt">Nouvelle session de formation</div>
-      <button class="mx" onclick="closeModal('newModal')">✕</button>
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-h">
+      <div class="modal-title">Nouvelle session</div>
+      <button class="modal-x" onclick="closeModal('newModal')">✕</button>
     </div>
-    <div class="mb" style="flex:1;overflow-y:auto;">
- 
-      <div class="sl">Informations générales</div>
-      <div class="fg"><label>Intitulé de la formation *</label><input id="ns_title" placeholder="Ex : Prise en main de Claude — Niveau 1"></div>
+    <div class="modal-b">
+      <div class="sec-label">Informations de la session</div>
+      <div class="fg"><label>Intitulé *</label><input id="ns_title" placeholder="Ex : Prise en main de Claude — Niveau 1"></div>
       <div class="g2">
-        <div class="fg"><label>Date de début *</label><input type="date" id="ns_ds"></div>
-        <div class="fg"><label>Date de fin</label><input type="date" id="ns_de"></div>
+        <div class="fg"><label>Date début *</label><input type="date" id="ns_ds"></div>
+        <div class="fg"><label>Date fin</label><input type="date" id="ns_de"></div>
       </div>
       <div class="g2">
         <div class="fg"><label>Heure début</label><input type="time" id="ns_hs" value="09:00"></div>
         <div class="fg"><label>Heure fin</label><input type="time" id="ns_he" value="17:00"></div>
       </div>
       <div class="g2">
-        <div class="fg"><label>Lieu / Modalité</label><input id="ns_lieu" placeholder="Paris 8e / Distanciel / Hybride"></div>
-        <div class="fg"><label>Client / Entreprise</label><input id="ns_client" placeholder="Nom de l'entreprise cliente"></div>
+        <div class="fg"><label>Lieu / Modalité</label><input id="ns_lieu" placeholder="Paris / Distanciel / Hybride"></div>
+        <div class="fg"><label>Client / Entreprise</label><input id="ns_client" placeholder="Nom de l'entreprise"></div>
       </div>
       <div class="g2">
         <div class="fg"><label>Formateur *</label><input id="ns_form" value="Jacques-Henri MARIN"></div>
         <div class="fg"><label>Email formateur</label><input id="ns_fmail" value="jacqueshenri.marin@lenouvion-consulting.fr"></div>
       </div>
-      <div class="fg"><label>Demi-journées (séparées par des virgules)</label><input id="ns_slots" value="Matin J1, Après-midi J1" placeholder="Matin J1, Après-midi J1, Matin J2…"></div>
- 
-      <div class="sl">Participants</div>
-      <table class="mpt" id="mptTable">
+      <div class="fg"><label>Demi-journées (séparées par virgules)</label><input id="ns_slots" value="Matin J1, Après-midi J1"></div>
+
+      <div class="sec-label">Participants</div>
+      <table class="mpt">
         <thead><tr><th>Prénom</th><th>Nom</th><th>Email</th><th>Société</th><th>Fonction</th><th></th></tr></thead>
         <tbody id="mptBody"></tbody>
       </table>
-      <div style="display:flex;gap:6px;margin-top:8px;align-items:flex-end;flex-wrap:wrap;">
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Prénom</label><input id="mp_p" onkeydown="modalAddKey(event)" placeholder="Marie"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Nom</label><input id="mp_n" onkeydown="modalAddKey(event)" placeholder="DUPONT"></div>
+      <div style="display:flex;gap:5px;margin-top:8px;align-items:flex-end;flex-wrap:wrap;padding:9px;background:var(--Cr);border-radius:6px;border:1px solid var(--Wi);">
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Prénom</label><input id="mp_p" onkeydown="modalAddKey(event)" placeholder="Marie"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Nom</label><input id="mp_n" onkeydown="modalAddKey(event)" placeholder="DUPONT"></div>
         <div class="fg" style="margin:0;flex:1.4;min-width:90px;"><label>Email</label><input id="mp_e" onkeydown="modalAddKey(event)" placeholder="marie@acme.fr"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Société</label><input id="mp_s" onkeydown="modalAddKey(event)" placeholder="Acme SA"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Fonction</label><input id="mp_f" onkeydown="modalAddKey(event)" placeholder="Dir."></div>
-        <button class="btn bsa" style="align-self:flex-end;" onclick="modalAdd()">＋</button>
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Société</label><input id="mp_s" onkeydown="modalAddKey(event)" placeholder="Acme SA"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:60px;"><label>Fonction</label><input id="mp_f" onkeydown="modalAddKey(event)" placeholder="Dir."></div>
+        <button class="btn btn-sa" style="align-self:flex-end;" onclick="modalAdd()">＋</button>
       </div>
- 
-      <div class="sl">Import rapide (optionnel)</div>
-      <div class="fg"><label>Coller une liste — 1 ligne par participant : Prénom Nom email société</label>
+      <div class="sec-label">Import rapide (optionnel)</div>
+      <div class="fg"><label>1 ligne par participant : Prénom Nom email société</label>
         <textarea id="ns_import" placeholder="Marie DUPONT marie@acme.fr Acme SA&#10;Pierre MARTIN pierre@soc.fr SociétéB"></textarea>
       </div>
-      <button class="btn bs bx" onclick="importList()">↩ Importer</button>
+      <button class="btn btn-s btn-sm" onclick="importList()">↩ Importer</button>
     </div>
-    <div class="mf">
-      <button class="btn bs" onclick="closeModal('newModal')">Annuler</button>
-      <button class="btn bp" onclick="createSession()">✓ Créer la session</button>
+    <div class="modal-f">
+      <button class="btn btn-s" onclick="closeModal('newModal')">Annuler</button>
+      <button class="btn btn-p" onclick="createSession()">✓ Créer la session</button>
     </div>
   </div>
 </div>
- 
-<!-- ════ MODAL ÉDITION SESSION ════ -->
+
+<!-- ════════════════════════════════
+     MODAL : MODIFIER SESSION
+═════════════════════════════════ -->
 <div class="overlay" id="editModal" style="display:none;">
-  <div class="modal" style="max-width:680px;max-height:92vh;display:flex;flex-direction:column;">
-    <div class="mh">
-      <div class="mt">✏ Modifier la session</div>
-      <button class="mx" onclick="closeModal('editModal')">✕</button>
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-h">
+      <div class="modal-title">✏ Modifier la session</div>
+      <button class="modal-x" onclick="closeModal('editModal')">✕</button>
     </div>
-    <div class="mb" style="flex:1;overflow-y:auto;">
-      <div class="sl">Informations générales</div>
+    <div class="modal-b">
+      <div class="sec-label">Informations générales</div>
       <div class="fg"><label>Intitulé *</label><input id="ed_title"></div>
       <div class="g2">
         <div class="fg"><label>Date début *</label><input type="date" id="ed_ds"></div>
@@ -267,228 +336,301 @@ textarea{resize:vertical;min-height:48px;}
         <div class="fg"><label>Email formateur</label><input id="ed_fmail"></div>
       </div>
       <div class="fg">
-        <label>Demi-journées (séparées par des virgules)</label>
+        <label>Demi-journées (séparées par virgules)</label>
         <input id="ed_slots">
-        <div style="font-size:10px;color:var(--Wi);margin-top:3px;">⚠ Modifier l'ordre peut décaler les signatures existantes.</div>
+        <div style="font-size:10px;color:var(--Wi);margin-top:2px;">⚠ Modifier l'ordre peut décaler les signatures existantes.</div>
       </div>
- 
-      <div class="sl">Participants (<span id="edPCount">0</span>)</div>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead><tr style="background:var(--Ink);">
-          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Prénom</th>
-          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Nom</th>
-          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Email</th>
-          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Société</th>
-          <th style="padding:7px 10px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--Pa);text-align:left;">Fonction</th>
-          <th style="padding:7px 10px;width:32px;"></th>
-        </tr></thead>
+
+      <div class="sec-label">Participants (<span id="edPCount">0</span>)</div>
+      <table class="mpt">
+        <thead><tr><th>Prénom</th><th>Nom</th><th>Email</th><th>Société</th><th>Fonction</th><th></th></tr></thead>
         <tbody id="edPtBody"></tbody>
       </table>
- 
-      <div style="display:flex;gap:6px;margin-top:9px;align-items:flex-end;flex-wrap:wrap;padding:10px;background:var(--Cr);border-radius:6px;border:1px solid var(--Wi);">
-        <div style="font-size:10px;font-weight:700;color:var(--T);text-transform:uppercase;letter-spacing:.6px;width:100%;margin-bottom:2px;">Ajouter un participant</div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Prénom</label><input id="ep_p" onkeydown="edAddKey(event)" placeholder="Marie"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Nom</label><input id="ep_n" onkeydown="edAddKey(event)" placeholder="DUPONT"></div>
+      <div style="display:flex;gap:5px;margin-top:8px;align-items:flex-end;flex-wrap:wrap;padding:9px;background:var(--Cr);border-radius:6px;border:1px solid var(--Wi);">
+        <div style="font-size:9px;font-weight:700;color:var(--T);text-transform:uppercase;letter-spacing:.5px;width:100%;margin-bottom:1px;">Ajouter un participant</div>
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Prénom</label><input id="ep_p" onkeydown="edAddKey(event)" placeholder="Marie"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Nom</label><input id="ep_n" onkeydown="edAddKey(event)" placeholder="DUPONT"></div>
         <div class="fg" style="margin:0;flex:1.4;min-width:90px;"><label>Email</label><input id="ep_e" onkeydown="edAddKey(event)" placeholder="marie@acme.fr"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:70px;"><label>Société</label><input id="ep_s" onkeydown="edAddKey(event)" placeholder="Acme SA"></div>
-        <div class="fg" style="margin:0;flex:1;min-width:60px;"><label>Fonction</label><input id="ep_f" onkeydown="edAddKey(event)" placeholder="Dir."></div>
-        <button class="btn bsa" style="align-self:flex-end;" onclick="edAddPart()">＋</button>
+        <div class="fg" style="margin:0;flex:1;min-width:65px;"><label>Société</label><input id="ep_s" onkeydown="edAddKey(event)" placeholder="Acme SA"></div>
+        <div class="fg" style="margin:0;flex:1;min-width:55px;"><label>Fonction</label><input id="ep_f" onkeydown="edAddKey(event)" placeholder="Dir."></div>
+        <button class="btn btn-sa" style="align-self:flex-end;" onclick="edAddPart()">＋</button>
       </div>
- 
-      <div class="sl">Import rapide (optionnel)</div>
+      <div class="sec-label">Import rapide (optionnel)</div>
       <div class="fg"><label>1 ligne par participant : Prénom Nom email société</label>
         <textarea id="ed_import" placeholder="Marie DUPONT marie@acme.fr Acme SA&#10;Pierre MARTIN pierre@soc.fr SociétéB"></textarea>
       </div>
-      <button class="btn bs bx" onclick="edImport()">↩ Importer</button>
+      <button class="btn btn-s btn-sm" onclick="edImport()">↩ Importer</button>
     </div>
-    <div class="mf">
-      <button class="btn bs" onclick="closeModal('editModal')">Annuler</button>
-      <button class="btn bp" onclick="saveEdit()">✓ Enregistrer les modifications</button>
+    <div class="modal-f">
+      <button class="btn btn-s" onclick="closeModal('editModal')">Annuler</button>
+      <button class="btn btn-p" onclick="saveEdit()">✓ Enregistrer</button>
     </div>
   </div>
 </div>
- 
-<!-- ════ MODAL SIGNATURE ════ -->
+
+<!-- ════════════════════════════════
+     MODAL : SIGNATURE
+═════════════════════════════════ -->
 <div class="overlay" id="sigModal" style="display:none;">
-  <div class="modal" style="max-width:500px;">
-    <div class="mh">
-      <div class="mt" id="sigTitle">Signature</div>
-      <button class="mx" onclick="closeModal('sigModal')">✕</button>
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-h">
+      <div class="modal-title" id="sigTitle">Signature</div>
+      <button class="modal-x" onclick="closeModal('sigModal')">✕</button>
     </div>
-    <div class="mb">
-      <p style="font-size:12px;color:var(--Sl);margin-bottom:10px;">Signez dans le cadre ci-dessous (doigt sur tablette ou souris).</p>
+    <div class="modal-b">
+      <p style="font-size:12px;color:var(--Sl);margin-bottom:10px;">Signez ci-dessous (doigt sur tablette ou souris).</p>
       <div class="canv-wrap">
-        <canvas id="sigCanvas" width="456" height="155"></canvas>
-        <div class="chint" id="chint">Signez ici ✍</div>
+        <canvas id="sigCanvas"></canvas>
+        <div class="canv-hint" id="chint">Signez ici ✍</div>
       </div>
       <div style="display:flex;gap:7px;margin-top:8px;align-items:center;">
-        <button class="btn bs bx" onclick="clearCanv()">🗑 Effacer</button>
+        <button class="btn btn-s btn-sm" onclick="clearCanv()">🗑 Effacer</button>
         <span style="font-size:10px;color:var(--Wi);">Stylet, doigt ou souris</span>
       </div>
     </div>
-    <div class="mf">
-      <button class="btn bs" onclick="closeModal('sigModal')">Annuler</button>
-      <button class="btn bp" onclick="saveSig()">✓ Valider la signature</button>
+    <div class="modal-f">
+      <button class="btn btn-s" onclick="closeModal('sigModal')">Annuler</button>
+      <button class="btn btn-p" onclick="saveSig()">✓ Valider</button>
     </div>
   </div>
 </div>
- 
+
+<!-- ════════════════════════════════
+     MODAL : EMAIL ÉMARGEMENT
+═════════════════════════════════ -->
+<div class="overlay" id="emailModal" style="display:none;">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-h">
+      <div class="modal-title">📧 Envoyer la feuille d'émargement</div>
+      <button class="modal-x" onclick="closeModal('emailModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <div class="sec-label">Configuration</div>
+      <div class="fg">
+        <label>URL de l'application d'émargement</label>
+        <input id="em_appurl">
+        <div style="font-size:10px;color:var(--Wi);margin-top:2px;">Inclus dans chaque email pour que les participants signent depuis leur téléphone.</div>
+      </div>
+      <div class="g2" style="margin-bottom:10px;">
+        <div class="fg" style="margin:0;">
+          <label>Destinataires</label>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="em_sendparts" checked style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;flex-shrink:0;">
+              Participants (avec email)
+            </label>
+            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="em_sendform" checked style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;flex-shrink:0;">
+              Formateur (récap complet)
+            </label>
+          </div>
+        </div>
+        <div class="fg" style="margin:0;">
+          <label>Demi-journée</label>
+          <select id="em_slot" style="margin-top:4px;"></select>
+        </div>
+      </div>
+
+      <div class="sec-label">Prévisualisation — participant</div>
+      <div style="border:1px solid var(--Wi);border-radius:6px;overflow:hidden;margin-bottom:10px;">
+        <div style="background:var(--Ink);padding:8px 12px;font-size:10px;color:var(--Wi);display:flex;gap:14px;flex-wrap:wrap;">
+          <span>Objet : <strong style="color:var(--Pa);" id="em_prev_subj">—</strong></span>
+        </div>
+        <div id="em_prev_body" style="padding:10px 12px;font-size:11px;line-height:1.6;color:var(--Ink);max-height:180px;overflow-y:auto;white-space:pre-wrap;background:var(--W);"></div>
+      </div>
+
+      <div id="em_warn" style="display:none;padding:8px 10px;background:#fef9c3;border:1px solid #fde047;border-radius:5px;font-size:11px;color:#713f12;margin-bottom:8px;">
+        ⚠ <span id="em_warn_msg"></span>
+      </div>
+
+      <div class="sec-label">Résumé</div>
+      <div id="em_summary" style="font-size:12px;color:var(--Sl);line-height:1.8;"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-s" onclick="closeModal('emailModal')">Annuler</button>
+      <button class="btn btn-blue" onclick="sendEmails()">📧 Ouvrir les emails</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ════════════════════════════════════
-// STATE
-// ════════════════════════════════════
-const KEY = 'lnc_ema_v2';
-const DEFAULT_APP_URL = 'https://jacqueshenrimarin-lnc.github.io/evaluation-formation/';
-let S = { sessions:[], aid:null, aslot:0, appUrl: DEFAULT_APP_URL };
- 
-function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-function hydrate(){ try{ const d=localStorage.getItem(KEY); if(d) S={...S,...JSON.parse(d)}; }catch(e){} }
- 
-// ════════════════════════════════════
-// MODAL
-// ════════════════════════════════════
-function openModal(id){
-  const el=document.getElementById(id);
-  el.style.display='flex';
+// ════════════════════════════════════════════
+// STATE & PERSISTENCE
+// ════════════════════════════════════════════
+const STORE_KEY = 'lnc_ema_v3';
+const DEFAULT_URL = 'https://jacqueshenrimarin-lnc.github.io/evaluation-formation/';
+let S = { sessions: [], aid: null, aslot: 0, appUrl: DEFAULT_URL };
+
+function persist() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e) {} }
+function hydrate() {
+  try {
+    const d = localStorage.getItem(STORE_KEY);
+    if (d) { const p = JSON.parse(d); S = { ...S, ...p }; }
+    // migrate from old keys
+    ['lnc_ema_v2','lnc_emargement_v2','lnc_emargement'].forEach(k => {
+      try {
+        const old = localStorage.getItem(k);
+        if (old && !S.sessions.length) {
+          const op = JSON.parse(old);
+          if (op.sessions) { S.sessions = op.sessions; persist(); }
+        }
+      } catch(e) {}
+    });
+  } catch(e) {}
 }
-function closeModal(id){
-  document.getElementById(id).style.display='none';
+
+// ════════════════════════════════════════════
+// MODAL HELPERS
+// ════════════════════════════════════════════
+function openModal(id) {
+  const el = document.getElementById(id);
+  el.style.display = 'flex';
 }
-document.addEventListener('click', e=>{
-  if(e.target.classList.contains('overlay')) closeModal(e.target.id);
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('overlay')) closeModal(e.target.id);
 });
- 
-// ════════════════════════════════════
-// TEMP PARTICIPANTS (modal)
-// ════════════════════════════════════
-let tmp=[];
- 
-function renderMPT(){
-  const tb=document.getElementById('mptBody');
-  if(!tmp.length){
-    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant — ajoutez-en ci-dessous</td></tr>';
+
+// ════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════
+function v(id) { return document.getElementById(id)?.value?.trim() || ''; }
+function cl(id) { const el = document.getElementById(id); if (el) el.value = ''; }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtD(d) { if (!d) return ''; const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function slug(s) { return String(s).replace(/[^a-zA-Z0-9]/g,'_').substring(0,40); }
+function getActive() { return S.sessions.find(s => s.id === S.aid); }
+
+function toast(msg, type = 'ok') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type === 'warn' ? ' warn' : '');
+  el.textContent = msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ════════════════════════════════════════════
+// NEW SESSION
+// ════════════════════════════════════════════
+let tmp = [];
+
+function renderMPT() {
+  const tb = document.getElementById('mptBody');
+  if (!tmp.length) {
+    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant — ajoutez-en ci-dessous</td></tr>';
     return;
   }
-  tb.innerHTML=tmp.map((p,i)=>`<tr>
+  tb.innerHTML = tmp.map((p,i) => `<tr>
     <td>${esc(p.p)}</td><td><b>${esc(p.n)}</b></td>
-    <td style="color:var(--Sl);font-size:11px;">${esc(p.e||'—')}</td>
-    <td style="color:var(--Sl);font-size:11px;">${esc(p.s||'—')}</td>
-    <td style="color:var(--Sl);font-size:11px;">${esc(p.f||'—')}</td>
-    <td><button class="btn bd bx" onclick="tmpRm(${i})">✕</button></td>
+    <td style="color:var(--Sl);">${esc(p.e||'—')}</td>
+    <td style="color:var(--Sl);">${esc(p.s||'—')}</td>
+    <td style="color:var(--Sl);">${esc(p.f||'—')}</td>
+    <td><button class="btn btn-d btn-xs" onclick="tmpRm(${i})">✕</button></td>
   </tr>`).join('');
 }
-function tmpRm(i){ tmp.splice(i,1); renderMPT(); }
- 
-function modalAdd(){
-  const p=v('mp_p'),n=v('mp_n');
-  if(!p&&!n){ toast('Prénom ou Nom requis','warn'); return; }
-  tmp.push({p,n,e:v('mp_e'),s:v('mp_s'),f:v('mp_f')});
+function tmpRm(i) { tmp.splice(i,1); renderMPT(); }
+
+function modalAdd() {
+  const p = v('mp_p'), n = v('mp_n');
+  if (!p && !n) { toast('Prénom ou Nom requis','warn'); return; }
+  tmp.push({ p, n, e: v('mp_e'), s: v('mp_s'), f: v('mp_f') });
   ['mp_p','mp_n','mp_e','mp_s','mp_f'].forEach(cl);
   document.getElementById('mp_p').focus();
   renderMPT();
 }
-function modalAddKey(e){ if(e.key==='Enter') modalAdd(); }
- 
-function importList(){
-  const raw=v('ns_import'); if(!raw) return;
-  const lines=raw.split('\n').filter(l=>l.trim());
-  lines.forEach(l=>{
-    const pts=l.trim().split(/[\s,;]+/);
-    if(pts.length<2) return;
-    tmp.push({p:pts[0],n:pts[1],e:pts[2]||'',s:pts.slice(3).join(' ')||'',f:''});
+function modalAddKey(e) { if (e.key === 'Enter') modalAdd(); }
+
+function importList() {
+  const raw = v('ns_import'); if (!raw) return;
+  const lines = raw.split('\n').filter(l => l.trim());
+  lines.forEach(l => {
+    const pts = l.trim().split(/[\s,;]+/);
+    if (pts.length < 2) return;
+    tmp.push({ p: pts[0], n: pts[1], e: pts[2]||'', s: pts.slice(3).join(' ')||'', f: '' });
   });
-  document.getElementById('ns_import').value='';
+  document.getElementById('ns_import').value = '';
   renderMPT();
   toast(`✓ ${lines.length} ligne(s) importée(s)`);
 }
- 
-// ════════════════════════════════════
-// OPEN NEW MODAL
-// ════════════════════════════════════
-function openNew(){
-  tmp=[];
+
+function openNew() {
+  tmp = [];
   renderMPT();
-  const today=todayStr();
+  const today = todayStr();
   ['ns_title','ns_lieu','ns_client'].forEach(cl);
-  document.getElementById('ns_ds').value=today;
-  document.getElementById('ns_de').value=today;
-  document.getElementById('ns_hs').value='09:00';
-  document.getElementById('ns_he').value='17:00';
-  document.getElementById('ns_form').value='Jacques-Henri MARIN';
-  document.getElementById('ns_fmail').value='jacqueshenri.marin@lenouvion-consulting.fr';
-  document.getElementById('ns_slots').value='Matin J1, Après-midi J1';
+  document.getElementById('ns_ds').value = today;
+  document.getElementById('ns_de').value = today;
+  document.getElementById('ns_hs').value = '09:00';
+  document.getElementById('ns_he').value = '17:00';
+  document.getElementById('ns_form').value = 'Jacques-Henri MARIN';
+  document.getElementById('ns_fmail').value = 'jacqueshenri.marin@lenouvion-consulting.fr';
+  document.getElementById('ns_slots').value = 'Matin J1, Après-midi J1';
   openModal('newModal');
 }
-document.getElementById('btnNewSession').onclick=openNew;
-document.getElementById('btnNewSession2').onclick=openNew;
- 
-// ════════════════════════════════════
-// CREATE SESSION
-// ════════════════════════════════════
-function createSession(){
-  const title=v('ns_title');
-  const ds=v('ns_ds');
-  if(!title){ toast('L\'intitulé est requis','warn'); return; }
-  if(!ds){ toast('La date de début est requise','warn'); return; }
- 
-  const slotsRaw=v('ns_slots');
-  const slots=slotsRaw.split(',').map(x=>x.trim()).filter(Boolean);
-  if(!slots.length) slots.push('Journée complète');
- 
-  const participants=tmp.map(t=>({
-    id:uid(), prenom:t.p, nom:t.n, email:t.e, societe:t.s, fonction:t.f,
-    signatures:{},
-    presence:Object.fromEntries(slots.map((_,i)=>[i,true]))
+document.getElementById('btnNew').onclick = openNew;
+document.getElementById('btnNew2').onclick = openNew;
+
+function createSession() {
+  const title = v('ns_title'), ds = v('ns_ds');
+  if (!title) { toast('Intitulé requis','warn'); return; }
+  if (!ds) { toast('Date de début requise','warn'); return; }
+  const slots = v('ns_slots').split(',').map(x => x.trim()).filter(Boolean);
+  if (!slots.length) slots.push('Journée complète');
+
+  const participants = tmp.map(t => ({
+    id: uid(), prenom: t.p, nom: t.n, email: t.e, societe: t.s, fonction: t.f,
+    signatures: {},
+    presence: Object.fromEntries(slots.map((_,i) => [i, true]))
   }));
- 
-  const session={
-    id:uid(), title,
-    ds, de:v('ns_de')||ds,
-    hs:v('ns_hs')||'09:00', he:v('ns_he')||'17:00',
-    lieu:v('ns_lieu'), client:v('ns_client'),
-    formateur:v('ns_form')||'Jacques-Henri MARIN',
-    fmail:v('ns_fmail'),
+
+  const session = {
+    id: uid(), title,
+    ds, de: v('ns_de') || ds,
+    hs: v('ns_hs') || '09:00', he: v('ns_he') || '17:00',
+    lieu: v('ns_lieu'), client: v('ns_client'),
+    formateur: v('ns_form') || 'Jacques-Henri MARIN',
+    fmail: v('ns_fmail'),
     slots, participants,
-    createdAt:new Date().toISOString()
+    createdAt: new Date().toISOString()
   };
- 
+
   S.sessions.unshift(session);
-  S.aid=session.id; S.aslot=0;
+  S.aid = session.id; S.aslot = 0;
   persist();
   closeModal('newModal');
   renderSB(); renderSV();
-  toast('✓ Session créée avec succès');
+  toast('✓ Session créée');
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // SESSION ACTIONS
-// ════════════════════════════════════
-function delSession(id,e){
+// ════════════════════════════════════════════
+function delSession(id, e) {
   e.stopPropagation();
-  if(!confirm('Supprimer cette session définitivement ?')) return;
-  S.sessions=S.sessions.filter(s=>s.id!==id);
-  if(S.aid===id){ S.aid=S.sessions[0]?.id||null; S.aslot=0; }
+  if (!confirm('Supprimer cette session définitivement ?')) return;
+  S.sessions = S.sessions.filter(s => s.id !== id);
+  if (S.aid === id) { S.aid = S.sessions[0]?.id || null; S.aslot = 0; }
   persist(); renderSB();
   S.aid ? renderSV() : showWelcome();
 }
-function selSession(id){
-  S.aid=id; S.aslot=0;
-  renderSB(); renderSV();
-}
-function getActive(){ return S.sessions.find(s=>s.id===S.aid); }
- 
-// ════════════════════════════════════
+function selSession(id) { S.aid = id; S.aslot = 0; renderSB(); renderSV(); }
+
+// ════════════════════════════════════════════
 // PARTICIPANTS
-// ════════════════════════════════════
-function addPart(){
-  const prenom=v('aP'),nom=v('aN');
-  if(!prenom&&!nom){ toast('Prénom ou Nom requis','warn'); return; }
-  const s=getActive();
-  const p={
-    id:uid(), prenom, nom,
-    email:v('aE'), societe:v('aS'), fonction:v('aF'),
-    signatures:{},
-    presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+// ════════════════════════════════════════════
+function addPart() {
+  const prenom = v('aP'), nom = v('aN');
+  if (!prenom && !nom) { toast('Prénom ou Nom requis','warn'); return; }
+  const s = getActive();
+  const p = {
+    id: uid(), prenom, nom,
+    email: v('aE'), societe: v('aS'), fonction: v('aF'),
+    signatures: {},
+    presence: Object.fromEntries(s.slots.map((_,i) => [i, true]))
   };
   s.participants.push(p);
   persist();
@@ -497,676 +639,584 @@ function addPart(){
   renderTable(); renderStats();
   toast(`✓ ${p.prenom} ${p.nom} ajouté(e)`);
 }
-function addKey(e){ if(e.key==='Enter') addPart(); }
- 
-function rmPart(id){
-  if(!confirm('Supprimer ce participant ?')) return;
-  const s=getActive();
-  s.participants=s.participants.filter(p=>p.id!==id);
+function addKey(e) { if (e.key === 'Enter') addPart(); }
+
+function rmPart(id) {
+  if (!confirm('Supprimer ce participant ?')) return;
+  const s = getActive();
+  s.participants = s.participants.filter(p => p.id !== id);
   persist(); renderTable(); renderStats();
   toast('Participant supprimé');
 }
- 
-function togPresence(pid,si){
-  const p=getActive().participants.find(x=>x.id===pid);
-  if(p){ p.presence[si]=!p.presence[si]; persist(); renderTable(); renderStats(); }
+
+function togPresence(pid, si) {
+  const p = getActive().participants.find(x => x.id === pid);
+  if (p) { p.presence[si] = !p.presence[si]; persist(); renderTable(); renderStats(); }
 }
- 
-function clrSig(pid,si){
-  const p=getActive().participants.find(x=>x.id===pid);
-  if(p){ delete p.signatures[si]; persist(); renderTable(); renderStats(); }
+
+function clrSig(pid, si) {
+  const p = getActive().participants.find(x => x.id === pid);
+  if (p) { delete p.signatures[si]; persist(); renderTable(); renderStats(); }
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // RENDER SIDEBAR
-// ════════════════════════════════════
-function renderSB(){
-  const el=document.getElementById('sbList');
-  if(!S.sessions.length){
-    el.innerHTML='<div style="padding:16px;text-align:center;color:var(--Sl);font-size:12px;">Aucune session.<br>Commencez par en créer une.</div>';
+// ════════════════════════════════════════════
+function renderSB() {
+  const el = document.getElementById('sbList');
+  if (!S.sessions.length) {
+    el.innerHTML = '<div style="padding:14px;text-align:center;color:var(--Sl);font-size:12px;">Aucune session.</div>';
     return;
   }
-  el.innerHTML=S.sessions.map(s=>{
-    const t=s.participants.length;
-    const isA=s.id===S.aid;
-    return `<div class="sc ${isA?'active':''}" onclick="selSession('${s.id}')">
+  el.innerHTML = S.sessions.map(s => {
+    const isA = s.id === S.aid;
+    return `<div class="sc ${isA ? 'active' : ''}" onclick="selSession('${s.id}')">
       <div class="sc-t">${esc(s.title)}</div>
-      <div class="sc-m">${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''} · ${s.hs}–${s.he}</div>
-      ${s.client?`<div class="sc-m">🏢 ${esc(s.client)}</div>`:''}
+      <div class="sc-m">${fmtD(s.ds)}${s.de !== s.ds ? ' → ' + fmtD(s.de) : ''} · ${s.hs}–${s.he}</div>
+      ${s.client ? `<div class="sc-m">🏢 ${esc(s.client)}</div>` : ''}
       <div class="sc-m">👤 ${esc(s.formateur)}</div>
-      <div class="sc-badge">${t} part.</div>
+      <div class="sc-badge">${s.participants.length} part.</div>
       <button class="sc-del" onclick="delSession('${s.id}',event)" title="Supprimer">🗑</button>
     </div>`;
   }).join('');
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // RENDER SESSION VIEW
-// ════════════════════════════════════
-function renderSV(){
-  const s=getActive();
-  if(!s){ showWelcome(); return; }
-  document.getElementById('welcome').style.display='none';
-  const sv=document.getElementById('sv');
-  sv.style.display='flex';
- 
-  document.getElementById('svTitle').textContent=s.title;
-  const meta=[fmtD(s.ds)+(s.de!==s.ds?' → '+fmtD(s.de):''),`${s.hs}–${s.he}`,s.lieu,s.client,s.formateur].filter(Boolean).join(' · ');
-  document.getElementById('svMeta').textContent=meta;
- 
-  document.getElementById('slotsbar').innerHTML=
-    s.slots.map((sl,i)=>`<button class="stab ${i===S.aslot?'active':''}" onclick="setSlot(${i})">${esc(sl)}</button>`).join('')+
+// ════════════════════════════════════════════
+function renderSV() {
+  const s = getActive();
+  if (!s) { showWelcome(); return; }
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('sv').style.display = 'flex';
+
+  document.getElementById('svTitle').textContent = s.title;
+  const meta = [
+    fmtD(s.ds) + (s.de !== s.ds ? ' → ' + fmtD(s.de) : ''),
+    s.hs + '–' + s.he, s.lieu, s.client, s.formateur
+  ].filter(Boolean).join(' · ');
+  document.getElementById('svMeta').textContent = meta;
+
+  document.getElementById('slotsBar').innerHTML =
+    s.slots.map((sl,i) => `<button class="stab ${i === S.aslot ? 'active' : ''}" onclick="setSlot(${i})">${esc(sl)}</button>`).join('') +
     `<button class="stab-add" onclick="addSlot()">＋ Demi-journée</button>`;
- 
+
   renderTable(); renderStats();
 }
- 
-function setSlot(i){ S.aslot=i; renderSV(); }
- 
-function addSlot(){
-  const s=getActive();
-  const nm=prompt('Nom de la nouvelle demi-journée :',`Créneau ${s.slots.length+1}`);
-  if(!nm) return;
+
+function setSlot(i) { S.aslot = i; renderSV(); }
+
+function addSlot() {
+  const s = getActive();
+  const nm = prompt('Nom de la nouvelle demi-journée :', `Créneau ${s.slots.length + 1}`);
+  if (!nm) return;
   s.slots.push(nm.trim());
-  s.participants.forEach(p=>{ p.presence[s.slots.length-1]=true; });
-  persist(); S.aslot=s.slots.length-1; renderSV();
+  s.participants.forEach(p => { p.presence[s.slots.length - 1] = true; });
+  persist(); S.aslot = s.slots.length - 1; renderSV();
 }
- 
-function showWelcome(){
-  document.getElementById('welcome').style.display='flex';
-  document.getElementById('sv').style.display='none';
+
+function showWelcome() {
+  document.getElementById('welcome').style.display = 'flex';
+  document.getElementById('sv').style.display = 'none';
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // RENDER TABLE
-// ════════════════════════════════════
-function renderTable(){
-  const s=getActive(); const si=S.aslot;
-  const wrap=document.getElementById('ptw');
-  if(!s.participants.length){
-    wrap.innerHTML='<div class="empty"><div style="font-size:36px;opacity:.3;">👥</div><div style="font-size:13px;">Aucun participant — utilisez le formulaire ci-dessus.</div></div>';
+// ════════════════════════════════════════════
+function renderTable() {
+  const s = getActive(); const si = S.aslot;
+  const wrap = document.getElementById('ptw');
+  if (!s.participants.length) {
+    wrap.innerHTML = `<div class="empty-state"><div style="font-size:36px;opacity:.25;">👥</div><div style="font-size:13px;color:var(--Sl);">Aucun participant — utilisez le formulaire ci-dessus.</div></div>`;
     return;
   }
-  wrap.innerHTML=`<table>
+  const appUrl = S.appUrl || DEFAULT_URL;
+  wrap.innerHTML = `<table>
     <thead><tr>
-      <th>#</th><th>Prénom &amp; Nom</th><th>Email</th><th>Société</th><th>Fonction</th>
-      <th>Présence</th><th>Signature — ${esc(s.slots[si])}</th><th></th>
+      <th style="width:30px;">#</th>
+      <th>Nom & Prénom</th>
+      <th>Email</th>
+      <th>Société</th>
+      <th>Présence</th>
+      <th>Signature — ${esc(s.slots[si])}</th>
+      <th style="width:30px;"></th>
     </tr></thead>
-    <tbody>${s.participants.map((p,i)=>{
-      const present=p.presence[si]!==false;
-      const sig=p.signatures[si];
-      const hasEmail=p.email&&p.email.includes('@');
-      const appUrl=S.appUrl||DEFAULT_APP_URL;
-      const mailtoLink=hasEmail
-        ?`mailto:${encodeURIComponent(p.email)}?subject=${encodeURIComponent(buildSubjectParticipant(s))}&body=${encodeURIComponent(buildParticipantEmail(s,p,appUrl))}`
-        :'#';
+    <tbody>
+    ${s.participants.map((p,i) => {
+      const present = p.presence[si] !== false;
+      const sig = p.signatures[si];
+      const hasEmail = p.email && p.email.includes('@');
       return `<tr>
-        <td style="color:var(--Sl);font-size:10px;">${i+1}</td>
-        <td><b>${esc(p.prenom)} ${esc(p.nom)}</b></td>
-        <td style="font-size:11px;">
+        <td style="color:var(--Wi);font-size:10px;text-align:center;">${i+1}</td>
+        <td><strong>${esc(p.prenom)} ${esc(p.nom)}</strong>${p.fonction ? `<div style="font-size:10px;color:var(--Sl);">${esc(p.fonction)}</div>` : ''}</td>
+        <td>
           <div style="display:flex;align-items:center;gap:5px;">
-            <span style="color:var(--Sl);">${esc(p.email||'—')}</span>
+            <span style="color:var(--Sl);font-size:11px;">${esc(p.email || '—')}</span>
             ${hasEmail
-              ?`<a href="${mailtoLink}" class="btn bp bx" style="text-decoration:none;padding:3px 8px;font-size:10px;" title="Envoyer l'email d'émargement">✉</a>`
-              :`<span style="font-size:10px;color:var(--Wi);" title="Pas d'email">—</span>`
-            }
+              ? `<button class="btn btn-blue btn-xs" onclick="openMailtoLink('${esc(p.email)}','${esc(p.id)}')" title="Envoyer l'email d'émargement">✉</button>`
+              : `<span style="font-size:10px;color:var(--Wi);" title="Pas d'email">✕</span>`}
           </div>
         </td>
-        <td style="color:var(--Sl);font-size:11px;">${esc(p.societe||'—')}</td>
-        <td style="color:var(--Sl);font-size:11px;">${esc(p.fonction||'—')}</td>
+        <td style="color:var(--Sl);font-size:11px;">${esc(p.societe || '—')}</td>
         <td>
           <label style="display:flex;align-items:center;gap:5px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:11px;font-weight:600;">
-            <input type="checkbox" ${present?'checked':''} onchange="togPresence('${p.id}',${si})" style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;">
-            <span style="color:${present?'var(--G)':'var(--R)'};">${present?'Présent':'Absent'}</span>
+            <input type="checkbox" ${present ? 'checked' : ''} onchange="togPresence('${p.id}',${si})" style="width:14px;height:14px;accent-color:var(--T);cursor:pointer;">
+            <span style="color:${present ? 'var(--G)' : 'var(--R)'};">${present ? 'Présent' : 'Absent'}</span>
           </label>
         </td>
-        <td>${sig
-          ?`<div style="display:flex;align-items:center;gap:6px;"><img src="${sig}" class="sig-img" alt="sig"><button class="btn bd bx" onclick="clrSig('${p.id}',${si})">✕</button></div>`
-          :`<button class="btn bp bx" onclick="openSig('${p.id}')">✍ Signer</button>`
-        }</td>
-        <td><button class="btn bd bx" onclick="rmPart('${p.id}')">🗑</button></td>
+        <td>
+          ${sig
+            ? `<div style="display:flex;align-items:center;gap:5px;"><img src="${sig}" class="sig-img" alt="sig"><button class="btn btn-d btn-xs" onclick="clrSig('${p.id}',${si})">✕</button></div>`
+            : `<button class="btn btn-p btn-xs" onclick="openSig('${p.id}')">✍ Signer</button>`}
+        </td>
+        <td style="text-align:center;"><button class="btn btn-d btn-xs" onclick="rmPart('${p.id}')">🗑</button></td>
       </tr>`;
-    }).join('')}</tbody>
+    }).join('')}
+    </tbody>
   </table>`;
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // STATS
-// ════════════════════════════════════
-function renderStats(){
-  const s=getActive(); const si=S.aslot;
-  const tot=s.participants.length;
-  const pres=s.participants.filter(p=>p.presence[si]!==false).length;
-  const sgd=s.participants.filter(p=>p.signatures[si]).length;
-  document.getElementById('statsbar').innerHTML=`
-    <span><span class="sdot" style="background:var(--T)"></span><b>${tot}</b> participant(s)</span>
-    <span><span class="sdot" style="background:var(--G)"></span><b>${pres}</b> présent(s)</span>
-    <span><span class="sdot" style="background:#8b5cf6"></span><b>${sgd}/${tot}</b> signature(s)</span>
-    <span style="flex:1"></span>
-    <span style="font-size:10px;color:var(--Wi);">Demi-journée : ${esc(s.slots[si])}</span>`;
+// ════════════════════════════════════════════
+function renderStats() {
+  const s = getActive(); const si = S.aslot;
+  const tot = s.participants.length;
+  const pres = s.participants.filter(p => p.presence[si] !== false).length;
+  const sgd = s.participants.filter(p => p.signatures[si]).length;
+  document.getElementById('statsBar').innerHTML = `
+    <span><span class="sdot" style="background:var(--T)"></span><strong>${tot}</strong> participant(s)</span>
+    <span><span class="sdot" style="background:var(--G)"></span><strong>${pres}</strong> présent(s)</span>
+    <span><span class="sdot" style="background:#8b5cf6"></span><strong>${sgd}/${tot}</strong> signé(s)</span>
+    <span style="flex:1;"></span>
+    <span style="font-size:10px;color:var(--Wi);">${esc(s.slots[si])}</span>`;
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // SIGNATURE
-// ════════════════════════════════════
-let sCtx,sDraw=false,sLX=0,sLY=0,sPid=null;
- 
-function openSig(pid){
-  sPid=pid;
-  const p=getActive().participants.find(x=>x.id===pid);
-  document.getElementById('sigTitle').textContent=`Signature — ${p.prenom} ${p.nom}`;
+// ════════════════════════════════════════════
+let sCtx, sDraw = false, sLX = 0, sLY = 0, sPid = null;
+
+function openSig(pid) {
+  sPid = pid;
+  const p = getActive().participants.find(x => x.id === pid);
+  document.getElementById('sigTitle').textContent = `Signature — ${p.prenom} ${p.nom}`;
   openModal('sigModal');
-  setTimeout(initCanv,60);
+  setTimeout(initCanv, 60);
 }
- 
-function initCanv(){
-  const c=document.getElementById('sigCanvas');
-  sCtx=c.getContext('2d');
-  sCtx.clearRect(0,0,c.width,c.height);
-  sCtx.strokeStyle='#0B0B0C'; sCtx.lineWidth=2; sCtx.lineCap='round'; sCtx.lineJoin='round';
-  document.getElementById('chint').style.display='block';
-  const pos=e=>{ const r=c.getBoundingClientRect(); const src=e.touches?e.touches[0]:e; return [src.clientX-r.left,src.clientY-r.top]; };
-  c.onmousedown=e=>{ sDraw=true; [sLX,sLY]=pos(e); document.getElementById('chint').style.display='none'; };
-  c.onmousemove=e=>{ if(!sDraw) return; const[x,y]=pos(e); sCtx.beginPath(); sCtx.moveTo(sLX,sLY); sCtx.lineTo(x,y); sCtx.stroke(); sLX=x; sLY=y; };
-  c.onmouseup=c.onmouseleave=()=>sDraw=false;
-  c.ontouchstart=e=>{ e.preventDefault(); sDraw=true; [sLX,sLY]=pos(e); document.getElementById('chint').style.display='none'; };
-  c.ontouchmove=e=>{ e.preventDefault(); if(!sDraw) return; const[x,y]=pos(e); sCtx.beginPath(); sCtx.moveTo(sLX,sLY); sCtx.lineTo(x,y); sCtx.stroke(); sLX=x; sLY=y; };
-  c.ontouchend=()=>sDraw=false;
+
+function initCanv() {
+  const c = document.getElementById('sigCanvas');
+  // Set canvas internal resolution to match displayed size
+  const w = c.offsetWidth || 440;
+  c.width = w; c.height = 150;
+  sCtx = c.getContext('2d');
+  sCtx.clearRect(0, 0, c.width, c.height);
+  sCtx.strokeStyle = '#0B0B0C'; sCtx.lineWidth = 2; sCtx.lineCap = 'round'; sCtx.lineJoin = 'round';
+  document.getElementById('chint').style.display = 'block';
+  const pos = e => {
+    const r = c.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return [(src.clientX - r.left) * (c.width / r.width), (src.clientY - r.top) * (c.height / r.height)];
+  };
+  c.onmousedown = e => { sDraw = true; [sLX, sLY] = pos(e); document.getElementById('chint').style.display = 'none'; };
+  c.onmousemove = e => { if (!sDraw) return; const [x,y] = pos(e); sCtx.beginPath(); sCtx.moveTo(sLX, sLY); sCtx.lineTo(x, y); sCtx.stroke(); sLX = x; sLY = y; };
+  c.onmouseup = c.onmouseleave = () => sDraw = false;
+  c.ontouchstart = e => { e.preventDefault(); sDraw = true; [sLX, sLY] = pos(e); document.getElementById('chint').style.display = 'none'; };
+  c.ontouchmove = e => { e.preventDefault(); if (!sDraw) return; const [x,y] = pos(e); sCtx.beginPath(); sCtx.moveTo(sLX, sLY); sCtx.lineTo(x, y); sCtx.stroke(); sLX = x; sLY = y; };
+  c.ontouchend = () => sDraw = false;
 }
- 
-function clearCanv(){ const c=document.getElementById('sigCanvas'); sCtx.clearRect(0,0,c.width,c.height); document.getElementById('chint').style.display='block'; }
- 
-function saveSig(){
-  const c=document.getElementById('sigCanvas');
-  const blank=!sCtx.getImageData(0,0,c.width,c.height).data.some(x=>x!==0);
-  if(blank){ toast('Veuillez signer dans le cadre','warn'); return; }
-  const p=getActive().participants.find(x=>x.id===sPid);
-  p.signatures[S.aslot]=c.toDataURL('image/png');
+
+function clearCanv() {
+  const c = document.getElementById('sigCanvas');
+  sCtx.clearRect(0, 0, c.width, c.height);
+  document.getElementById('chint').style.display = 'block';
+}
+
+function saveSig() {
+  const c = document.getElementById('sigCanvas');
+  const blank = !sCtx.getImageData(0, 0, c.width, c.height).data.some(x => x !== 0);
+  if (blank) { toast('Veuillez signer dans le cadre','warn'); return; }
+  const p = getActive().participants.find(x => x.id === sPid);
+  p.signatures[S.aslot] = c.toDataURL('image/png');
   persist(); closeModal('sigModal'); renderTable(); renderStats();
   toast(`✓ Signature de ${p.prenom} ${p.nom} enregistrée`);
 }
- 
-// ════════════════════════════════════
-// EXPORT PDF
-// ════════════════════════════════════
-function exportPDF(){
-  const s=getActive(); if(!s) return;
-  const {jsPDF}=window.jspdf;
-  s.slots.forEach((slotName,si)=>{
-    const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const W=297,H=210,mg=14;
-    // fond
-    doc.setFillColor(245,242,236); doc.rect(0,0,W,H,'F');
-    // header
-    doc.setFillColor(11,11,12); doc.rect(0,0,W,21,'F');
-    doc.setFillColor(200,83,43); doc.rect(0,21,W,1.5,'F');
-    // logo
-    doc.setFillColor(200,83,43); doc.roundedRect(mg,4.5,11,11,2,2,'F');
-    doc.setTextColor(245,242,236); doc.setFontSize(8); doc.setFont('helvetica','bold');
-    doc.text('LN',mg+5.5,11.5,{align:'center'});
-    doc.setFontSize(10); doc.setTextColor(245,242,236);
-    doc.text('LENOUVION Consulting',mg+15,9.5);
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(180,178,169);
-    doc.text('Organisme de formation IA · Qualiopi · SIRET 980 112 536 00019',mg+15,14.5);
-    // badge
-    doc.setFillColor(200,83,43); doc.roundedRect(W-40,5.5,26,9,2,2,'F');
-    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
-    doc.text('QUALIOPI',W-27,11.2,{align:'center'});
-    // titre
-    doc.setTextColor(11,11,12); doc.setFontSize(12); doc.setFont('helvetica','bold');
-    doc.text("FEUILLE D'ÉMARGEMENT",mg,30);
-    // encart terracotta
-    doc.setFillColor(200,83,43); doc.rect(mg,33,1.5,19,'F');
-    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(11,11,12);
-    doc.text(s.title,mg+4,38);
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(74,74,74);
-    const l1=[`${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}`,`${s.hs}–${s.he}`,s.lieu?`Lieu : ${s.lieu}`:null,s.client?`Client : ${s.client}`:null].filter(Boolean).join('    ');
-    doc.text(l1,mg+4,44);
-    doc.text(`Formateur : ${s.formateur}  ·  ${s.fmail||''}`,mg+4,49);
-    doc.setFillColor(200,83,43); doc.roundedRect(mg+4,51,55,5.5,1,1,'F');
-    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
-    doc.text(`Demi-journée : ${slotName}`,mg+31.5,55,{align:'center'});
-    // TABLE
-    const tY=61; const cols=[8,42,38,34,38,18,89];
-    const heads=['N°','Prénom & Nom','Société','Fonction','Email','Présence','Signature'];
-    let xO=mg;
-    doc.setFillColor(11,11,12); doc.rect(mg,tY,W-mg*2,7,'F');
-    doc.setTextColor(245,242,236); doc.setFontSize(6); doc.setFont('helvetica','bold');
-    heads.forEach((h,i)=>{ doc.text(h,xO+2,tY+4.7); xO+=cols[i]; });
-    let rY=tY+7; const rH=14;
-    s.participants.forEach((p,idx)=>{
-      const even=idx%2===0;
-      doc.setFillColor(even?250:255,even?246:255,even?238:255); doc.rect(mg,rY,W-mg*2,rH,'F');
-      doc.setDrawColor(180,178,169); doc.setLineWidth(.25); doc.rect(mg,rY,W-mg*2,rH,'S');
-      const present=p.presence[si]!==false;
-      xO=mg;
-      const cells=[String(idx+1),`${p.prenom} ${p.nom}`,p.societe||'',p.fonction||'',p.email||'',present?'Présent':'Absent'];
-      cells.forEach((c,i)=>{
-        if(i===1){doc.setFont('helvetica','bold');doc.setTextColor(11,11,12);}
-        else if(i===5){doc.setTextColor(present?22:153,present?101:27,present?52:27);doc.setFont('helvetica','bold');}
-        else{doc.setFont('helvetica','normal');doc.setTextColor(74,74,74);}
-        doc.setFontSize(6); doc.text(String(c).substring(0,30),xO+2,rY+8);
-        xO+=cols[i];
-      });
-      const sig=p.signatures[si];
-      if(sig){try{doc.addImage(sig,'PNG',xO+2,rY+1,85,12);}catch(e){}}
-      else{doc.setDrawColor(180,178,169);doc.setLineWidth(.2);doc.rect(xO+2,rY+1,85,11,'S');doc.setFontSize(5.5);doc.setTextColor(180,178,169);doc.text('À signer',xO+44,rY+8,{align:'center'});}
-      rY+=rH;
-    });
-    // footer
-    doc.setFillColor(11,11,12); doc.rect(0,H-9,W,11,'F');
-    doc.setFillColor(200,83,43); doc.rect(0,H-9,W,.7,'F');
-    doc.setTextColor(180,178,169); doc.setFontSize(6.5); doc.setFont('helvetica','normal');
-    doc.text('© LENOUVION Consulting · Tous droits réservés',mg,H-4);
-    doc.text('Formation IA · Qualiopi',W/2,H-4,{align:'center'});
-    doc.setTextColor(200,83,43);
-    doc.text(`${slotName} · ${fmtD(s.ds)}`,W-mg,H-4,{align:'right'});
-    doc.save(`Emargement_${slug(s.title)}_${slug(slotName)}.pdf`);
-  });
-  toast(`📄 ${s.slots.length} PDF exporté(s)`);
-}
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // EDIT MODAL
-// ════════════════════════════════════
-let edTmpParts = []; // working copy of participants during edit
- 
-function openEditModal(){
-  const s=getActive(); if(!s) return;
-  // fill fields
+// ════════════════════════════════════════════
+let edTmp = [];
+
+function openEditModal() {
+  const s = getActive(); if (!s) return;
   document.getElementById('ed_title').value = s.title;
   document.getElementById('ed_ds').value = s.ds;
-  document.getElementById('ed_de').value = s.de||'';
-  document.getElementById('ed_hs').value = s.hs||'09:00';
-  document.getElementById('ed_he').value = s.he||'17:00';
-  document.getElementById('ed_lieu').value = s.lieu||'';
-  document.getElementById('ed_client').value = s.client||'';
-  document.getElementById('ed_form').value = s.formateur||'';
-  document.getElementById('ed_fmail').value = s.fmail||'';
+  document.getElementById('ed_de').value = s.de || '';
+  document.getElementById('ed_hs').value = s.hs || '09:00';
+  document.getElementById('ed_he').value = s.he || '17:00';
+  document.getElementById('ed_lieu').value = s.lieu || '';
+  document.getElementById('ed_client').value = s.client || '';
+  document.getElementById('ed_form').value = s.formateur || '';
+  document.getElementById('ed_fmail').value = s.fmail || '';
   document.getElementById('ed_slots').value = s.slots.join(', ');
   document.getElementById('ed_import').value = '';
-  // deep copy participants
-  edTmpParts = s.participants.map(p=>({...p, signatures:{...p.signatures}, presence:{...p.presence}}));
+  edTmp = s.participants.map(p => ({ ...p, signatures: { ...p.signatures }, presence: { ...p.presence } }));
   renderEdTable();
   openModal('editModal');
 }
- 
-function renderEdTable(){
-  document.getElementById('edPCount').textContent = edTmpParts.length;
+
+function renderEdTable() {
+  document.getElementById('edPCount').textContent = edTmp.length;
   const tb = document.getElementById('edPtBody');
-  if(!edTmpParts.length){
-    tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant</td></tr>';
+  if (!edTmp.length) {
+    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--Wi);padding:10px;font-size:11px;">Aucun participant</td></tr>';
     return;
   }
-  tb.innerHTML = edTmpParts.map((p,i)=>`<tr style="border-bottom:1px solid var(--Cr);">
-    <td style="padding:5px 8px;"><input value="${esc(p.prenom)}" oninput="edTmpParts[${i}].prenom=this.value" style="padding:4px 7px;font-size:11px;"></td>
-    <td style="padding:5px 8px;"><input value="${esc(p.nom)}" oninput="edTmpParts[${i}].nom=this.value" style="padding:4px 7px;font-size:11px;"></td>
-    <td style="padding:5px 8px;"><input value="${esc(p.email||'')}" oninput="edTmpParts[${i}].email=this.value" style="padding:4px 7px;font-size:11px;" placeholder="email"></td>
-    <td style="padding:5px 8px;"><input value="${esc(p.societe||'')}" oninput="edTmpParts[${i}].societe=this.value" style="padding:4px 7px;font-size:11px;" placeholder="société"></td>
-    <td style="padding:5px 8px;"><input value="${esc(p.fonction||'')}" oninput="edTmpParts[${i}].fonction=this.value" style="padding:4px 7px;font-size:11px;" placeholder="fonction"></td>
-    <td style="padding:5px 8px;">
-      <button class="btn bd bx" onclick="edRmPart(${i})" title="Supprimer${p.signatures&&Object.keys(p.signatures).length?' (a des signatures)':''}">
-        ${p.signatures&&Object.keys(p.signatures).length ? '⚠ Retirer' : '✕'}
+  tb.innerHTML = edTmp.map((p,i) => `<tr style="border-bottom:1px solid var(--Cr);">
+    <td style="padding:4px 7px;"><input value="${esc(p.prenom)}" oninput="edTmp[${i}].prenom=this.value" style="padding:3px 6px;font-size:11px;"></td>
+    <td style="padding:4px 7px;"><input value="${esc(p.nom)}" oninput="edTmp[${i}].nom=this.value" style="padding:3px 6px;font-size:11px;"></td>
+    <td style="padding:4px 7px;"><input value="${esc(p.email||'')}" oninput="edTmp[${i}].email=this.value" style="padding:3px 6px;font-size:11px;" placeholder="email"></td>
+    <td style="padding:4px 7px;"><input value="${esc(p.societe||'')}" oninput="edTmp[${i}].societe=this.value" style="padding:3px 6px;font-size:11px;" placeholder="société"></td>
+    <td style="padding:4px 7px;"><input value="${esc(p.fonction||'')}" oninput="edTmp[${i}].fonction=this.value" style="padding:3px 6px;font-size:11px;" placeholder="fonction"></td>
+    <td style="padding:4px 7px;">
+      <button class="btn btn-d btn-xs" onclick="edRm(${i})" title="${p.signatures && Object.keys(p.signatures).length ? 'A des signatures' : ''}">
+        ${p.signatures && Object.keys(p.signatures).length ? '⚠' : '✕'}
       </button>
     </td>
   </tr>`).join('');
 }
- 
-function edRmPart(i){
-  const p = edTmpParts[i];
-  const hasSig = p.signatures && Object.keys(p.signatures).length > 0;
-  if(hasSig){
-    if(!confirm(`${p.prenom} ${p.nom} a déjà signé. Supprimer quand même (la signature sera perdue) ?`)) return;
+
+function edRm(i) {
+  const p = edTmp[i];
+  if (p.signatures && Object.keys(p.signatures).length) {
+    if (!confirm(`${p.prenom} ${p.nom} a déjà signé. Supprimer quand même ?`)) return;
   }
-  edTmpParts.splice(i,1);
-  renderEdTable();
+  edTmp.splice(i,1); renderEdTable();
 }
- 
-function edAddPart(){
-  const prenom=v('ep_p'), nom=v('ep_n');
-  if(!prenom&&!nom){ toast('Prénom ou Nom requis','warn'); return; }
-  const s=getActive();
-  edTmpParts.push({
-    id:uid(), prenom, nom,
-    email:v('ep_e'), societe:v('ep_s'), fonction:v('ep_f'),
-    signatures:{},
-    presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+
+function edAddPart() {
+  const prenom = v('ep_p'), nom = v('ep_n');
+  if (!prenom && !nom) { toast('Prénom ou Nom requis','warn'); return; }
+  const s = getActive();
+  edTmp.push({
+    id: uid(), prenom, nom,
+    email: v('ep_e'), societe: v('ep_s'), fonction: v('ep_f'),
+    signatures: {},
+    presence: Object.fromEntries(s.slots.map((_,i) => [i, true]))
   });
   ['ep_p','ep_n','ep_e','ep_s','ep_f'].forEach(cl);
   document.getElementById('ep_p').focus();
   renderEdTable();
 }
-function edAddKey(e){ if(e.key==='Enter') edAddPart(); }
- 
-function edImport(){
-  const raw=v('ed_import'); if(!raw) return;
-  const s=getActive();
-  const lines=raw.split('\n').filter(l=>l.trim());
-  lines.forEach(l=>{
-    const pts=l.trim().split(/[\s,;]+/);
-    if(pts.length<2) return;
-    edTmpParts.push({
-      id:uid(), prenom:pts[0], nom:pts[1],
-      email:pts[2]||'', societe:pts.slice(3).join(' ')||'', fonction:'',
-      signatures:{},
-      presence:Object.fromEntries(s.slots.map((_,i)=>[i,true]))
+function edAddKey(e) { if (e.key === 'Enter') edAddPart(); }
+
+function edImport() {
+  const raw = v('ed_import'); if (!raw) return;
+  const s = getActive();
+  const lines = raw.split('\n').filter(l => l.trim());
+  lines.forEach(l => {
+    const pts = l.trim().split(/[\s,;]+/);
+    if (pts.length < 2) return;
+    edTmp.push({
+      id: uid(), prenom: pts[0], nom: pts[1],
+      email: pts[2]||'', societe: pts.slice(3).join(' ')||'', fonction: '',
+      signatures: {},
+      presence: Object.fromEntries(s.slots.map((_,i) => [i, true]))
     });
   });
-  document.getElementById('ed_import').value='';
+  document.getElementById('ed_import').value = '';
   renderEdTable();
   toast(`✓ ${lines.length} ligne(s) importée(s)`);
 }
- 
-function saveEdit(){
-  const title=v('ed_title'), ds=v('ed_ds');
-  if(!title){ toast('L\'intitulé est requis','warn'); return; }
-  if(!ds){ toast('La date de début est requise','warn'); return; }
-  const slotsRaw=v('ed_slots');
-  const slots=slotsRaw.split(',').map(x=>x.trim()).filter(Boolean);
-  if(!slots.length){ toast('Au moins une demi-journée requise','warn'); return; }
- 
-  const s=getActive();
-  // update scalar fields
-  s.title=title; s.ds=ds; s.de=v('ed_de')||ds;
-  s.hs=v('ed_hs')||'09:00'; s.he=v('ed_he')||'17:00';
-  s.lieu=v('ed_lieu'); s.client=v('ed_client');
-  s.formateur=v('ed_form')||'Jacques-Henri MARIN';
-  s.fmail=v('ed_fmail');
-  s.slots=slots;
- 
-  // update participants — preserve signatures/presence for existing IDs
-  s.participants = edTmpParts.map(p=>{
-    // ensure presence keys cover all slots
-    const presence={};
-    slots.forEach((_,i)=>{ presence[i] = (p.presence[i] !== undefined) ? p.presence[i] : true; });
-    return {...p, presence};
+
+function saveEdit() {
+  const title = v('ed_title'), ds = v('ed_ds');
+  if (!title) { toast('Intitulé requis','warn'); return; }
+  if (!ds) { toast('Date de début requise','warn'); return; }
+  const slots = v('ed_slots').split(',').map(x => x.trim()).filter(Boolean);
+  if (!slots.length) { toast('Au moins une demi-journée requise','warn'); return; }
+  const s = getActive();
+  s.title = title; s.ds = ds; s.de = v('ed_de') || ds;
+  s.hs = v('ed_hs') || '09:00'; s.he = v('ed_he') || '17:00';
+  s.lieu = v('ed_lieu'); s.client = v('ed_client');
+  s.formateur = v('ed_form') || 'Jacques-Henri MARIN';
+  s.fmail = v('ed_fmail');
+  s.slots = slots;
+  s.participants = edTmp.map(p => {
+    const presence = {};
+    slots.forEach((_,i) => { presence[i] = p.presence[i] !== undefined ? p.presence[i] : true; });
+    return { ...p, presence };
   });
- 
   persist();
   closeModal('editModal');
-  S.aslot=Math.min(S.aslot, slots.length-1);
+  S.aslot = Math.min(S.aslot, slots.length - 1);
   renderSB(); renderSV();
   toast('✓ Session mise à jour');
 }
-// ════════════════════════════════════
-// EMAIL CONVOCATIONS
-// ════════════════════════════════════
-function openEmailModal(){
-  const s=getActive(); if(!s) return;
- 
-  // populate slot selector
-  const sel=document.getElementById('em_slot');
-  sel.innerHTML='<option value="all">Toutes les demi-journées</option>'+
-    s.slots.map((sl,i)=>`<option value="${i}">${esc(sl)}</option>`).join('');
-  sel.value=String(S.aslot);
- 
-  // restore saved URL
-  document.getElementById('em_appurl').value = S.appUrl || DEFAULT_APP_URL;
- 
-  updateEmailPreview();
-  sel.onchange=updateEmailPreview;
-  document.getElementById('em_appurl').oninput=updateEmailPreview;
-  document.getElementById('em_sendparts').onchange=updateEmailPreview;
-  document.getElementById('em_sendform').onchange=updateEmailPreview;
- 
-  openModal('emailModal');
+
+// ════════════════════════════════════════════
+// EMAIL — CONTENT BUILDERS
+// ════════════════════════════════════════════
+function getSlotLabel(s) {
+  const val = document.getElementById('em_slot')?.value;
+  if (!val || val === 'all') return s.slots.join(', ');
+  return s.slots[parseInt(val)] || s.slots[0];
 }
- 
-function buildSlotLabel(s){
-  const slotVal=document.getElementById('em_slot').value;
-  if(slotVal==='all') return s.slots.join(', ');
-  return s.slots[parseInt(slotVal)]||s.slots[0];
-}
- 
-function buildParticipantEmail(s, p, appUrl){
-  const slotLabel=buildSlotLabel(s);
-  const link=appUrl
-    ? `Cliquez sur le lien ci-dessous, puis apposez votre signature électronique :\n\n👉 ${appUrl}\n\n⏱ Cela prend moins de 30 secondes depuis votre téléphone ou ordinateur.`
-    : `Votre formateur vous communiquera le lien de signature au démarrage de la session.\n👉 ${DEFAULT_APP_URL}`;
-  return `Bonjour ${p.prenom},
- 
-La session "${s.title}" démarre dans quelques minutes — merci de signer votre feuille d'émargement dès maintenant.
- 
-${link}
- 
-──────────────────────────────
-📚 ${s.title}
-📅 ${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}  ·  ⏰ ${s.hs} – ${s.he}
-${s.lieu?'📍 '+s.lieu+'  ·  ':''}📋 ${slotLabel}
-👤 Formateur : ${s.formateur}
-──────────────────────────────
- 
-Votre signature vaut attestation de présence au titre des exigences Qualiopi.
- 
-En cas de difficulté technique, signalez-le directement à votre formateur.
- 
-Bonne formation,
- 
-${s.formateur}
-LENOUVION Consulting — Organisme de formation IA · Qualiopi
-SIRET 980 112 536 00019`;
-}
- 
-function buildFormateurEmail(s, appUrl){
-  const slotLabel=buildSlotLabel(s);
-  const link=appUrl?`🔗 Lien émargement participants : ${appUrl}`:'⚠ Lien émargement : non renseigné — pensez à configurer l\'URL de l\'app.';
-  const listeParts=s.participants.map((p,i)=>{
-    const hasMail=p.email&&p.email.includes('@');
-    return `  ${i+1}. ${p.prenom} ${p.nom}${p.societe?' ('+p.societe+')':''}${hasMail?' — '+p.email:' ⚠ pas d\'email'}`;
-  }).join('\n');
-  const noMail=s.participants.filter(p=>!p.email||!p.email.includes('@'));
-  return `Bonjour ${s.formateur},
- 
-La session démarre dans quelques minutes. Voici votre récapitulatif d'émargement.
- 
-${link}
- 
-──────────────────────────────
-📚 ${s.title}
-📅 ${fmtD(s.ds)}${s.de!==s.ds?' → '+fmtD(s.de):''}  ·  ⏰ ${s.hs} – ${s.he}
-${s.lieu?'📍 '+s.lieu+'  ·  ':''}📋 ${slotLabel}
-──────────────────────────────
- 
-👥 PARTICIPANTS (${s.participants.length}) :
-${listeParts||'  Aucun participant enregistré.'}
-${noMail.length?`\n⚠ ${noMail.length} participant(s) sans email — émargement manuel requis :\n${noMail.map(p=>'  · '+p.prenom+' '+p.nom).join('\n')}`:'' }
- 
-Bonne formation !
- 
-LENOUVION Consulting — Organisme de formation IA · Qualiopi`;
-}
- 
-function buildSubjectParticipant(s){
+
+function buildSubjPart(s) {
   return `✍ Émargement à signer — ${s.title} — aujourd'hui ${s.hs}`;
 }
- 
-function buildSubjectFormateur(s){
+function buildSubjForm(s) {
   return `[FORMATEUR] Récap émargement — ${s.title} — ${fmtD(s.ds)}`;
 }
- 
-function updateEmailPreview(){
-  const s=getActive(); if(!s) return;
-  const appUrl=document.getElementById('em_appurl').value.trim();
-  const sendParts=document.getElementById('em_sendparts').checked;
-  const sendForm=document.getElementById('em_sendform').checked;
- 
-  const sampleP=s.participants[0]||{prenom:'Participant',nom:'',email:'exemple@société.fr',societe:'',fonction:''};
-  document.getElementById('em_prev_subj').textContent=buildSubjectParticipant(s);
-  document.getElementById('em_prev_body').textContent=buildParticipantEmail(s,sampleP,appUrl);
- 
-  // count participants with/without email
-  const withEmail=s.participants.filter(p=>p.email&&p.email.includes('@'));
-  const withoutEmail=s.participants.filter(p=>!p.email||!p.email.includes('@'));
- 
-  // warnings
-  const warn=document.getElementById('em_nomail_warn');
-  const warnMsg=document.getElementById('em_nomail_msg');
-  if(withoutEmail.length && sendParts){
-    warn.style.display='block';
-    warnMsg.textContent=`${withoutEmail.length} participant(s) sans email valide seront ignorés : ${withoutEmail.map(p=>p.prenom+' '+p.nom).join(', ')}`;
-  } else { warn.style.display='none'; }
- 
-  // summary
-  let lines=[];
-  if(sendParts) lines.push(`📨 ${withEmail.length} email(s) participants (ouverture dans votre client email)`);
-  if(sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail} (ouverture dans votre client email)`);
-  else if(sendForm && !s.fmail) lines.push(`⚠ Email formateur : aucune adresse enregistrée pour ${s.formateur}`);
-  if(!sendParts && !sendForm) lines.push('Aucun destinataire sélectionné.');
-  document.getElementById('em_summary').innerHTML=lines.join('<br>');
+
+function buildBodyPart(s, p, appUrl) {
+  const slot = getSlotLabel(s);
+  const link = appUrl
+    ? `Cliquez sur le lien ci-dessous et apposez votre signature :\n\n👉 ${appUrl}\n\n⏱ Moins de 30 secondes depuis votre téléphone.`
+    : `Votre formateur vous communiquera le lien au démarrage.\n👉 ${DEFAULT_URL}`;
+  return `Bonjour ${p.prenom},
+
+La session "${s.title}" démarre dans quelques minutes.
+Merci de signer votre feuille d'émargement dès maintenant.
+
+${link}
+
+──────────────────────────────
+📚 ${s.title}
+📅 ${fmtD(s.ds)}${s.de !== s.ds ? ' → ' + fmtD(s.de) : ''}  ·  ⏰ ${s.hs}–${s.he}
+${s.lieu ? '📍 ' + s.lieu + '  ·  ' : ''}📋 ${slot}
+👤 Formateur : ${s.formateur}
+──────────────────────────────
+
+Votre signature vaut attestation de présence (Qualiopi).
+
+En cas de difficulté, signalez-le à votre formateur.
+
+${s.formateur}
+LENOUVION Consulting — Formation IA · Qualiopi
+SIRET 980 112 536 00019`;
 }
- 
-function sendConvocations(){
-  const s=getActive(); if(!s) return;
-  const appUrl=document.getElementById('em_appurl').value.trim() || DEFAULT_APP_URL;
-  const sendParts=document.getElementById('em_sendparts').checked;
-  const sendForm=document.getElementById('em_sendform').checked;
- 
-  S.appUrl=appUrl; persist();
- 
-  if(!sendParts && !sendForm){ toast('Aucun destinataire sélectionné','warn'); return; }
- 
-  const recipients=[];
- 
-  if(sendParts){
-    const eligible=s.participants.filter(p=>p.email&&p.email.includes('@'));
-    if(!eligible.length && sendParts){ toast('Aucun participant avec email valide','warn'); }
-    eligible.forEach(p=>{
-      recipients.push({
-        email: p.email,
-        subject: buildSubjectParticipant(s),
-        body: buildParticipantEmail(s, p, appUrl)
-      });
+
+function buildBodyForm(s, appUrl) {
+  const slot = getSlotLabel(s);
+  const link = appUrl ? `🔗 ${appUrl}` : `🔗 ${DEFAULT_URL}`;
+  const liste = s.participants.map((p,i) => {
+    const ok = p.email && p.email.includes('@');
+    return `  ${i+1}. ${p.prenom} ${p.nom}${p.societe ? ' (' + p.societe + ')' : ''}${ok ? ' — ' + p.email : ' ⚠ pas d\'email'}`;
+  }).join('\n');
+  const noMail = s.participants.filter(p => !p.email || !p.email.includes('@'));
+  return `Bonjour ${s.formateur},
+
+Récapitulatif de votre session — démarrage dans quelques minutes.
+
+${link}
+
+──────────────────────────────
+📚 ${s.title}
+📅 ${fmtD(s.ds)}${s.de !== s.ds ? ' → ' + fmtD(s.de) : ''}  ·  ⏰ ${s.hs}–${s.he}
+${s.lieu ? '📍 ' + s.lieu + '  ·  ' : ''}📋 ${slot}
+──────────────────────────────
+
+👥 PARTICIPANTS (${s.participants.length}) :
+${liste || '  Aucun participant enregistré.'}
+${noMail.length ? `\n⚠ ${noMail.length} participant(s) sans email — émargement manuel requis.` : ''}
+
+Bonne formation !
+LENOUVION Consulting — Formation IA · Qualiopi`;
+}
+
+// ════════════════════════════════════════════
+// EMAIL MODAL
+// ════════════════════════════════════════════
+function openEmailModal() {
+  const s = getActive(); if (!s) return;
+  // slots selector
+  const sel = document.getElementById('em_slot');
+  sel.innerHTML = '<option value="all">Toutes</option>' +
+    s.slots.map((sl,i) => `<option value="${i}">${esc(sl)}</option>`).join('');
+  sel.value = String(S.aslot);
+  // url
+  document.getElementById('em_appurl').value = S.appUrl || DEFAULT_URL;
+  // listeners
+  sel.onchange = updateEmailPreview;
+  document.getElementById('em_appurl').oninput = updateEmailPreview;
+  document.getElementById('em_sendparts').onchange = updateEmailPreview;
+  document.getElementById('em_sendform').onchange = updateEmailPreview;
+  updateEmailPreview();
+  openModal('emailModal');
+}
+
+function updateEmailPreview() {
+  const s = getActive(); if (!s) return;
+  const appUrl = document.getElementById('em_appurl').value.trim() || DEFAULT_URL;
+  const sendParts = document.getElementById('em_sendparts').checked;
+  const sendForm = document.getElementById('em_sendform').checked;
+  const sampleP = s.participants[0] || { prenom: 'Participant', nom: '', email: 'exemple@société.fr', societe: '', fonction: '' };
+
+  document.getElementById('em_prev_subj').textContent = buildSubjPart(s);
+  document.getElementById('em_prev_body').textContent = buildBodyPart(s, sampleP, appUrl);
+
+  const withEmail = s.participants.filter(p => p.email && p.email.includes('@'));
+  const noEmail = s.participants.filter(p => !p.email || !p.email.includes('@'));
+  const warn = document.getElementById('em_warn');
+  const warnMsg = document.getElementById('em_warn_msg');
+  if (noEmail.length && sendParts) {
+    warn.style.display = 'block';
+    warnMsg.textContent = `${noEmail.length} participant(s) sans email : ${noEmail.map(p => p.prenom + ' ' + p.nom).join(', ')}`;
+  } else { warn.style.display = 'none'; }
+
+  const lines = [];
+  if (sendParts) lines.push(`📨 ${withEmail.length} email(s) participants (ouverture client email)`);
+  if (sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail}`);
+  else if (sendForm && !s.fmail) lines.push(`⚠ Email formateur : adresse manquante — modifiez la session`);
+  if (!sendParts && !sendForm) lines.push('Aucun destinataire sélectionné.');
+  document.getElementById('em_summary').innerHTML = lines.join('<br>');
+}
+
+function sendEmails() {
+  const s = getActive(); if (!s) return;
+  const appUrl = document.getElementById('em_appurl').value.trim() || DEFAULT_URL;
+  const sendParts = document.getElementById('em_sendparts').checked;
+  const sendForm = document.getElementById('em_sendform').checked;
+  S.appUrl = appUrl; persist();
+
+  const recipients = [];
+  if (sendParts) {
+    s.participants.filter(p => p.email && p.email.includes('@')).forEach(p => {
+      recipients.push({ email: p.email, subject: buildSubjPart(s), body: buildBodyPart(s, p, appUrl) });
     });
   }
- 
-  if(sendForm && s.fmail && s.fmail.includes('@')){
-    recipients.push({
-      email: s.fmail,
-      subject: buildSubjectFormateur(s),
-      body: buildFormateurEmail(s, appUrl)
-    });
-  } else if(sendForm && (!s.fmail || !s.fmail.includes('@'))){
-    toast('Email formateur manquant — modifiez la session','warn');
+  if (sendForm && s.fmail && s.fmail.includes('@')) {
+    recipients.push({ email: s.fmail, subject: buildSubjForm(s), body: buildBodyForm(s, appUrl) });
   }
- 
-  if(!recipients.length){ return; }
- 
+  if (!recipients.length) { toast('Aucun email valide — vérifiez les adresses','warn'); return; }
+
   closeModal('emailModal');
- 
-  // Open mailto links one by one with a small delay
-  // so the email client doesn't block multiple rapid opens
-  let delay=0;
-  recipients.forEach((r, i)=>{
-    setTimeout(()=>{
-      const mailto=`mailto:${encodeURIComponent(r.email)}`
-        +`?subject=${encodeURIComponent(r.subject)}`
-        +`&body=${encodeURIComponent(r.body)}`;
-      window.location.href=mailto;
-      if(i===recipients.length-1){
-        toast(`✓ ${recipients.length} email(s) ouverts dans votre client email`);
-      }
-    }, delay);
-    delay+=800; // 800ms between each to avoid blocking
+
+  // Ouvre chaque mailto via un lien invisible — évite la redirection de page
+  function openMailto(r) {
+    const a = document.createElement('a');
+    a.href = `mailto:${encodeURIComponent(r.email)}?subject=${encodeURIComponent(r.subject)}&body=${encodeURIComponent(r.body)}`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 500);
+  }
+
+  // Un seul destinataire → ouverture immédiate
+  if (recipients.length === 1) {
+    openMailto(recipients[0]);
+    toast('✓ Email ouvert dans votre client email');
+    return;
+  }
+
+  // Plusieurs destinataires → délai entre chaque ouverture
+  // et avertissement que le navigateur peut bloquer les suivants
+  toast(`📧 Ouverture de ${recipients.length} email(s) — acceptez les popups si demandé`);
+  recipients.forEach((r, i) => {
+    setTimeout(() => {
+      openMailto(r);
+      if (i === recipients.length - 1) toast(`✓ ${recipients.length} email(s) ouverts`);
+    }, i * 1200);
   });
 }
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
+// EXPORT PDF
+// ════════════════════════════════════════════
+function exportPDF() {
+  const s = getActive(); if (!s) return;
+  const { jsPDF } = window.jspdf;
+  s.slots.forEach((slotName, si) => {
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const W = 297, H = 210, mg = 14;
+    doc.setFillColor(245,242,236); doc.rect(0,0,W,H,'F');
+    doc.setFillColor(11,11,12); doc.rect(0,0,W,21,'F');
+    doc.setFillColor(200,83,43); doc.rect(0,21,W,1.5,'F');
+    doc.setFillColor(200,83,43); doc.roundedRect(mg,4.5,11,11,2,2,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(8); doc.setFont('helvetica','bold');
+    doc.text('LN', mg+5.5, 11.5, { align: 'center' });
+    doc.setFontSize(10); doc.setTextColor(245,242,236);
+    doc.text('LENOUVION Consulting', mg+15, 9.5);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(180,178,169);
+    doc.text('Organisme de formation IA · Qualiopi · SIRET 980 112 536 00019', mg+15, 14.5);
+    doc.setFillColor(200,83,43); doc.roundedRect(W-40,5.5,26,9,2,2,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text('QUALIOPI', W-27, 11.2, { align: 'center' });
+    doc.setTextColor(11,11,12); doc.setFontSize(12); doc.setFont('helvetica','bold');
+    doc.text("FEUILLE D'ÉMARGEMENT", mg, 30);
+    doc.setFillColor(200,83,43); doc.rect(mg,33,1.5,19,'F');
+    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(11,11,12);
+    doc.text(s.title, mg+4, 38);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(74,74,74);
+    const l1 = [
+      `${fmtD(s.ds)}${s.de !== s.ds ? ' → '+fmtD(s.de) : ''}`, `${s.hs}–${s.he}`,
+      s.lieu ? 'Lieu : '+s.lieu : null, s.client ? 'Client : '+s.client : null
+    ].filter(Boolean).join('    ');
+    doc.text(l1, mg+4, 44);
+    doc.text(`Formateur : ${s.formateur}  ·  ${s.fmail||''}`, mg+4, 49);
+    doc.setFillColor(200,83,43); doc.roundedRect(mg+4,51,55,5.5,1,1,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(7); doc.setFont('helvetica','bold');
+    doc.text(`Demi-journée : ${slotName}`, mg+31.5, 55, { align: 'center' });
+    const tY = 61, cols = [8,42,38,34,38,18,89];
+    const heads = ['N°','Prénom & Nom','Société','Fonction','Email','Présence','Signature'];
+    let xO = mg;
+    doc.setFillColor(11,11,12); doc.rect(mg,tY,W-mg*2,7,'F');
+    doc.setTextColor(245,242,236); doc.setFontSize(6); doc.setFont('helvetica','bold');
+    heads.forEach((h,i) => { doc.text(h, xO+2, tY+4.7); xO += cols[i]; });
+    let rY = tY+7, rH = 14;
+    s.participants.forEach((p,idx) => {
+      const even = idx%2===0;
+      doc.setFillColor(even?250:255, even?246:255, even?238:255); doc.rect(mg,rY,W-mg*2,rH,'F');
+      doc.setDrawColor(180,178,169); doc.setLineWidth(.25); doc.rect(mg,rY,W-mg*2,rH,'S');
+      const present = p.presence[si] !== false;
+      xO = mg;
+      [String(idx+1), `${p.prenom} ${p.nom}`, p.societe||'', p.fonction||'', p.email||'', present?'Présent':'Absent'].forEach((c,i) => {
+        if (i===1) { doc.setFont('helvetica','bold'); doc.setTextColor(11,11,12); }
+        else if (i===5) { doc.setTextColor(present?22:153, present?101:27, present?52:27); doc.setFont('helvetica','bold'); }
+        else { doc.setFont('helvetica','normal'); doc.setTextColor(74,74,74); }
+        doc.setFontSize(6); doc.text(String(c).substring(0,30), xO+2, rY+8);
+        xO += cols[i];
+      });
+      const sig = p.signatures[si];
+      if (sig) { try { doc.addImage(sig,'PNG',xO+2,rY+1,85,12); } catch(e) {} }
+      else { doc.setDrawColor(180,178,169); doc.setLineWidth(.2); doc.rect(xO+2,rY+1,85,11,'S'); doc.setFontSize(5.5); doc.setTextColor(180,178,169); doc.text('À signer',xO+44,rY+8,{align:'center'}); }
+      rY += rH;
+    });
+    doc.setFillColor(11,11,12); doc.rect(0,H-9,W,11,'F');
+    doc.setFillColor(200,83,43); doc.rect(0,H-9,W,.7,'F');
+    doc.setTextColor(180,178,169); doc.setFontSize(6.5); doc.setFont('helvetica','normal');
+    doc.text('© LENOUVION Consulting · Tous droits réservés', mg, H-4);
+    doc.text('Formation IA · Qualiopi', W/2, H-4, { align: 'center' });
+    doc.setTextColor(200,83,43);
+    doc.text(`${slotName} · ${fmtD(s.ds)}`, W-mg, H-4, { align: 'right' });
+    doc.save(`Emargement_${slug(s.title)}_${slug(slotName)}.pdf`);
+  });
+  toast(`📄 ${s.slots.length} PDF exporté(s)`);
+}
+
+// ════════════════════════════════════════════
 // EXPORT JSON
-// ════════════════════════════════════
-function exportJSON(){
-  const s=getActive(); if(!s) return;
-  const b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'});
-  const u=URL.createObjectURL(b);
-  const a=document.createElement('a'); a.href=u; a.download=`Session_${slug(s.title)}.json`; a.click();
+// ════════════════════════════════════════════
+function exportJSON() {
+  const s = getActive(); if (!s) return;
+  const b = new Blob([JSON.stringify(s, null, 2)], { type: 'application/json' });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a'); a.href = u;
+  a.download = `Session_${slug(s.title)}.json`; a.click();
   URL.revokeObjectURL(u);
   toast('💾 Session sauvegardée en JSON');
 }
- 
-// ════════════════════════════════════
-// UTILS
-// ════════════════════════════════════
-function v(id){ return document.getElementById(id)?.value?.trim()||''; }
-function cl(id){ const e=document.getElementById(id); if(e) e.value=''; }
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmtD(d){ if(!d) return ''; const[y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
-function todayStr(){ return new Date().toISOString().split('T')[0]; }
-function slug(s){ return String(s).replace(/[^a-zA-Z0-9]/g,'_').substring(0,40); }
-function toast(msg,type='ok'){
-  const el=document.createElement('div');
-  el.className='toast'+(type==='warn'?' warn':'');
-  el.textContent=msg;
-  document.getElementById('toasts').appendChild(el);
-  setTimeout(()=>el.remove(),3500);
-}
- 
-// ════════════════════════════════════
+
+// ════════════════════════════════════════════
 // INIT
-// ════════════════════════════════════
+// ════════════════════════════════════════════
 hydrate();
 renderSB();
-if(S.aid && S.sessions.find(s=>s.id===S.aid)) renderSV();
-else if(S.sessions.length){ S.aid=S.sessions[0].id; renderSB(); renderSV(); }
+if (S.aid && S.sessions.find(s => s.id === S.aid)) renderSV();
+else if (S.sessions.length) { S.aid = S.sessions[0].id; renderSB(); renderSV(); }
 </script>
-<!-- ════ MODAL EMAIL CONVOCATIONS ════ -->
-<div class="overlay" id="emailModal" style="display:none;">
-  <div class="modal" style="max-width:640px;max-height:92vh;display:flex;flex-direction:column;">
-    <div class="mh">
-      <div class="mt">📧 Envoyer la feuille d'émargement</div>
-      <button class="mx" onclick="closeModal('emailModal')">✕</button>
-    </div>
-    <div class="mb" style="flex:1;overflow-y:auto;">
- 
-      <div class="sl">Configuration</div>
-      <div class="fg">
-        <label>URL de l'application d'émargement</label>
-        <input id="em_appurl" placeholder="https://jacqueshenrimarin-lnc.github.io/evaluation-formation/">
-        <div style="font-size:10px;color:var(--Wi);margin-top:3px;">Ce lien est inclus dans chaque email pour que les participants signent depuis leur téléphone.</div>
-      </div>
-      <div class="g2">
-        <div class="fg">
-          <label>Destinataires</label>
-          <div style="display:flex;flex-direction:column;gap:5px;margin-top:2px;">
-            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:7px;cursor:pointer;">
-              <input type="checkbox" id="em_sendparts" checked style="width:14px;height:14px;accent-color:var(--T);">
-              Participants (avec email)
-            </label>
-            <label style="text-transform:none;letter-spacing:0;font-size:12px;font-weight:400;display:flex;align-items:center;gap:7px;cursor:pointer;">
-              <input type="checkbox" id="em_sendform" checked style="width:14px;height:14px;accent-color:var(--T);">
-              Formateur (récap complet)
-            </label>
-          </div>
-        </div>
-        <div class="fg">
-          <label>Demi-journée concernée</label>
-          <select id="em_slot" style="margin-top:2px;"></select>
-          <div style="font-size:10px;color:var(--Wi);margin-top:3px;">Ou "Toutes" pour une convocation globale.</div>
-        </div>
-      </div>
- 
-      <div class="sl">Prévisualisation — Email participant</div>
-      <div style="border:1px solid var(--Wi);border-radius:7px;overflow:hidden;">
-        <div style="background:var(--Ink);padding:10px 14px;display:flex;gap:14px;font-size:11px;color:var(--Wi);">
-          <span>À : <strong style="color:var(--Pa);">marie.dupont@acme.fr</strong></span>
-          <span>Objet : <strong style="color:var(--Pa);" id="em_prev_subj">—</strong></span>
-        </div>
-        <div id="em_prev_body" style="padding:14px;font-size:12px;line-height:1.7;color:var(--Ink);background:var(--W);max-height:220px;overflow-y:auto;white-space:pre-wrap;"></div>
-      </div>
- 
-      <div id="em_nomail_warn" style="display:none;margin-top:10px;padding:9px 12px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;font-size:12px;color:#713f12;">
-        ⚠ <span id="em_nomail_msg"></span>
-      </div>
- 
-      <div class="sl">Résumé</div>
-      <div id="em_summary" style="font-size:12px;color:var(--Sl);line-height:1.8;"></div>
-    </div>
-    <div class="mf">
-      <button class="btn bs" onclick="closeModal('emailModal')">Annuler</button>
-      <button class="btn" style="background:#1a73e8;color:#fff;font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:600;gap:6px;display:inline-flex;align-items:center;padding:7px 14px;border:none;border-radius:5px;cursor:pointer;" onclick="sendConvocations()" id="em_sendBtn">
-        📧 Ouvrir les emails
-    </div>
-  </div>
-</div>
- 
 </body>
 </html>
