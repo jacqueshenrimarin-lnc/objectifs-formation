@@ -595,10 +595,23 @@ function renderTable(){
     <tbody>${s.participants.map((p,i)=>{
       const present=p.presence[si]!==false;
       const sig=p.signatures[si];
+      const hasEmail=p.email&&p.email.includes('@');
+      const appUrl=S.appUrl||DEFAULT_APP_URL;
+      const mailtoLink=hasEmail
+        ?`mailto:${encodeURIComponent(p.email)}?subject=${encodeURIComponent(buildSubjectParticipant(s))}&body=${encodeURIComponent(buildParticipantEmail(s,p,appUrl))}`
+        :'#';
       return `<tr>
         <td style="color:var(--Sl);font-size:10px;">${i+1}</td>
         <td><b>${esc(p.prenom)} ${esc(p.nom)}</b></td>
-        <td style="color:var(--Sl);font-size:11px;">${esc(p.email||'—')}</td>
+        <td style="font-size:11px;">
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span style="color:var(--Sl);">${esc(p.email||'—')}</span>
+            ${hasEmail
+              ?`<a href="${mailtoLink}" class="btn bp bx" style="text-decoration:none;padding:3px 8px;font-size:10px;" title="Envoyer l'email d'émargement">✉</a>`
+              :`<span style="font-size:10px;color:var(--Wi);" title="Pas d'email">—</span>`
+            }
+          </div>
+        </td>
         <td style="color:var(--Sl);font-size:11px;">${esc(p.societe||'—')}</td>
         <td style="color:var(--Sl);font-size:11px;">${esc(p.fonction||'—')}</td>
         <td>
@@ -995,86 +1008,66 @@ function updateEmailPreview(){
  
   // summary
   let lines=[];
-  if(sendParts) lines.push(`📨 ${withEmail.length} email(s) d'émargement participants (brouillons Gmail)`);
-  if(sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail}`);
+  if(sendParts) lines.push(`📨 ${withEmail.length} email(s) participants (ouverture dans votre client email)`);
+  if(sendForm && s.fmail) lines.push(`📨 1 email formateur → ${s.fmail} (ouverture dans votre client email)`);
   else if(sendForm && !s.fmail) lines.push(`⚠ Email formateur : aucune adresse enregistrée pour ${s.formateur}`);
   if(!sendParts && !sendForm) lines.push('Aucun destinataire sélectionné.');
   document.getElementById('em_summary').innerHTML=lines.join('<br>');
 }
  
-async function sendConvocations(){
+function sendConvocations(){
   const s=getActive(); if(!s) return;
-  const appUrl=document.getElementById('em_appurl').value.trim();
+  const appUrl=document.getElementById('em_appurl').value.trim() || DEFAULT_APP_URL;
   const sendParts=document.getElementById('em_sendparts').checked;
   const sendForm=document.getElementById('em_sendform').checked;
  
-  // save URL for next time
   S.appUrl=appUrl; persist();
  
-  const btn=document.getElementById('em_sendBtn');
-  btn.textContent='⏳ Création des brouillons…';
-  btn.disabled=true;
+  if(!sendParts && !sendForm){ toast('Aucun destinataire sélectionné','warn'); return; }
  
-  let created=0, errors=0;
+  const recipients=[];
  
-  // ── PARTICIPANTS ──
   if(sendParts){
     const eligible=s.participants.filter(p=>p.email&&p.email.includes('@'));
-    for(const p of eligible){
-      try{
-        await callGmailCreateDraft({
-          to:[p.email],
-          subject:buildSubjectParticipant(s),
-          body:buildParticipantEmail(s,p,appUrl)
-        });
-        created++;
-      } catch(e){ errors++; console.error('Draft error',p.email,e); }
-    }
-  }
- 
-  // ── FORMATEUR ──
-  if(sendForm && s.fmail && s.fmail.includes('@')){
-    try{
-      await callGmailCreateDraft({
-        to:[s.fmail],
-        subject:buildSubjectFormateur(s),
-        body:buildFormateurEmail(s,appUrl)
+    if(!eligible.length && sendParts){ toast('Aucun participant avec email valide','warn'); }
+    eligible.forEach(p=>{
+      recipients.push({
+        email: p.email,
+        subject: buildSubjectParticipant(s),
+        body: buildParticipantEmail(s, p, appUrl)
       });
-      created++;
-    } catch(e){ errors++; console.error('Draft error formateur',e); }
+    });
   }
  
-  btn.textContent='📧 Créer les brouillons Gmail';
-  btn.disabled=false;
- 
-  if(created>0){
-    closeModal('emailModal');
-    toast(`✓ ${created} brouillon(s) créé(s) dans Gmail${errors?' ('+errors+' erreur(s))':''}`);
-  } else {
-    toast('Aucun brouillon créé — vérifiez les adresses email','warn');
+  if(sendForm && s.fmail && s.fmail.includes('@')){
+    recipients.push({
+      email: s.fmail,
+      subject: buildSubjectFormateur(s),
+      body: buildFormateurEmail(s, appUrl)
+    });
+  } else if(sendForm && (!s.fmail || !s.fmail.includes('@'))){
+    toast('Email formateur manquant — modifiez la session','warn');
   }
-}
  
-async function callGmailCreateDraft({to, subject, body}){
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      mcp_servers:[{type:'url',url:'https://gmailmcp.googleapis.com/mcp/v1',name:'gmail'}],
-      messages:[{role:'user',content:`Create a Gmail draft with these exact parameters (do not modify content):
-TO: ${to.join(', ')}
-SUBJECT: ${subject}
-BODY (use exactly as-is):
-${body}`}]
-    })
+  if(!recipients.length){ return; }
+ 
+  closeModal('emailModal');
+ 
+  // Open mailto links one by one with a small delay
+  // so the email client doesn't block multiple rapid opens
+  let delay=0;
+  recipients.forEach((r, i)=>{
+    setTimeout(()=>{
+      const mailto=`mailto:${encodeURIComponent(r.email)}`
+        +`?subject=${encodeURIComponent(r.subject)}`
+        +`&body=${encodeURIComponent(r.body)}`;
+      window.location.href=mailto;
+      if(i===recipients.length-1){
+        toast(`✓ ${recipients.length} email(s) ouverts dans votre client email`);
+      }
+    }, delay);
+    delay+=800; // 800ms between each to avoid blocking
   });
-  if(!resp.ok){
-    const err=await resp.text();
-    throw new Error(`API error ${resp.status}: ${err}`);
-  }
-  return resp.json();
 }
  
 // ════════════════════════════════════
@@ -1170,7 +1163,7 @@ else if(S.sessions.length){ S.aid=S.sessions[0].id; renderSB(); renderSV(); }
     <div class="mf">
       <button class="btn bs" onclick="closeModal('emailModal')">Annuler</button>
       <button class="btn" style="background:#1a73e8;color:#fff;font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:600;gap:6px;display:inline-flex;align-items:center;padding:7px 14px;border:none;border-radius:5px;cursor:pointer;" onclick="sendConvocations()" id="em_sendBtn">
-        📧 Créer les brouillons Gmail
+        📧 Ouvrir les emails
     </div>
   </div>
 </div>
